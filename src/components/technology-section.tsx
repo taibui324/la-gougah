@@ -6,7 +6,7 @@ export default function TechnologySection() {
   return (
     <section id="technology" className="relative py-16 overflow-hidden">
       {/* Background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-r from-blue-50 to-blue-100 z-0" />
+      <div className="absolute inset-0 bg-gradient-to-b from-white to-blue-100 z-0" />
       
       {/* Decorative elements */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0">

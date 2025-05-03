@@ -6,7 +6,7 @@ export default function TeamSection() {
   return (
     <section id="team" className="relative py-16 overflow-hidden">
       {/* Background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-l from-blue-50 to-blue-100 z-0" />
+      <div className="absolute inset-0 bg-gradient-to-b from-blue-100 to-blue-200 z-0" />
       
       {/* Decorative elements */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0">

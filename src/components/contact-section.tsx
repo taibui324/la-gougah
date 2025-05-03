@@ -65,14 +65,14 @@ export default function ContactSection() {
             {/* Map */}
             <div className="rounded-lg overflow-hidden shadow-md h-64 w-full">
               <iframe 
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.5177580567147!2d106.69916121471856!3d10.771594992323586!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f4b3330bcc7%3A0x4db964d76bf6e18e!2sHo%20Chi%20Minh%20City%2C%20Vietnam!5e0!3m2!1sen!2s!4v1620120000000!5m2!1sen!2s" 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15639.948391865068!2d108.34553383022461!3d11.688343300000003!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31710668a8a1a72f%3A0xb9c7d1a6a4d7f3e2!2zVGjDtG4gUGjDuiBIw7JhLCBQaMO6IEjhu5lpLCDEkOG7qWMgVHLhu41uZywgTMOibSDEkOG7k25nLCBWaWV0bmFt!5e0!3m2!1sen!2sus!4v1714820534498!5m2!1sen!2sus" 
                 width="100%" 
                 height="100%" 
                 style={{ border: 0 }} 
                 allowFullScreen={false} 
                 loading="lazy" 
                 referrerPolicy="no-referrer-when-downgrade"
-                title="La Gougah Factory Location"
+                title="La Gougah Factory Location - Thôn Phú Hòa, Xã Phú Hội, Huyện Đức Trọng, Tỉnh Lâm Đồng"
               ></iframe>
             </div>
             
@@ -87,7 +87,7 @@ export default function ContactSection() {
                   </div>
                   <div>
                     <p className="text-sm text-gray-500">Hotline</p>
-                    <p className="text-lg font-medium">+84 123 456 789</p>
+                    <p className="text-lg font-medium">01 - 234 -5678</p>
                   </div>
                 </div>
                 
@@ -97,7 +97,7 @@ export default function ContactSection() {
                   </div>
                   <div>
                     <p className="text-sm text-gray-500">Email</p>
-                    <p className="text-lg font-medium">contact@lagougah.com</p>
+                    <p className="text-lg font-medium">admin@lagougah.com</p>
                   </div>
                 </div>
                 
@@ -107,7 +107,7 @@ export default function ContactSection() {
                   </div>
                   <div>
                     <p className="text-sm text-gray-500">Địa chỉ</p>
-                    <p className="text-lg font-medium">Khu Công Nghiệp XYZ, Thành phố Hồ Chí Minh, Việt Nam</p>
+                    <p className="text-lg font-medium">Thôn Phú Hòa, Xã Phú Hội, Huyện Đức Trọng, Tỉnh Lâm Đồng, Việt Nam</p>
                   </div>
                 </div>
               </div>

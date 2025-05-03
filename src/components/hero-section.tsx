@@ -4,10 +4,12 @@ import Image from "next/image";
 
 export default function HeroSection() {
   return (
-    <section className="relative min-h-screen bg-transparent overflow-hidden">
+    <section className="relative min-h-screen overflow-hidden">
+      {/* Background gradient base */}
+      <div className="absolute inset-0 z-0 bg-gradient-to-b from-blue-50/20 to-white"></div>
+      
       {/* Background splash with blur effect */}
-      <div className="absolute inset-0 z-0 bg-blue-100/20">
-        <div className="absolute inset-0 bg-gradient-to-b from-blue-100/10 to-blue-300/30"></div>
+      <div className="absolute inset-0 z-0">
         <Image
           src="/images/splash.png"
           alt="Water Splash Background"
@@ -16,7 +18,7 @@ export default function HeroSection() {
           priority
           style={{ 
             filter: 'blur(5px) brightness(110%)', 
-            opacity: 0.85
+            opacity: 0.75
           }}
         />
       </div>

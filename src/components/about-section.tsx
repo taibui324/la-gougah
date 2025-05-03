@@ -32,9 +32,12 @@ export default function AboutSection() {
   ];
 
   return (
-    <section className="relative min-h-screen overflow-hidden">
-      {/* Background Image */}
-      <div className="absolute inset-0 z-0">
+    <section id="about" className="relative min-h-screen overflow-hidden">
+      {/* Background gradient and overlay */}
+      <div className="absolute inset-0 bg-gradient-to-b from-blue-50/30 to-white z-0" />
+      
+      {/* Background Image with overlay */}
+      <div className="absolute inset-0 z-0 opacity-40 mix-blend-overlay">
         <Image
           src="/images/image-10.png"
           alt="Water Hand Background"
@@ -42,6 +45,12 @@ export default function AboutSection() {
           className="object-cover"
           priority
         />
+      </div>
+      
+      {/* Decorative elements */}
+      <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0">
+        <div className="absolute -top-20 right-20 w-64 h-64 rounded-full border-2 border-blue-100 opacity-20" />
+        <div className="absolute bottom-40 left-20 w-80 h-80 rounded-full border-2 border-blue-100 opacity-20" />
       </div>
 
       {/* Content */}

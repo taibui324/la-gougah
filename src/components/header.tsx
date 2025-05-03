@@ -8,12 +8,14 @@ import { Menu } from "lucide-react";
 
 export default function Header() {
   const menuItems = [
+    { id: "about", title: "Giới thiệu", href: "#about" },
     { id: "products", title: "Sản Phẩm", href: "#products" },
     { id: "technology", title: "Công Nghệ", href: "#technology" },
   ];
 
   const rightMenuItems = [
     { id: "team", title: "Đội Ngũ", href: "#team" },
+    { id: "news", title: "Tin Tức", href: "#news" },
     { id: "contact", title: "Liên Hệ", href: "#contact" },
   ];
 
