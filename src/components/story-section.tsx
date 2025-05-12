@@ -59,7 +59,7 @@ export default function StorySection() {
             </p>
             
             <Link 
-              href="#about" 
+              href="/story" 
               className="inline-block bg-blue-800 hover:bg-blue-700 text-white font-medium py-3 px-8 rounded-full transition-colors duration-300 mt-4"
             >
               Nguồn Gốc

@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 
 export default function TechnologySection() {
   return (
@@ -24,11 +25,12 @@ export default function TechnologySection() {
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam sit
               amet neque eget nisi placerat rutrum.
             </p>
-            <button
-              className="px-8 py-3 bg-blue-800 hover:bg-blue-700 transition-colors rounded-full text-white font-medium"
+            <Link
+              href="/technology"
+              className="inline-block px-8 py-3 bg-blue-800 hover:bg-blue-700 transition-colors rounded-full text-white font-medium"
             >
               Tìm Hiểu
-            </button>
+            </Link>
           </div>
           <div className="relative aspect-video rounded-lg overflow-hidden shadow-xl">
             <Image
