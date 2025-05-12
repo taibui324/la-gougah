@@ -32,7 +32,7 @@ export default function StorySection() {
   }, []);
 
   return (
-    <section className="relative min-h-screen w-full overflow-hidden -mt-1">
+    <section id="story" className="relative min-h-screen w-full overflow-hidden -mt-1">
         {/* Background Image with Blur */}
         <div className="absolute inset-0">
           <Image
@@ -55,7 +55,7 @@ export default function StorySection() {
             <p className="text-sm md:text-base opacity-80 mb-2">(Cách phát âm: la gu-ga)</p>
             
             <p className="text-lg leading-relaxed my-8">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam sit amet neque eget nisi placerat rutrum. Phasellus vehicula, metus id sagittis posuere, enim ipsum pharetra lectus, eu interdum urna magna quis dolor.
+            La Gougah - thương hiệu nước khoáng thiên nhiên cao cấp từ vùng cao nguyên Lâm Đồng, Việt Nam. Với nguồn nước khoáng tinh khiết được khai thác từ độ sâu 120m dưới lòng đất, qua quy trình sản xuất hiện đại đạt tiêu chuẩn quốc tế, chúng tôi tự hào mang đến cho người tiêu dùng sản phẩm nước uống an toàn, giàu khoáng chất tự nhiên và có lợi cho sức khỏe.
             </p>
             
             <Link 

@@ -22,8 +22,7 @@ export default function TechnologySection() {
               Công Nghệ Sản Xuất
             </h2>
             <p className="text-lg text-primary/80 mb-8">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam sit
-              amet neque eget nisi placerat rutrum.
+              La Gougah tự hào áp dụng công nghệ lọc nước tiên tiến nhất từ châu Âu, với hệ thống lọc RO 7 cấp độ và đèn UV diệt khuẩn. Nguồn nước khoáng thiên nhiên được khai thác từ độ sâu 120m, giữ nguyên các khoáng chất có lợi cho sức khỏe như Magie, Canxi và Kali. Quy trình sản xuất khép kín đạt chuẩn ISO 22000 và HACCP đảm bảo chất lượng nước tinh khiết nhất.
             </p>
             <Link
               href="/technology"
@@ -34,7 +33,7 @@ export default function TechnologySection() {
           </div>
           <div className="relative aspect-video rounded-lg overflow-hidden shadow-xl">
             <Image
-              src="/images/image-7.png"
+              src="/images/production-line-1.png"
               alt="Manufacturing Technology"
               fill
               className="object-cover"

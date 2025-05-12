@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -9,6 +10,7 @@ export default function NewsSection() {
   const newsItems = [
     {
       id: 1,
+      slug: "ra-mat-san-pham-moi",
       title: "Ra mắt sản phẩm mới",
       date: "15/04/2025",
       description: "La Gougah vừa ra mắt dòng sản phẩm nước khoáng mới với thiết kế chai thân thiện với môi trường.",
@@ -16,6 +18,7 @@ export default function NewsSection() {
     },
     {
       id: 2,
+      slug: "chuong-trinh-bao-ve-moi-truong",
       title: "Chương trình bảo vệ môi trường",
       date: "28/03/2025",
       description: "La Gougah khởi động chiến dịch bảo vệ nguồn nước sạch tại các vùng núi cao Việt Nam.",
@@ -23,6 +26,7 @@ export default function NewsSection() {
     },
     {
       id: 3,
+      slug: "hop-tac-cung-phat-trien",
       title: "Hợp tác cùng phát triển",
       date: "10/03/2025",
       description: "La Gougah ký kết hợp tác với các đối tác chiến lược để mở rộng thị trường trong nước và quốc tế.",
@@ -69,18 +73,22 @@ export default function NewsSection() {
                 </CardDescription>
               </CardContent>
               <CardFooter>
-                <Button variant="outline" className="text-blue-600 border-blue-600 hover:bg-blue-50">
-                  Xem thêm
-                </Button>
+                <Link href={`/news/${item.slug}`}>
+                  <Button variant="outline" className="text-blue-600 border-blue-600 hover:bg-blue-50">
+                    Xem thêm
+                  </Button>
+                </Link>
               </CardFooter>
             </Card>
           ))}
         </div>
 
         <div className="text-center mt-12">
-          <Button variant="outline" className="text-blue-600 border-blue-600 hover:bg-blue-50">
-            Xem tất cả tin tức
-          </Button>
+          <Link href="/news">
+            <Button variant="outline" className="text-blue-600 border-blue-600 hover:bg-blue-50">
+              Xem tất cả tin tức
+            </Button>
+          </Link>
         </div>
       </div>
     </section>

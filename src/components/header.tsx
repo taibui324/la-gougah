@@ -8,19 +8,21 @@ import { Menu } from "lucide-react";
 
 export default function Header() {
   const menuItems = [
-    { id: "about", title: "Giới thiệu", href: "#about" },
+    // { id: "about", title: "Giới thiệu", href: "#about" }, // Removed as requested
+    { id: "story", title: "Nguồn Gốc", href: "#story" },
     { id: "products", title: "Sản Phẩm", href: "#products" },
     { id: "technology", title: "Công Nghệ", href: "#technology" },
   ];
 
   const rightMenuItems = [
-    { id: "team", title: "Đội Ngũ", href: "#team" },
+    // { id: "team", title: "Đội Ngũ", href: "#team" }, // Temporarily hidden
+    { id: "story_page", title: "Câu Chuyện", href: "#story" },
     { id: "news", title: "Tin Tức", href: "#news" },
     { id: "contact", title: "Liên Hệ", href: "#contact" },
   ];
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-[#396CB1]/40">
+    <header className="relative top-0 left-0 right-0 z-50 bg-[#396CB1]/40">
       <div className="container mx-auto px-4">
         <div className="flex h-28 items-center justify-between">
           {/* Left Menu */}
@@ -81,6 +83,7 @@ export default function Header() {
                 </div>
               </div>
               <nav className="flex flex-col gap-6 mt-8">
+                {/* Combine and filter out team section for mobile menu too */}
                 {[...menuItems, ...rightMenuItems].map((item) => (
                   <Link
                     key={item.id}
