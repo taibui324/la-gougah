@@ -1,11 +1,91 @@
 "use client";
 
+import { useState, FormEvent } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Phone, Mail, MapPin } from "lucide-react";
+import emailjs from '@emailjs/browser';
 
 export default function ContactSection() {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    message: ''
+  });
+
+  // Handle input changes
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  // Handle form submission
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    
+    // Basic validation
+    if (!formData.name || !formData.email || !formData.message) {
+      alert('Vui lòng điền đầy đủ thông tin: Họ tên, Email và Nội dung.');
+      return;
+    }
+
+    setIsSubmitting(true);
+    setSubmitStatus('idle');
+
+    try {
+      /*
+       * IMPORTANT: Set up EmailJS before using this form
+       * 1. Sign up at https://www.emailjs.com/
+       * 2. Create a service (Gmail, Outlook, etc.)
+       * 3. Create an email template with these variables:
+       *    - {{from_name}} - Sender's name
+       *    - {{from_email}} - Sender's email
+       *    - {{from_phone}} - Sender's phone (optional)
+       *    - {{message}} - Message content
+       *    - {{to_email}} - Recipient email (taibui324@gmail.com)
+       * 4. Get your Service ID, Template ID, and Public Key
+       * 5. Replace the values below with your IDs and Key
+       */
+      
+      // EmailJS configuration
+      const serviceId = 'service_eoevifd'; // Replace with your EmailJS service ID
+      const templateId = 'template_dl7dkd8'; // Replace with your EmailJS template ID
+      const publicKey = '5isW7RaQ9Tb9ckKXC'; // Replace with your EmailJS public key
+      
+      const templateParams = {
+        to_email: 'taibui324@gmail.com',
+        from_name: formData.name,
+        from_email: formData.email,
+        from_phone: formData.phone,
+        message: formData.message
+      };
+
+      await emailjs.send(serviceId, templateId, templateParams, publicKey);
+      
+      // Reset form after successful submission
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        message: ''
+      });
+      
+      setSubmitStatus('success');
+    } catch (error) {
+      console.error('Error sending email:', error);
+      setSubmitStatus('error');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <section id="contact" className="py-16 bg-transparent">
       <div className="container mx-auto px-4">
@@ -24,56 +104,97 @@ export default function ContactSection() {
               Hãy để lại thông tin của bạn, chúng tôi sẽ liên hệ trong thời gian
               sớm nhất.
             </p>
-            <form className="space-y-6">
+            
+            {/* Success message */}
+            {submitStatus === 'success' && (
+              <div className="mb-6 p-4 bg-green-100 text-green-700 rounded-md">
+                Cảm ơn bạn! Tin nhắn của bạn đã được gửi thành công. Chúng tôi sẽ phản hồi trong thời gian sớm nhất.
+              </div>
+            )}
+            
+            {/* Error message */}
+            {submitStatus === 'error' && (
+              <div className="mb-6 p-4 bg-red-100 text-red-700 rounded-md">
+                Có lỗi xảy ra khi gửi tin nhắn. Vui lòng thử lại sau hoặc liên hệ trực tiếp qua số điện thoại của chúng tôi.
+              </div>
+            )}
+            
+            <form className="space-y-6" onSubmit={handleSubmit}>
               <div>
                 <Input
                   type="text"
+                  name="name"
                   placeholder="Họ và tên"
                   className="w-full"
+                  value={formData.name}
+                  onChange={handleChange}
+                  required
                 />
               </div>
               <div>
                 <Input
                   type="email"
+                  name="email"
                   placeholder="Email"
                   className="w-full"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
                 />
               </div>
               <div>
                 <Input
                   type="tel"
+                  name="phone"
                   placeholder="Số điện thoại"
                   className="w-full"
+                  value={formData.phone}
+                  onChange={handleChange}
                 />
               </div>
               <div>
                 <Textarea
+                  name="message"
                   placeholder="Nội dung"
                   className="w-full h-32"
+                  value={formData.message}
+                  onChange={handleChange}
+                  required
                 />
               </div>
               <Button
                 type="submit"
                 variant="default"
                 className="w-full hover:opacity-90 transition-opacity"
+                disabled={isSubmitting}
               >
-                Gửi tin nhắn
+                {isSubmitting ? 'Đang gửi...' : 'Gửi tin nhắn'}
               </Button>
             </form>
           </div>
           <div className="space-y-8">
             {/* Map */}
-            <div className="rounded-lg overflow-hidden shadow-md h-64 w-full">
+            <div className="rounded-lg overflow-hidden shadow-md h-64 w-full relative">
               <iframe 
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15639.948391865068!2d108.34553383022461!3d11.688343300000003!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31710668a8a1a72f%3A0xb9c7d1a6a4d7f3e2!2zVGjDtG4gUGjDuiBIw7JhLCBQaMO6IEjhu5lpLCDEkOG7qWMgVHLhu41uZywgTMOibSDEkOG7k25nLCBWaWV0bmFt!5e0!3m2!1sen!2sus!4v1714820534498!5m2!1sen!2sus" 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1951.7742608694326!2d108.3433456!3d11.9175133!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f16.5!3m3!1m2!1s0x317e5ef18ff0df2b%3A0xdbeafe19c1c5c242!2s94%20Ph%C3%BA%20Ho%C3%A0%2C%20Ph%C3%BA%20H%E1%BB%99i%2C%20%C4%90%E1%BB%A9c%20Tr%E1%BB%8Dng%2C%20L%C3%A2m%20%C4%90%E1%BB%93ng%2C%20Vietnam!5e0!3m2!1sen!2sus!4v1714877458154!5m2!1sen!2sus"
                 width="100%" 
                 height="100%" 
                 style={{ border: 0 }} 
                 allowFullScreen={false} 
                 loading="lazy" 
                 referrerPolicy="no-referrer-when-downgrade"
-                title="La Gougah Factory Location - Thôn Phú Hòa, Xã Phú Hội, Huyện Đức Trọng, Tỉnh Lâm Đồng"
+                title="La Gougah - Thôn Phú Hòa, Xã Phú Hội, Huyện Đức Trọng"
               ></iframe>
+              
+              {/* Custom pin overlay */}
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none">
+                <div className="flex flex-col items-center">
+                  <div className="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center border-2 border-white shadow-lg">
+                    <div className="w-2 h-2 bg-white rounded-full"></div>
+                  </div>
+                  <div className="w-2 h-2 bg-blue-600 rotate-45 -mt-1"></div>
+                </div>
+              </div>
             </div>
             
             {/* Contact Information */}
@@ -87,7 +208,7 @@ export default function ContactSection() {
                   </div>
                   <div>
                     <p className="text-sm text-gray-500">Hotline</p>
-                    <p className="text-lg font-medium">01 - 234 -5678</p>
+                    <p className="text-lg font-medium">02633679979</p>
                   </div>
                 </div>
                 
@@ -97,7 +218,7 @@ export default function ContactSection() {
                   </div>
                   <div>
                     <p className="text-sm text-gray-500">Email</p>
-                    <p className="text-lg font-medium">admin@lagougah.com</p>
+                    <p className="text-lg font-medium">marketing@lagougah.com </p>
                   </div>
                 </div>
                 
@@ -107,7 +228,7 @@ export default function ContactSection() {
                   </div>
                   <div>
                     <p className="text-sm text-gray-500">Địa chỉ</p>
-                    <p className="text-lg font-medium">Thôn Phú Hòa, Xã Phú Hội, Huyện Đức Trọng, Tỉnh Lâm Đồng, Việt Nam</p>
+                    <p className="text-lg font-medium">Thôn Phú Hòa, Xã Phú Hội, Huyện Đức Trọng</p>
                   </div>
                 </div>
               </div>

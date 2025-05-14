@@ -6,19 +6,19 @@ const products = [
   {
     id: 1,
     name: "La Gougah 330ml",
-    image: "/images/water-bottle.png",
+    image: "/images/LGG_Bottle.png",
     scale: 0.7,
   },
   {
     id: 2,
     name: "La Gougah 500ml",
-    image: "/images/water-bottle.png",
-    scale: 0.85,
+    image: "/images/LGG_Bottle.png",
+    scale: 0.9,
   },
   {
     id: 3,
-    name: "La Gougah 1.5L",
-    image: "/images/water-bottle.png",
+    name: "La Gougah 1.500ml",
+    image: "/images/LGG_Bottle.png",
     scale: 1,
   },
 ];

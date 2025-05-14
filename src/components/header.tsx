@@ -2,24 +2,39 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
 
 export default function Header() {
+  const pathname = usePathname();
+  const isHomePage = pathname === "/";
+  
+  // Base section link items
   const menuItems = [
     // { id: "about", title: "Giới thiệu", href: "#about" }, // Removed as requested
-    { id: "story", title: "Nguồn Gốc", href: "#story" },
-    { id: "products", title: "Sản Phẩm", href: "#products" },
-    { id: "technology", title: "Công Nghệ", href: "#technology" },
+    { id: "origin", title: "Nguồn Gốc", baseHref: "#origin" },
+    { id: "products", title: "Sản Phẩm", baseHref: "#products" },
+    { id: "technology", title: "Công Nghệ", baseHref: "#technology" },
   ];
 
   const rightMenuItems = [
-    // { id: "team", title: "Đội Ngũ", href: "#team" }, // Temporarily hidden
-    { id: "story_page", title: "Câu Chuyện", href: "#story" },
-    { id: "news", title: "Tin Tức", href: "#news" },
-    { id: "contact", title: "Liên Hệ", href: "#contact" },
+    // { id: "team", title: "Đội Ngũ", baseHref: "#team" }, // Temporarily hidden
+    { id: "story_page", title: "Câu Chuyện", baseHref: "/story" },
+    // { id: "news", title: "Tin Tức", baseHref: "#news" }, // Hidden in phase 1
+    { id: "contact", title: "Liên Hệ", baseHref: "#contact" },
   ];
+  
+  // Helper function to get the correct href based on current page
+  const getHref = (baseHref: string) => {
+    // If it's already a full path (starts with /) or we're on the homepage, use as is
+    if (baseHref.startsWith('/') || isHomePage) {
+      return baseHref;
+    }
+    // Otherwise, prefix with / to return to homepage
+    return `/${baseHref}`;
+  };
 
   return (
     <header className="relative top-0 left-0 right-0 z-50 bg-[#396CB1]/40">
@@ -30,7 +45,7 @@ export default function Header() {
             {menuItems.map((item) => (
               <Link
                 key={item.id}
-                href={item.href}
+                href={getHref(item.baseHref)}
                 className="text-[#273572] hover:text-[#273572]/80 transition-colors text-base font-medium tracking-wide"
               >
                 {item.title}
@@ -54,7 +69,7 @@ export default function Header() {
             {rightMenuItems.map((item) => (
               <Link
                 key={item.id}
-                href={item.href}
+                href={getHref(item.baseHref)}
                 className="text-[#273572] hover:text-[#273572]/80 transition-colors text-base font-medium tracking-wide"
               >
                 {item.title}
@@ -71,6 +86,11 @@ export default function Header() {
               </Button>
             </SheetTrigger>
             <SheetContent side="right" className="bg-white/95 border-none">
+              <SheetHeader>
+                <SheetTitle className="sr-only">
+                  Menu Điều Hướng
+                </SheetTitle>
+              </SheetHeader>
               <div className="flex justify-center mb-8 mt-4">
                 <div className="relative w-36 h-16">
                   <Image
@@ -87,7 +107,7 @@ export default function Header() {
                 {[...menuItems, ...rightMenuItems].map((item) => (
                   <Link
                     key={item.id}
-                    href={item.href}
+                    href={getHref(item.baseHref)}
                     className="text-[#273572] hover:text-[#273572]/80 transition-colors text-lg font-medium tracking-wide text-center"
                   >
                     {item.title}

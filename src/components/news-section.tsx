@@ -74,9 +74,9 @@ export default function NewsSection() {
               </CardContent>
               <CardFooter>
                 <Link href={`/news/${item.slug}`}>
-                  <Button variant="outline" className="text-blue-600 border-blue-600 hover:bg-blue-50">
-                    Xem thêm
-                  </Button>
+                <Button variant="outline" className="text-blue-600 border-blue-600 hover:bg-blue-50">
+                  Xem thêm
+                </Button>
                 </Link>
               </CardFooter>
             </Card>
@@ -85,9 +85,9 @@ export default function NewsSection() {
 
         <div className="text-center mt-12">
           <Link href="/news">
-            <Button variant="outline" className="text-blue-600 border-blue-600 hover:bg-blue-50">
-              Xem tất cả tin tức
-            </Button>
+          <Button variant="outline" className="text-blue-600 border-blue-600 hover:bg-blue-50">
+            Xem tất cả tin tức
+          </Button>
           </Link>
         </div>
       </div>

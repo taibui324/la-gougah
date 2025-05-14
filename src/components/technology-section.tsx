@@ -22,7 +22,10 @@ export default function TechnologySection() {
               Công Nghệ Sản Xuất
             </h2>
             <p className="text-lg text-primary/80 mb-8">
-              La Gougah tự hào áp dụng công nghệ lọc nước tiên tiến nhất từ châu Âu, với hệ thống lọc RO 7 cấp độ và đèn UV diệt khuẩn. Nguồn nước khoáng thiên nhiên được khai thác từ độ sâu 120m, giữ nguyên các khoáng chất có lợi cho sức khỏe như Magie, Canxi và Kali. Quy trình sản xuất khép kín đạt chuẩn ISO 22000 và HACCP đảm bảo chất lượng nước tinh khiết nhất.
+              Nguồn nước La Gougah được xử lý qua hệ thống thẩm thấu ngược – RO hiện đại từ Mỹ. Nước sẽ đi qua các bộ lọc tiên tiến để loại bỏ các tạp chất, virus, vi sinh và kim loại nặng; cuối cùng được tiệt trùng bằng UV và Ozone để đảm bảo nước không bị nhiễm khuẩn và đạt độ an toàn vi sinh.
+            </p>
+            <p className="text-lg text-primary/80 mb-8">
+              Nước sau khi xử lý sẽ được đưa vào dây chuyền đóng chiết rót tự động được nhập khẩu 100% từ Đài Loan. Trước khi đưa vào chiết rót, nước sẽ qua thêm một lớp lọc 1 micromet để loại bỏ lớp cặn có thể phát sinh trong quá trình tồn trữ, đảm bảo độ trong của nước khi đóng chai.
             </p>
             <Link
               href="/technology"

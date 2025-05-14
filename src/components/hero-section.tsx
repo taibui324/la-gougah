@@ -44,6 +44,7 @@ export default function HeroSection() {
               fill
               className="object-contain"
               priority
+            
             />
           </div>
           

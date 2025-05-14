@@ -23,8 +23,8 @@ export default function Footer() {
                 <p>Địa chỉ: Thôn Phú Hòa, Xã Phú Hội, Huyện Đức Trọng</p>
                 <p>Tỉnh Lâm Đồng, Việt Nam</p>
                 <p>Giờ làm việc: 7h00 - 17h00, 13h00 - 17h00</p>
-                <p>Hotline: 01 - 234 -5678</p>
-                <p>Website: www.lagougahwater.vn</p>
+                <p>Hotline: 02633679979</p>
+                <p>Website: www.lagougah.com</p>
               </div>
             </div>
           </div>

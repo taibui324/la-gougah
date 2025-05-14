@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRef, useEffect } from 'react';
 import Header from '@/components/header';
 import Footer from '@/components/footer';
+import ScrollToTop from '@/components/scroll-to-top';
 
 export default function StoryPage() {
   const contentRef = useRef<HTMLDivElement>(null);
@@ -44,14 +45,16 @@ export default function StoryPage() {
             src="/images/image-10.png"
             alt="La Gougah Story"
             fill
+          
             className="object-cover"
             priority
+        
           />
           <div className="absolute inset-0 bg-gradient-to-b from-black/50 to-black/70" />
         </div>
         
         <div className="relative z-10 container mx-auto px-4 h-full flex items-center justify-center">
-          <h1 className="text-5xl md:text-7xl font-bold text-white text-center">Nguồn Gốc</h1>
+          <h1 className="text-5xl md:text-7xl font-bold text-white text-center">Câu Chuyện</h1>
         </div>
       </section>
       
@@ -130,6 +133,7 @@ export default function StoryPage() {
       </section>
       
       <Footer />
+      <ScrollToTop />
     </>
   );
 } 

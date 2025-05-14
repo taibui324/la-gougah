@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRef, useEffect } from 'react';
 import Header from '@/components/header';
 import Footer from '@/components/footer';
+import ScrollToTop from '@/components/scroll-to-top';
 
 export default function TechnologyPage() {
   const contentRef = useRef<HTMLDivElement>(null);
@@ -52,8 +53,12 @@ export default function TechnologyPage() {
             src="/images/image-3.png"
             alt="La Gougah Technology"
             fill
+            sizes="100vw"
+            quality={80}
             className="object-cover"
             priority
+            placeholder="blur"
+            blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mOMD/B7DwAEBAJDOiDPjgAAAABJRU5ErkJggg=="
           />
           <div className="absolute inset-0 bg-gradient-to-b from-black/50 to-black/70" />
         </div>
@@ -86,7 +91,10 @@ export default function TechnologyPage() {
                     src="/images/production-line-1.png"
                     alt="La Gougah Production Line"
                     fill
+                    sizes="(max-width: 768px) 100vw, 800px"
+                    quality={80}
                     className="object-cover"
+                    loading="lazy"
                   />
                 </div>
                 <figcaption className="text-center text-gray-500 mt-4">Dây chuyền sản xuất hiện đại của La Gougah</figcaption>
@@ -97,7 +105,7 @@ export default function TechnologyPage() {
               </p>
               
               <p>
-                Quy trình khai thác và sản xuất của La Gougah được thiết kế kỹ lưỡng, bao gồm nhiều giai đoạn lọc và kiểm soát chất lượng để đảm bảo sản phẩm đạt tiêu chuẩn cao nhất. Từ hệ thống bơm khai thác ở độ sâu hơn 250m, nước được dẫn qua hệ thống đường ống thép không gỉ, sau đó trải qua nhiều giai đoạn lọc tinh khiết bằng cát tự nhiên, than hoạt tính và màng vi lọc, cuối cùng là công đoạn khử trùng bằng tia UV - phương pháp hiện đại không sử dụng hóa chất, giúp bảo toàn hương vị tự nhiên của nước.
+                Nguồn nước La Gougah được xử lý qua hệ thống thẩm thấu ngược – RO hiện đại từ Mỹ. Nước sẽ đi qua các bộ lọc tiên tiến để loại bỏ các tạp chất, virus, vi sinh và kim loại nặng; cuối cùng được tiệt trùng bằng UV và Ozone để đảm bảo nước không bị nhiễm khuẩn và đạt độ an toàn vi sinh.
               </p>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 my-12">
@@ -107,7 +115,10 @@ export default function TechnologyPage() {
                       src="/images/production-line-2.png"
                       alt="La Gougah Bottling Process"
                       fill
+                      sizes="(max-width: 768px) 100vw, 400px"
+                      quality={75}
                       className="object-cover"
+                      loading="lazy"
                     />
                   </div>
                   <p className="text-center text-gray-500 mt-2">Quy trình đóng chai tự động</p>
@@ -118,7 +129,10 @@ export default function TechnologyPage() {
                       src="/images/production-line-3.png"
                       alt="La Gougah Quality Control"
                       fill
+                      sizes="(max-width: 768px) 100vw, 400px"
+                      quality={75}
                       className="object-cover"
+                      loading="lazy"
                     />
                   </div>
                   <p className="text-center text-gray-500 mt-2">Kiểm soát chất lượng</p>
@@ -127,6 +141,10 @@ export default function TechnologyPage() {
               
               <p>
                 Công đoạn đóng chai được thực hiện trong phòng sạch vô trùng, với hệ thống máy đóng chai tự động hiện đại, có công suất lên đến 24,000 chai mỗi giờ. Mỗi chai nước trước khi được đóng đều trải qua quy trình rửa và khử trùng nghiêm ngặt, đảm bảo không có bất kỳ tạp chất nào ảnh hưởng đến chất lượng sản phẩm.
+              </p>
+              
+              <p>
+                Nước sau khi xử lý sẽ được đưa vào dây chuyền đóng chiết rót tự động được nhập khẩu 100% từ Đài Loan. Trước khi đưa vào chiết rót, nước sẽ qua thêm một lớp lọc 1 micromet để loại bỏ lớp cặn có thể phát sinh trong quá trình tồn trữ, đảm bảo độ trong của nước khi đóng chai.
               </p>
               
               <p>
@@ -139,76 +157,100 @@ export default function TechnologyPage() {
               ref={timelineRef}
               className="mt-20 transition-all duration-1000 delay-300 opacity-0 translate-y-10"
             >
-              <h3 className="text-2xl font-bold text-[#273572] mb-8 text-center">Quy Trình Sản Xuất</h3>
+              <h3 className="text-2xl font-bold text-[#273572] mb-12 text-center">Quy Trình Sản Xuất</h3>
               
               <div className="relative">
                 {/* Timeline line */}
                 <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-[#396CB1]/20"></div>
                 
                 {/* Timeline items */}
-                <div className="space-y-16">
+                <div className="space-y-20">
+                  {/* 1. Khai thác */}
                   <div className="relative">
-                    <div className="absolute left-1/2 transform -translate-x-1/2 -top-2 w-5 h-5 rounded-full bg-[#396CB1]"></div>
-                    <div className="grid grid-cols-5">
-                      <div className="col-span-2 text-right pr-8">
-                        <h4 className="text-lg font-bold text-[#273572]">Khai thác</h4>
-                        <p className="text-gray-700">Nước được khai thác từ độ sâu hơn 250m dưới lòng đất.</p>
+                    <div className="absolute left-1/2 transform -translate-x-1/2 -top-3 w-6 h-6 rounded-full bg-[#396CB1] z-10 shadow-md"></div>
+                    <div className="grid grid-cols-12">
+                      <div className="col-span-5 text-right pr-10">
+                        <div className="bg-blue-50 p-4 rounded-lg shadow-sm border border-blue-100 inline-block min-h-[100px]">
+                          <h4 className="text-lg font-bold text-[#273572] mb-2">Khai thác</h4>
+                          <p className="text-gray-700">Nước được khai thác từ độ sâu hơn 250m dưới lòng đất.</p>
+                        </div>
                       </div>
-                      <div className="col-span-3"></div>
-                    </div>
-                  </div>
-                  
-                  <div className="relative">
-                    <div className="absolute left-1/2 transform -translate-x-1/2 -top-2 w-5 h-5 rounded-full bg-[#396CB1]"></div>
-                    <div className="grid grid-cols-5">
                       <div className="col-span-2"></div>
-                      <div className="col-span-3 pl-8">
-                        <h4 className="text-lg font-bold text-[#273572]">Lọc tự nhiên</h4>
-                        <p className="text-gray-700">Hệ thống lọc đa tầng với cát tự nhiên và than hoạt tính, loại bỏ tạp chất nhưng giữ lại khoáng chất có lợi.</p>
-                      </div>
+                      <div className="col-span-5"></div>
                     </div>
                   </div>
                   
+                  {/* 2. Lọc tự nhiên */}
                   <div className="relative">
-                    <div className="absolute left-1/2 transform -translate-x-1/2 -top-2 w-5 h-5 rounded-full bg-[#396CB1]"></div>
-                    <div className="grid grid-cols-5">
-                      <div className="col-span-2 text-right pr-8">
-                        <h4 className="text-lg font-bold text-[#273572]">Khử trùng UV</h4>
-                        <p className="text-gray-700">Phương pháp khử trùng hiện đại bằng tia UV, không sử dụng hóa chất, đảm bảo an toàn vệ sinh.</p>
-                      </div>
-                      <div className="col-span-3"></div>
-                    </div>
-                  </div>
-                  
-                  <div className="relative">
-                    <div className="absolute left-1/2 transform -translate-x-1/2 -top-2 w-5 h-5 rounded-full bg-[#396CB1]"></div>
-                    <div className="grid grid-cols-5">
+                    <div className="absolute left-1/2 transform -translate-x-1/2 -top-3 w-6 h-6 rounded-full bg-[#396CB1] z-10 shadow-md"></div>
+                    <div className="grid grid-cols-12">
+                      <div className="col-span-5"></div>
                       <div className="col-span-2"></div>
-                      <div className="col-span-3 pl-8">
-                        <h4 className="text-lg font-bold text-[#273572]">Đóng chai</h4>
-                        <p className="text-gray-700">Quy trình đóng chai tự động trong phòng sạch vô trùng, đảm bảo sản phẩm không bị nhiễm khuẩn.</p>
+                      <div className="col-span-5 pl-10">
+                        <div className="bg-blue-50 p-4 rounded-lg shadow-sm border border-blue-100 inline-block min-h-[100px]">
+                          <h4 className="text-lg font-bold text-[#273572] mb-2">Hệ thống RO</h4>
+                          <p className="text-gray-700">Nước được xử lý qua hệ thống thẩm thấu ngược (RO) hiện đại từ Mỹ, loại bỏ tạp chất, virus, và kim loại nặng.</p>
+                        </div>
                       </div>
                     </div>
                   </div>
                   
+                  {/* 3. Khử trùng UV */}
                   <div className="relative">
-                    <div className="absolute left-1/2 transform -translate-x-1/2 -top-2 w-5 h-5 rounded-full bg-[#396CB1]"></div>
-                    <div className="grid grid-cols-5">
-                      <div className="col-span-2 text-right pr-8">
-                        <h4 className="text-lg font-bold text-[#273572]">Kiểm tra chất lượng</h4>
-                        <p className="text-gray-700">Mỗi lô sản phẩm đều được kiểm tra nghiêm ngặt về lý hóa và vi sinh trước khi xuất xưởng.</p>
+                    <div className="absolute left-1/2 transform -translate-x-1/2 -top-3 w-6 h-6 rounded-full bg-[#396CB1] z-10 shadow-md"></div>
+                    <div className="grid grid-cols-12">
+                      <div className="col-span-5 text-right pr-10">
+                        <div className="bg-blue-50 p-4 rounded-lg shadow-sm border border-blue-100 inline-block min-h-[100px]">
+                          <h4 className="text-lg font-bold text-[#273572] mb-2">Tiệt trùng UV và Ozone</h4>
+                          <p className="text-gray-700">Nước được tiệt trùng bằng UV và Ozone để đảm bảo không bị nhiễm khuẩn và đạt độ an toàn vi sinh.</p>
+                        </div>
                       </div>
-                      <div className="col-span-3"></div>
-                    </div>
-                  </div>
-                  
-                  <div className="relative">
-                    <div className="absolute left-1/2 transform -translate-x-1/2 -top-2 w-5 h-5 rounded-full bg-[#396CB1]"></div>
-                    <div className="grid grid-cols-5">
                       <div className="col-span-2"></div>
-                      <div className="col-span-3 pl-8">
-                        <h4 className="text-lg font-bold text-[#273572]">Phân phối</h4>
-                        <p className="text-gray-700">Sản phẩm được bảo quản trong kho lạnh và phân phối đến người tiêu dùng trong điều kiện tối ưu.</p>
+                      <div className="col-span-5"></div>
+                    </div>
+                  </div>
+                  
+                  {/* 4. Đóng chai */}
+                  <div className="relative">
+                    <div className="absolute left-1/2 transform -translate-x-1/2 -top-3 w-6 h-6 rounded-full bg-[#396CB1] z-10 shadow-md"></div>
+                    <div className="grid grid-cols-12">
+                      <div className="col-span-5"></div>
+                      <div className="col-span-2"></div>
+                      <div className="col-span-5 pl-10">
+                        <div className="bg-blue-50 p-4 rounded-lg shadow-sm border border-blue-100 inline-block min-h-[100px]">
+                          <h4 className="text-lg font-bold text-[#273572] mb-2">Lọc vi mét và Chiết rót</h4>
+                          <p className="text-gray-700">Nước qua lớp lọc 1 micromet để loại bỏ cặn và đưa vào dây chuyền chiết rót tự động từ Đài Loan.</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* 5. Kiểm tra chất lượng */}
+                  <div className="relative">
+                    <div className="absolute left-1/2 transform -translate-x-1/2 -top-3 w-6 h-6 rounded-full bg-[#396CB1] z-10 shadow-md"></div>
+                    <div className="grid grid-cols-12">
+                      <div className="col-span-5 text-right pr-10">
+                        <div className="bg-blue-50 p-4 rounded-lg shadow-sm border border-blue-100 inline-block min-h-[100px]">
+                          <h4 className="text-lg font-bold text-[#273572] mb-2">Kiểm tra chất lượng</h4>
+                          <p className="text-gray-700">Mỗi lô sản phẩm đều được kiểm tra nghiêm ngặt về lý hóa và vi sinh trước khi xuất xưởng.</p>
+                        </div>
+                      </div>
+                      <div className="col-span-2"></div>
+                      <div className="col-span-5"></div>
+                    </div>
+                  </div>
+                  
+                  {/* 6. Phân phối */}
+                  <div className="relative">
+                    <div className="absolute left-1/2 transform -translate-x-1/2 -top-3 w-6 h-6 rounded-full bg-[#396CB1] z-10 shadow-md"></div>
+                    <div className="grid grid-cols-12">
+                      <div className="col-span-5"></div>
+                      <div className="col-span-2"></div>
+                      <div className="col-span-5 pl-10">
+                        <div className="bg-blue-50 p-4 rounded-lg shadow-sm border border-blue-100 inline-block min-h-[100px]">
+                          <h4 className="text-lg font-bold text-[#273572] mb-2">Phân phối</h4>
+                          <p className="text-gray-700">Sản phẩm được bảo quản trong kho lạnh và phân phối đến người tiêu dùng trong điều kiện tối ưu.</p>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -230,6 +272,7 @@ export default function TechnologyPage() {
       </section>
       
       <Footer />
+      <ScrollToTop />
     </>
   );
 } 

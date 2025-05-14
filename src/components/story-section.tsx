@@ -55,7 +55,7 @@ export default function StorySection() {
             <p className="text-sm md:text-base opacity-80 mb-2">(Cách phát âm: la gu-ga)</p>
             
             <p className="text-lg leading-relaxed my-8">
-            La Gougah - thương hiệu nước khoáng thiên nhiên cao cấp từ vùng cao nguyên Lâm Đồng, Việt Nam. Với nguồn nước khoáng tinh khiết được khai thác từ độ sâu 120m dưới lòng đất, qua quy trình sản xuất hiện đại đạt tiêu chuẩn quốc tế, chúng tôi tự hào mang đến cho người tiêu dùng sản phẩm nước uống an toàn, giàu khoáng chất tự nhiên và có lợi cho sức khỏe.
+            Từ mạch nước ngầm tích tụ từ kỷ Creata muộn (cuối kỷ Phấn Trắng) trải qua hàng triệu năm trên cao nguyên Lâm Đồng. Nguồn nước của La Gougah được khai thác ở độ sâu hơn 250m của nguồn nước này, qua hệ thống xử lý nước hiện đại RO của Mỹ và hệ thống chiết rót tự động được nhập khẩu 100% từ Đài Loan, để trao đến người tiêu dùng sản phẩm nước uống đóng chai thanh khiết, an toàn và đảm bảo các thành phần tốt cho sức khoẻ. 
             </p>
             
             <Link 
