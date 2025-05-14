@@ -49,7 +49,7 @@ export default function ContactSection() {
        *    - {{from_email}} - Sender's email
        *    - {{from_phone}} - Sender's phone (optional)
        *    - {{message}} - Message content
-       *    - {{to_email}} - Recipient email (taibui324@gmail.com)
+       *    - {{to_email}} - Recipient email
        * 4. Get your Service ID, Template ID, and Public Key
        * 5. Replace the values below with your IDs and Key
        */
@@ -60,7 +60,7 @@ export default function ContactSection() {
       const publicKey = '5isW7RaQ9Tb9ckKXC'; // Replace with your EmailJS public key
       
       const templateParams = {
-        to_email: 'taibui324@gmail.com',
+        to_email: 'marketing@lagougah.com',
         from_name: formData.name,
         from_email: formData.email,
         from_phone: formData.phone,
