@@ -39,7 +39,7 @@ export default function HeroSection() {
         <div className="relative flex-1 w-full flex items-center justify-center my-4 md:my-8">
           <div className="relative z-10 h-[380px] w-[150px] sm:h-[450px] sm:w-[170px] md:h-[550px] md:w-[180px] lg:h-[650px] lg:w-[200px]">
             <Image
-              src="/images/water-bottle.png"
+              src="/images/LGG_Bottle.png"
               alt="La Gougah Water Bottle"
               fill
               className="object-contain"

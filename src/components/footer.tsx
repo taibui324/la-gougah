@@ -131,10 +131,10 @@ export default function Footer() {
                 <Globe className="h-5 w-5 text-white" />
                 <span className="sr-only">Language</span>
               </button>
-              <Link href="#" aria-label="Instagram">
+              <Link href="https://www.instagram.com/lagougah/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
                 <InstagramIcon className="h-5 w-5 text-blue-800" />
               </Link>
-              <Link href="#" aria-label="Facebook">
+              <Link href="https://www.facebook.com/profile.php?id=61574601075804" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
                 <FacebookIcon className="h-5 w-5 text-blue-800" />
               </Link>
             </div>

@@ -176,14 +176,14 @@ export default function ContactSection() {
             {/* Map */}
             <div className="rounded-lg overflow-hidden shadow-md h-64 w-full relative">
               <iframe 
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1951.7742608694326!2d108.3433456!3d11.9175133!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f16.5!3m3!1m2!1s0x317e5ef18ff0df2b%3A0xdbeafe19c1c5c242!2s94%20Ph%C3%BA%20Ho%C3%A0%2C%20Ph%C3%BA%20H%E1%BB%99i%2C%20%C4%90%E1%BB%A9c%20Tr%E1%BB%8Dng%2C%20L%C3%A2m%20%C4%90%E1%BB%93ng%2C%20Vietnam!5e0!3m2!1sen!2sus!4v1714877458154!5m2!1sen!2sus"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4400.542263058984!2d108.35317071106913!3d11.689377141642508!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x317147d317e26cfb%3A0x93a5056507c20274!2zQ8O0bmcgVHkgQ-G7lSBQaOG6p24gWHXhuqV0IE5o4bqtcCBLaOG6qXUgUXXDoCBU4bq3bmcgR2lhbmcgQW5oIEvhu7M!5e1!3m2!1svi!2s!4v1747233852455!5m2!1svi!2s"
                 width="100%" 
                 height="100%" 
                 style={{ border: 0 }} 
                 allowFullScreen={false} 
                 loading="lazy" 
                 referrerPolicy="no-referrer-when-downgrade"
-                title="La Gougah - Thôn Phú Hòa, Xã Phú Hội, Huyện Đức Trọng"
+                title="La Gougah - Thôn Phú Hòa, Xã Phú Hội, Huyện Đức Trọng, Tỉnh Lâm Đồng, Việt Nam"
               ></iframe>
               
               {/* Custom pin overlay */}
@@ -228,7 +228,7 @@ export default function ContactSection() {
                   </div>
                   <div>
                     <p className="text-sm text-gray-500">Địa chỉ</p>
-                    <p className="text-lg font-medium">Thôn Phú Hòa, Xã Phú Hội, Huyện Đức Trọng</p>
+                    <p className="text-lg font-medium">Thôn Phú Hòa, Xã Phú Hội, Huyện Đức Trọng, Tỉnh Lâm Đồng, Việt Nam</p>
                   </div>
                 </div>
               </div>

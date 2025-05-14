@@ -5,7 +5,7 @@ import Image from "next/image";
 const products = [
   {
     id: 1,
-    name: "La Gougah 330ml",
+    name: "La Gougah 350ml",
     image: "/images/LGG_Bottle.png",
     scale: 0.7,
   },
