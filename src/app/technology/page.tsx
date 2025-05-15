@@ -76,13 +76,13 @@ export default function TechnologyPage() {
             className="max-w-4xl mx-auto transition-all duration-1000 opacity-0 translate-y-10"
           >
             <div className="mb-16 text-center">
-              <h2 className="text-4xl font-bold text-[#273572] mb-6">Dây Chuyền Sản Xuất Hiện Đại</h2>
+              <h2 className="text-4xl font-bold text-[#273572] mb-6">Quy trình sản xuất nước La Gougah – Kết tinh từ thiên nhiên, tinh lọc bằng công nghệ quốc tế</h2>
               <div className="w-24 h-1 bg-[#396CB1] mx-auto"></div>
             </div>
             
             <div className="prose prose-lg max-w-none text-gray-700 space-y-8">
               <p>
-                Tại La Gougah, chúng tôi đặt niềm tin vào việc kết hợp giữa công nghệ hiện đại và sự tinh khiết của thiên nhiên. Dây chuyền sản xuất của chúng tôi được thiết kế và lắp đặt bởi các chuyên gia hàng đầu trong ngành công nghiệp nước đóng chai, đảm bảo mỗi giọt nước đến tay người tiêu dùng đều giữ nguyên vẹn chất lượng và độ tinh khiết tự nhiên.
+                La Gougah là thương hiệu nước uống đóng chai được khai sinh từ sự giao thoa giữa thiên nhiên nguyên sơ và công nghệ hiện đại. Với cam kết đem lại sản phẩm nước thanh khiết, an toàn và giàu giá trị - La Gougah được đầu tư bài bản từ khâu khai thác đến xử lý và đóng chai, đảm bảo mang đến cho người tiêu dùng một sản phẩm đạt chuẩn chất lượng quốc tế.
               </p>
               
               <figure className="my-12">
@@ -100,12 +100,13 @@ export default function TechnologyPage() {
                 <figcaption className="text-center text-gray-500 mt-4">Dây chuyền sản xuất hiện đại của La Gougah</figcaption>
               </figure>
               
+              <h3 className="text-2xl font-bold text-[#273572] mb-4">Nguồn nước quý giá từ lòng đất sâu 250 mét</h3>
               <p>
-                Nhà máy sản xuất của La Gougah tọa lạc tại vị trí lý tưởng gần với nguồn nước tự nhiên tại cao nguyên Lâm Đồng, giúp giảm thiểu thời gian và quãng đường vận chuyển, đồng thời bảo toàn tối đa chất lượng nước nguyên bản. Với diện tích hơn 10,000m², nhà máy được trang bị hệ thống máy móc hiện đại, tự động hóa cao, đáp ứng tiêu chuẩn quốc tế về an toàn thực phẩm.
+                La Gougah sử dụng nguồn nước ngầm được khai thác từ độ sâu hơn 250 mét, nơi tích tụ dòng nước nguyên sinh đã trải qua hàng triệu năm lọc qua các tầng địa chất tự nhiên từ kỷ Creta muộn. Đây là thời kỳ địa chất cổ đại – khoảng hơn 65 triệu năm trước – thời điểm mà nước mưa, băng tuyết và các yếu tố tự nhiên bắt đầu tích tụ vào lòng đất và được bảo tồn đến tận ngày nay.
               </p>
               
               <p>
-                Nguồn nước La Gougah được xử lý qua hệ thống thẩm thấu ngược – RO hiện đại từ Mỹ. Nước sẽ đi qua các bộ lọc tiên tiến để loại bỏ các tạp chất, virus, vi sinh và kim loại nặng; cuối cùng được tiệt trùng bằng UV và Ozone để đảm bảo nước không bị nhiễm khuẩn và đạt độ an toàn vi sinh.
+                Chính nhờ nguồn gốc đặc biệt này, nước La Gougah sở hữu độ tinh khiết tự nhiên cao, chứa các khoáng chất có lợi rất tốt cho sức khỏe và phù hợp để sử dụng hàng ngày.
               </p>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 my-12">
@@ -139,16 +140,26 @@ export default function TechnologyPage() {
                 </div>
               </div>
               
+              <h3 className="text-2xl font-bold text-[#273572] mb-4">Công nghệ thẩm thấu ngược RO – Công nghệ lọc nước hiện đại từ Mỹ</h3>
               <p>
-                Công đoạn đóng chai được thực hiện trong phòng sạch vô trùng, với hệ thống máy đóng chai tự động hiện đại, có công suất lên đến 24,000 chai mỗi giờ. Mỗi chai nước trước khi được đóng đều trải qua quy trình rửa và khử trùng nghiêm ngặt, đảm bảo không có bất kỳ tạp chất nào ảnh hưởng đến chất lượng sản phẩm.
+                Trái tim của quy trình xử lý nước tại La Gougah chính là công nghệ thẩm thấu ngược RO (Reverse Osmosis) tiên tiến đến từ Hoa Kỳ. Đây là công nghệ hiện đại bậc nhất hiện nay trong ngành xử lý nước uống, sử dụng các màng lọc có kích thước nhỏ cho đến siêu nhỏ.
               </p>
               
               <p>
-                Nước sau khi xử lý sẽ được đưa vào dây chuyền đóng chiết rót tự động được nhập khẩu 100% từ Đài Loan. Trước khi đưa vào chiết rót, nước sẽ qua thêm một lớp lọc 1 micromet để loại bỏ lớp cặn có thể phát sinh trong quá trình tồn trữ, đảm bảo độ trong của nước khi đóng chai.
+                Công nghệ RO giúp loại bỏ hoàn toàn vi khuẩn, kim loại nặng, các tạp chất hữu cơ và vô cơ, mang lại nguồn nước tinh khiết tuyệt đối mà vẫn giữ lại được các khoáng chất vi lượng có lợi cho sức khỏe. Với hệ thống lọc nhiều tầng, nước La Gougah đạt chuẩn chất lượng khắt khe về vệ sinh an toàn thực phẩm QCVN 6-1:2010/BYT và chất lượng ISO 22000:2018.
+              </p>
+              
+              <h3 className="text-2xl font-bold text-[#273572] mb-4">Dây chuyền chiết rót hiện đại nhập khẩu 100% từ Đài Loan</h3>
+              <p>
+                Không chỉ chú trọng vào quy trình lọc nước, La Gougah còn đầu tư mạnh mẽ vào hệ thống chiết rót và đóng chai tự động, được nhập khẩu trực tiếp 100% từ Đài Loan – quốc gia nổi tiếng với công nghệ sản xuất máy móc ngành thực phẩm và đồ uống.
               </p>
               
               <p>
-                La Gougah tự hào áp dụng các tiêu chuẩn quốc tế trong quản lý chất lượng, bao gồm ISO 9001:2015 về hệ thống quản lý chất lượng, ISO 22000:2018 về an toàn thực phẩm, và HACCP (Hệ thống phân tích mối nguy và điểm kiểm soát tới hạn). Mỗi lô sản phẩm đều được kiểm tra nghiêm ngặt ở phòng thí nghiệm nội bộ và định kỳ gửi mẫu đến các trung tâm kiểm nghiệm độc lập để đảm bảo sản phẩm luôn đạt tiêu chuẩn chất lượng cao nhất.
+                Dây chuyền chiết rót của La Gougah hoạt động tự động hóa hoàn toàn từ khâu tráng rửa chai, chiết rót đến đóng nắp và dán nhãn. Điều này không chỉ giúp tăng năng suất, giảm thiểu tối đa sự can thiệp của con người mà còn đảm bảo tính vệ sinh tuyệt đối, ngăn ngừa nguy cơ nhiễm khuẩn chéo trong quá trình sản xuất.
+              </p>
+              
+              <p>
+                Toàn bộ quy trình đều được giám sát chặt chẽ bởi đội ngũ kỹ thuật viên có chuyên môn cao và hệ thống kiểm tra chất lượng nghiêm ngặt, đảm bảo mỗi chai nước La Gougah đến tay người tiêu dùng đều đạt chuẩn về độ tinh khiết, an toàn và ổn định.
               </p>
             </div>
             
@@ -172,7 +183,7 @@ export default function TechnologyPage() {
                       <div className="col-span-5 text-right pr-10">
                         <div className="bg-blue-50 p-4 rounded-lg shadow-sm border border-blue-100 inline-block min-h-[100px]">
                           <h4 className="text-lg font-bold text-[#273572] mb-2">Khai thác</h4>
-                          <p className="text-gray-700">Nước được khai thác từ độ sâu hơn 250m dưới lòng đất.</p>
+                          <p className="text-gray-700">Nước được khai thác từ độ sâu hơn 250m dưới lòng đất, nơi tích tụ dòng nước nguyên sinh qua hàng triệu năm.</p>
                         </div>
                       </div>
                       <div className="col-span-2"></div>
@@ -189,7 +200,7 @@ export default function TechnologyPage() {
                       <div className="col-span-5 pl-10">
                         <div className="bg-blue-50 p-4 rounded-lg shadow-sm border border-blue-100 inline-block min-h-[100px]">
                           <h4 className="text-lg font-bold text-[#273572] mb-2">Hệ thống RO</h4>
-                          <p className="text-gray-700">Nước được xử lý qua hệ thống thẩm thấu ngược (RO) hiện đại từ Mỹ, loại bỏ tạp chất, virus, và kim loại nặng.</p>
+                          <p className="text-gray-700">Nước được xử lý qua hệ thống thẩm thấu ngược (RO) tiên tiến từ Hoa Kỳ, loại bỏ vi khuẩn, kim loại nặng và các tạp chất.</p>
                         </div>
                       </div>
                     </div>
@@ -218,8 +229,8 @@ export default function TechnologyPage() {
                       <div className="col-span-2"></div>
                       <div className="col-span-5 pl-10">
                         <div className="bg-blue-50 p-4 rounded-lg shadow-sm border border-blue-100 inline-block min-h-[100px]">
-                          <h4 className="text-lg font-bold text-[#273572] mb-2">Lọc vi mét và Chiết rót</h4>
-                          <p className="text-gray-700">Nước qua lớp lọc 1 micromet để loại bỏ cặn và đưa vào dây chuyền chiết rót tự động từ Đài Loan.</p>
+                          <h4 className="text-lg font-bold text-[#273572] mb-2">Chiết rót tự động</h4>
+                          <p className="text-gray-700">Dây chuyền chiết rót tự động nhập khẩu 100% từ Đài Loan thực hiện quy trình từ tráng rửa chai đến đóng nắp và dán nhãn.</p>
                         </div>
                       </div>
                     </div>
