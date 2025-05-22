@@ -18,27 +18,29 @@ export default function Analytics() {
     // Check if window is defined (browser environment)
     if (typeof window !== "undefined") {
       // Initialize Facebook Pixel
-      window.fbq = window.fbq || function() {
-        window.fbq.callMethod ? 
-          window.fbq.callMethod.apply(window.fbq, arguments) : 
-          window.fbq.queue.push(arguments);
-      };
-      
+      window.fbq =
+        window.fbq ||
+        (() => {
+          window.fbq.callMethod
+            ? window.fbq.callMethod.apply(window.fbq, arguments)
+            : window.fbq.queue.push(arguments);
+        });
+
       if (!window._fbq) window._fbq = window.fbq;
       window.fbq.push = window.fbq;
       window.fbq.loaded = true;
-      window.fbq.version = '2.0';
+      window.fbq.version = "2.0";
       window.fbq.queue = [];
-      
-      window.fbq('init', '1516388463099816');
-      window.fbq('track', 'PageView');
+
+      window.fbq("init", "1516388463099816");
+      window.fbq("track", "PageView");
     }
   }, []);
 
   return (
     <>
       {/* Google Analytics */}
-      <Script 
+      <Script
         src="https://www.googletagmanager.com/gtag/js?id=G-2L93QTLLDG"
         strategy="afterInteractive"
       />
@@ -61,11 +63,11 @@ export default function Analytics() {
         <img
           height="1"
           width="1"
-          style={{ display: 'none' }}
+          style={{ display: "none" }}
           src="https://www.facebook.com/tr?id=1516388463099816&ev=PageView&noscript=1"
           alt=""
         />
       </noscript>
     </>
   );
-} 
+}

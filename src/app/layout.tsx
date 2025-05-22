@@ -11,7 +11,8 @@ const beVietnamPro = Be_Vietnam_Pro({
 
 export const metadata = {
   title: "La Gougah - Nước uống thiên nhiên",
-  description: "La Gougah - Thương hiệu nước uống cao cấp từ nguồn nước khoáng thiên nhiên Việt Nam",
+  description:
+    "La Gougah - Thương hiệu nước uống cao cấp từ nguồn nước khoáng thiên nhiên Việt Nam",
 };
 
 export default function RootLayout({
