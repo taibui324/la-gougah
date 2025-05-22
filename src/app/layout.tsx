@@ -1,5 +1,6 @@
 import { Be_Vietnam_Pro } from "next/font/google";
 import "./globals.css";
+import Analytics from "@/components/analytics";
 
 const beVietnamPro = Be_Vietnam_Pro({
   subsets: ["latin", "vietnamese"],
@@ -7,6 +8,11 @@ const beVietnamPro = Be_Vietnam_Pro({
   display: "swap",
   preload: true,
 });
+
+export const metadata = {
+  title: "La Gougah - Nước uống thiên nhiên",
+  description: "La Gougah - Thương hiệu nước uống cao cấp từ nguồn nước khoáng thiên nhiên Việt Nam",
+};
 
 export default function RootLayout({
   children,
@@ -24,6 +30,7 @@ export default function RootLayout({
       </head>
       <body className="min-h-screen bg-background text-foreground antialiased">
         <main className="relative">{children}</main>
+        <Analytics />
       </body>
     </html>
   );
