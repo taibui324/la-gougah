@@ -28,13 +28,13 @@ export default function ProductSection() {
     <section id="products" className="py-16 relative overflow-hidden">
       {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-to-b from-white to-blue-50/30 z-0" />
-      
+
       {/* Decorative elements */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0">
         <div className="absolute top-20 -left-20 w-64 h-64 rounded-full border-2 border-blue-100 opacity-20" />
         <div className="absolute bottom-40 -right-20 w-80 h-80 rounded-full border-2 border-blue-100 opacity-20" />
       </div>
-      
+
       <div className="container mx-auto px-4 relative z-10">
         <h2 className="text-5xl font-light text-primary text-center mb-16">
           Sản phẩm
@@ -46,7 +46,10 @@ export default function ProductSection() {
               className="relative aspect-[3/4] transition-transform hover:scale-105"
             >
               <div className="relative w-full h-full flex items-center justify-center">
-                <div style={{ transform: `scale(${product.scale})` }} className="relative w-4/5 h-4/5">
+                <div
+                  style={{ transform: `scale(${product.scale})` }}
+                  className="relative w-4/5 h-4/5"
+                >
                   <Image
                     src={product.image}
                     alt={product.name}

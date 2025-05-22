@@ -4,13 +4,19 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
 
 export default function Header() {
   const pathname = usePathname();
   const isHomePage = pathname === "/";
-  
+
   // Base section link items
   const menuItems = [
     // { id: "about", title: "Giới thiệu", href: "#about" }, // Removed as requested
@@ -25,11 +31,11 @@ export default function Header() {
     // { id: "news", title: "Tin Tức", baseHref: "#news" }, // Hidden in phase 1
     { id: "contact", title: "Liên Hệ", baseHref: "#contact" },
   ];
-  
+
   // Helper function to get the correct href based on current page
   const getHref = (baseHref: string) => {
     // If it's already a full path (starts with /) or we're on the homepage, use as is
-    if (baseHref.startsWith('/') || isHomePage) {
+    if (baseHref.startsWith("/") || isHomePage) {
       return baseHref;
     }
     // Otherwise, prefix with / to return to homepage
@@ -87,9 +93,7 @@ export default function Header() {
             </SheetTrigger>
             <SheetContent side="right" className="bg-white/95 border-none">
               <SheetHeader>
-                <SheetTitle className="sr-only">
-                  Menu Điều Hướng
-                </SheetTitle>
+                <SheetTitle className="sr-only">Menu Điều Hướng</SheetTitle>
               </SheetHeader>
               <div className="flex justify-center mb-8 mt-4">
                 <div className="relative w-36 h-16">

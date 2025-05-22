@@ -7,13 +7,13 @@ export default function TeamSection() {
     <section id="team" className="relative py-16 overflow-hidden">
       {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-to-b from-blue-100 to-blue-200 z-0" />
-      
+
       {/* Decorative elements */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0">
         <div className="absolute -bottom-20 -right-20 w-64 h-64 rounded-full border-2 border-blue-200 opacity-30" />
         <div className="absolute top-40 -left-20 w-80 h-80 rounded-full border-2 border-blue-200 opacity-30" />
       </div>
-      
+
       <div className="container mx-auto px-4 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div className="relative aspect-video rounded-lg overflow-hidden shadow-xl order-2 lg:order-1">
@@ -37,9 +37,7 @@ export default function TeamSection() {
               volutpat tincidunt.
             </p>
             <div className="flex justify-end">
-              <button
-                className="px-8 py-3 bg-blue-800 hover:bg-blue-700 transition-colors rounded-full text-white font-medium"
-              >
+              <button className="px-8 py-3 bg-blue-800 hover:bg-blue-700 transition-colors rounded-full text-white font-medium">
                 Tìm Hiểu
               </button>
             </div>
@@ -48,4 +46,4 @@ export default function TeamSection() {
       </div>
     </section>
   );
-} 
+}

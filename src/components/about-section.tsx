@@ -8,25 +8,29 @@ export default function AboutSection() {
     {
       id: "source",
       title: "Nguồn nước tinh khiết",
-      description: "Được lấy từ mạch nước ngầm tự nhiên, không chạm tay con người và giữ nguyên hương vị tự nhiên.",
+      description:
+        "Được lấy từ mạch nước ngầm tự nhiên, không chạm tay con người và giữ nguyên hương vị tự nhiên.",
       icon: "💧",
     },
     {
       id: "minerals",
       title: "Giàu khoáng chất",
-      description: "Chứa các khoáng chất tự nhiên cần thiết cho cơ thể, tạo nên sự cân bằng hoàn hảo.",
+      description:
+        "Chứa các khoáng chất tự nhiên cần thiết cho cơ thể, tạo nên sự cân bằng hoàn hảo.",
       icon: "✨",
     },
     {
       id: "sustainable",
       title: "Phát triển bền vững",
-      description: "Cam kết với môi trường và cộng đồng thông qua các hoạt động bảo vệ nguồn nước.",
+      description:
+        "Cam kết với môi trường và cộng đồng thông qua các hoạt động bảo vệ nguồn nước.",
       icon: "🌱",
     },
     {
       id: "quality",
       title: "Chất lượng hàng đầu",
-      description: "Được kiểm định nghiêm ngặt, đạt tiêu chuẩn quốc tế về nước uống đóng chai cao cấp.",
+      description:
+        "Được kiểm định nghiêm ngặt, đạt tiêu chuẩn quốc tế về nước uống đóng chai cao cấp.",
       icon: "🏆",
     },
   ];
@@ -35,7 +39,7 @@ export default function AboutSection() {
     <section id="about" className="relative min-h-screen overflow-hidden">
       {/* Background gradient and overlay */}
       <div className="absolute inset-0 bg-gradient-to-b from-blue-50/30 to-white z-0" />
-      
+
       {/* Background Image with overlay */}
       <div className="absolute inset-0 z-0 opacity-40 mix-blend-overlay">
         <Image
@@ -46,7 +50,7 @@ export default function AboutSection() {
           priority
         />
       </div>
-      
+
       {/* Decorative elements */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0">
         <div className="absolute -top-20 right-20 w-64 h-64 rounded-full border-2 border-blue-100 opacity-20" />
@@ -68,7 +72,10 @@ export default function AboutSection() {
         {/* Description Box */}
         <div className="bg-[#273572]/20 backdrop-blur-sm rounded-[32px] max-w-4xl mx-auto p-8 mb-12">
           <p className="text-[#273572] text-center text-lg md:text-xl leading-relaxed">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam sit amet neque eget nisi placerat rutrum. Phasellus vehicula, metus id sagittis posuere, enim ipsum pharetra lectus, eu interdum urna magna quis dolor.
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam sit
+            amet neque eget nisi placerat rutrum. Phasellus vehicula, metus id
+            sagittis posuere, enim ipsum pharetra lectus, eu interdum urna magna
+            quis dolor.
           </p>
         </div>
 

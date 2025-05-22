@@ -16,13 +16,13 @@ export default function ScrollToTop() {
     } else {
       setIsVisible(false);
     }
-    
+
     // Check if we're at the footer
-    const footer = document.querySelector('footer');
+    const footer = document.querySelector("footer");
     if (footer) {
       const footerPosition = footer.getBoundingClientRect();
       const windowHeight = window.innerHeight;
-      
+
       // If the footer is visible in the viewport
       if (footerPosition.top < windowHeight - 120) {
         setIsFooter(true);
@@ -44,7 +44,7 @@ export default function ScrollToTop() {
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
-      behavior: "smooth"
+      behavior: "smooth",
     });
   };
 
@@ -57,15 +57,17 @@ export default function ScrollToTop() {
   };
 
   // Dynamic positioning based on whether we're at the footer
-  const positionClass = isFooter 
-    ? "fixed bottom-20 sm:bottom-24 right-4 sm:right-8" 
+  const positionClass = isFooter
+    ? "fixed bottom-20 sm:bottom-24 right-4 sm:right-8"
     : "fixed bottom-8 right-4 sm:right-8";
 
   return (
     <div className={`${positionClass} z-50 flex flex-col gap-3`}>
       {/* Phone Button - Always visible */}
       <Button
-        onClick={() => window.location.href = `tel:${phoneNumber.replace(/[-\s]/g, '')}`}
+        onClick={() =>
+          (window.location.href = `tel:${phoneNumber.replace(/[-\s]/g, "")}`)
+        }
         className="bg-green-600 hover:bg-green-700 text-white rounded-full shadow-lg w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center transition-all duration-300 hover:scale-110 relative group"
         aria-label="Gọi điện"
       >
@@ -96,4 +98,4 @@ export default function ScrollToTop() {
       )}
     </div>
   );
-} 
+}
