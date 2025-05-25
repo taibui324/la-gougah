@@ -3,7 +3,7 @@ import OriginSection from "@/components/origin-section";
 import ProductSection from "@/components/product-section";
 import TechnologySection from "@/components/technology-section";
 // import TeamSection from "@/components/team-section"; // Temporarily hidden
-// import NewsSection from "@/components/news-section"; // Hidden in phase 1
+import NewsSection from "@/components/news-section"; // Hidden in phase 1
 import ContactSection from "@/components/contact-section";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
@@ -20,7 +20,7 @@ export default function Home() {
       <ProductSection />
       <TechnologySection />
       {/* <TeamSection /> */}
-      {/* <NewsSection /> */}
+      <NewsSection />
       <ContactSection />
       <Footer />
       <ScrollToTop />

@@ -11,39 +11,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { newsItems } from "@/lib/news-data";
 
 export default function NewsSection() {
-  // Sample news data - this could be fetched from an API in a real application
-  const newsItems = [
-    {
-      id: 1,
-      slug: "ra-mat-san-pham-moi",
-      title: "Ra mắt sản phẩm mới",
-      date: "15/04/2025",
-      description:
-        "La Gougah vừa ra mắt dòng sản phẩm nước khoáng mới với thiết kế chai thân thiện với môi trường.",
-      image: "/images/image-6.png",
-    },
-    {
-      id: 2,
-      slug: "chuong-trinh-bao-ve-moi-truong",
-      title: "Chương trình bảo vệ môi trường",
-      date: "28/03/2025",
-      description:
-        "La Gougah khởi động chiến dịch bảo vệ nguồn nước sạch tại các vùng núi cao Việt Nam.",
-      image: "/images/image-7.png",
-    },
-    {
-      id: 3,
-      slug: "hop-tac-cung-phat-trien",
-      title: "Hợp tác cùng phát triển",
-      date: "10/03/2025",
-      description:
-        "La Gougah ký kết hợp tác với các đối tác chiến lược để mở rộng thị trường trong nước và quốc tế.",
-      image: "/images/image-8.png",
-    },
-  ];
-
   return (
     <section id="news" className="py-20 relative overflow-hidden">
       {/* Background gradient */}

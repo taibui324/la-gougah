@@ -64,7 +64,7 @@ export default function ContactSection() {
       const publicKey = "5isW7RaQ9Tb9ckKXC"; // Replace with your EmailJS public key
 
       const templateParams = {
-        to_email: "marketing@lagougah.com",
+        to_email: "admin@lagougah.com",
         from_name: formData.name,
         from_email: formData.email,
         from_phone: formData.phone,
@@ -227,7 +227,7 @@ export default function ContactSection() {
                   <div>
                     <p className="text-sm text-gray-500">Email</p>
                     <p className="text-lg font-medium">
-                      marketing@lagougah.com{" "}
+                      admin@lagougah.com{" "}
                     </p>
                   </div>
                 </div>

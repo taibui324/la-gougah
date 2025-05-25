@@ -13,27 +13,38 @@ import {
 } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
 
+interface MenuItem {
+  id: string;
+  title: string;
+  baseHref: string;
+  fullPageHref?: string;
+}
+
 export default function Header() {
   const pathname = usePathname();
   const isHomePage = pathname === "/";
 
   // Base section link items
-  const menuItems = [
+  const menuItems: MenuItem[] = [
     // { id: "about", title: "Giới thiệu", href: "#about" }, // Removed as requested
     { id: "origin", title: "Nguồn Gốc", baseHref: "#origin" },
     { id: "products", title: "Sản Phẩm", baseHref: "#products" },
     { id: "technology", title: "Công Nghệ", baseHref: "#technology" },
   ];
 
-  const rightMenuItems = [
+  const rightMenuItems: MenuItem[] = [
     // { id: "team", title: "Đội Ngũ", baseHref: "#team" }, // Temporarily hidden
     { id: "story_page", title: "Câu Chuyện", baseHref: "/story" },
-    // { id: "news", title: "Tin Tức", baseHref: "#news" }, // Hidden in phase 1
+    { id: "news", title: "Tin Tức", baseHref: "#news", fullPageHref: "/news" },
     { id: "contact", title: "Liên Hệ", baseHref: "#contact" },
   ];
 
   // Helper function to get the correct href based on current page
-  const getHref = (baseHref: string) => {
+  const getHref = (baseHref: string, fullPageHref?: string) => {
+    // Special case for news - if we have a fullPageHref and we're not on homepage, use the full page
+    if (fullPageHref && !isHomePage) {
+      return fullPageHref;
+    }
     // If it's already a full path (starts with /) or we're on the homepage, use as is
     if (baseHref.startsWith("/") || isHomePage) {
       return baseHref;
@@ -51,7 +62,7 @@ export default function Header() {
             {menuItems.map((item) => (
               <Link
                 key={item.id}
-                href={getHref(item.baseHref)}
+                href={getHref(item.baseHref, item.fullPageHref)}
                 className="text-[#273572] hover:text-[#273572]/80 transition-colors text-base font-medium tracking-wide"
               >
                 {item.title}
@@ -75,7 +86,7 @@ export default function Header() {
             {rightMenuItems.map((item) => (
               <Link
                 key={item.id}
-                href={getHref(item.baseHref)}
+                href={getHref(item.baseHref, item.fullPageHref)}
                 className="text-[#273572] hover:text-[#273572]/80 transition-colors text-base font-medium tracking-wide"
               >
                 {item.title}
@@ -111,7 +122,7 @@ export default function Header() {
                 {[...menuItems, ...rightMenuItems].map((item) => (
                   <Link
                     key={item.id}
-                    href={getHref(item.baseHref)}
+                    href={getHref(item.baseHref, item.fullPageHref)}
                     className="text-[#273572] hover:text-[#273572]/80 transition-colors text-lg font-medium tracking-wide text-center"
                   >
                     {item.title}

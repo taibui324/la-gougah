@@ -1,6 +1,7 @@
 import { Be_Vietnam_Pro } from "next/font/google";
 import "./globals.css";
 import Analytics from "@/components/analytics";
+import { ConvexClientProvider } from "@/components/convex-client-provider";
 
 const beVietnamPro = Be_Vietnam_Pro({
   subsets: ["latin", "vietnamese"],
@@ -30,8 +31,10 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-screen bg-background text-foreground antialiased">
-        <main className="relative">{children}</main>
-        <Analytics />
+        <ConvexClientProvider>
+          <main className="relative">{children}</main>
+          <Analytics />
+        </ConvexClientProvider>
       </body>
     </html>
   );
