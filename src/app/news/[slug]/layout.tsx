@@ -1,4 +1,4 @@
-import { getAllNewsSlugs } from '@/lib/news-data';
+import { getAllNewsSlugs } from "@/lib/news-data";
 
 // This function generates static paths for all news articles
 export async function generateStaticParams() {
@@ -14,4 +14,4 @@ export default function NewsSlugLayout({
   children: React.ReactNode;
 }) {
   return <>{children}</>;
-} 
+}

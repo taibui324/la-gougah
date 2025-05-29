@@ -171,18 +171,17 @@ export default function TechnologyPage() {
               <p>
                 Trái tim của quy trình xử lý nước tại La Gougah chính là công
                 nghệ thẩm thấu ngược RO (Reverse Osmosis) tiên tiến đến từ Hoa
-                Kỳ. Đây là công nghệ hiện đại bậc nhất hiện nay trong ngành xử
-                lý nước uống, sử dụng các màng lọc có kích thước nhỏ cho đến
-                siêu nhỏ.
+                Kỳ. Đây là công nghệ hiện đại trong ngành xử lý nước uống, sử
+                dụng các màng lọc có kích thước nhỏ cho đến siêu nhỏ.
               </p>
 
               <p>
-                Công nghệ RO giúp loại bỏ hoàn toàn vi khuẩn, kim loại nặng, các
-                tạp chất hữu cơ và vô cơ, mang lại nguồn nước tinh khiết tuyệt
-                đối mà vẫn giữ lại được các khoáng chất vi lượng có lợi cho sức
-                khỏe. Với hệ thống lọc nhiều tầng, nước La Gougah đạt chuẩn chất
-                lượng khắt khe về vệ sinh an toàn thực phẩm QCVN 6-1:2010/BYT và
-                chất lượng ISO 22000:2018.
+                Công nghệ RO giúp loại bỏ vi khuẩn, kim loại nặng, các tạp chất
+                hữu cơ và vô cơ, mang lại nguồn nước tinh khiết mà vẫn giữ lại
+                được các khoáng chất vi lượng có lợi cho sức khỏe. Với hệ thống
+                lọc nhiều tầng, nước La Gougah đạt chuẩn chất lượng khắt khe về
+                vệ sinh an toàn thực phẩm QCVN 6-1:2010/BYT và chất lượng ISO
+                22000:2018.
               </p>
 
               <h3 className="text-2xl font-bold text-[#273572] mb-4">
@@ -199,8 +198,8 @@ export default function TechnologyPage() {
                 Dây chuyền chiết rót của La Gougah hoạt động tự động hóa hoàn
                 toàn từ khâu tráng rửa chai, chiết rót đến đóng nắp và dán nhãn.
                 Điều này không chỉ giúp tăng năng suất, giảm thiểu tối đa sự can
-                thiệp của con người mà còn đảm bảo tính vệ sinh tuyệt đối, ngăn
-                ngừa nguy cơ nhiễm khuẩn chéo trong quá trình sản xuất.
+                thiệp của con người mà còn đảm bảo tính vệ sinh, ngăn ngừa nguy
+                cơ nhiễm khuẩn chéo trong quá trình sản xuất.
               </p>
 
               <p>

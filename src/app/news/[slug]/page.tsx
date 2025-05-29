@@ -1,13 +1,13 @@
 "use client";
 
-import Image from 'next/image';
-import Link from 'next/link';
-import { useRef, useEffect } from 'react';
-import { useParams, notFound } from 'next/navigation';
-import Header from '@/components/header';
-import Footer from '@/components/footer';
+import Image from "next/image";
+import Link from "next/link";
+import { useRef, useEffect } from "react";
+import { useParams, notFound } from "next/navigation";
+import Header from "@/components/header";
+import Footer from "@/components/footer";
 import { Button } from "@/components/ui/button";
-import { getNewsBySlug, newsItems } from '@/lib/news-data';
+import { getNewsBySlug, newsItems } from "@/lib/news-data";
 
 export default function NewsDetailPage() {
   const contentRef = useRef<HTMLDivElement>(null);
@@ -16,28 +16,30 @@ export default function NewsDetailPage() {
 
   // Find the current news item
   const newsItem = getNewsBySlug(slug);
-  
+
   // If news item not found, show a 404 page
   if (!newsItem) {
     notFound();
   }
 
   // Get related news (other news items excluding current one)
-  const relatedNews = newsItems.filter(item => item.slug !== slug).slice(0, 2);
+  const relatedNews = newsItems
+    .filter((item) => item.slug !== slug)
+    .slice(0, 2);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            entry.target.classList.add('opacity-100', 'translate-y-0');
-            entry.target.classList.remove('opacity-0', 'translate-y-10');
+            entry.target.classList.add("opacity-100", "translate-y-0");
+            entry.target.classList.remove("opacity-0", "translate-y-10");
           }
         });
       },
-      { threshold: 0.1 }
+      { threshold: 0.1 },
     );
-    
+
     if (contentRef.current) {
       observer.observe(contentRef.current);
     }
@@ -90,7 +92,7 @@ export default function NewsDetailPage() {
           >
             {/* Article Content */}
             <div className="prose prose-lg max-w-none mb-12">
-              <div 
+              <div
                 className="text-gray-700 leading-relaxed space-y-6"
                 dangerouslySetInnerHTML={{ __html: newsItem.content }}
               />
@@ -124,7 +126,10 @@ export default function NewsDetailPage() {
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   {relatedNews.map((item) => (
-                    <div key={item.id} className="bg-gray-50 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                    <div
+                      key={item.id}
+                      className="bg-gray-50 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow"
+                    >
                       <div className="relative h-48 w-full">
                         <Image
                           src={item.image}
@@ -140,11 +145,9 @@ export default function NewsDetailPage() {
                         <h4 className="text-xl font-bold text-[#273572] mb-3">
                           {item.title}
                         </h4>
-                        <p className="text-gray-600 mb-4">
-                          {item.description}
-                        </p>
+                        <p className="text-gray-600 mb-4">{item.description}</p>
                         <Link href={`/news/${item.slug}`}>
-                          <Button 
+                          <Button
                             variant="outline"
                             className="text-blue-600 border-blue-600 hover:bg-blue-50"
                           >
@@ -164,4 +167,4 @@ export default function NewsDetailPage() {
       <Footer />
     </>
   );
-} 
+}

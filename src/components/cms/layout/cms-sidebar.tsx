@@ -3,15 +3,15 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { 
-  LayoutDashboard, 
-  FileText, 
-  Users, 
-  Settings, 
+import {
+  LayoutDashboard,
+  FileText,
+  Users,
+  Settings,
   Image as ImageIcon,
   Menu as MenuIcon,
   Mail,
-  Eye
+  Eye,
 } from "lucide-react";
 
 type Role = "admin" | "editor" | "user";
@@ -81,8 +81,8 @@ const navItems: NavItem[] = [
 export function CMSSidebar({ userRole }: CMSSidebarProps) {
   const pathname = usePathname();
 
-  const filteredNavItems = navItems.filter(item => 
-    item.roles.includes(userRole)
+  const filteredNavItems = navItems.filter((item) =>
+    item.roles.includes(userRole),
   );
 
   return (
@@ -107,7 +107,7 @@ export function CMSSidebar({ userRole }: CMSSidebarProps) {
                   "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
                   isActive
                     ? "bg-[#396CB1] text-white"
-                    : "text-gray-700 hover:bg-gray-100 hover:text-[#273572]"
+                    : "text-gray-700 hover:bg-gray-100 hover:text-[#273572]",
                 )}
               >
                 <Icon className="h-4 w-4" />
@@ -131,4 +131,4 @@ export function CMSSidebar({ userRole }: CMSSidebarProps) {
       </div>
     </div>
   );
-} 
+}

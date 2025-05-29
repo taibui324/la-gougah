@@ -125,6 +125,44 @@ export const initializeMenuItems = mutation({
   },
 });
 
+// Function to create a new admin user (for testing)
+export const createNewAdmin = mutation({
+  args: {
+    email: v.string(),
+    name: v.string(),
+  },
+  handler: async (ctx, args) => {
+    // Check if user with this email already exists
+    const existingUser = await ctx.db
+      .query("users")
+      .withIndex("email", (q) => q.eq("email", args.email))
+      .first();
+
+    if (existingUser) {
+      // Update existing user to admin
+      await ctx.db.patch(existingUser._id, {
+        role: "admin",
+        name: args.name,
+      });
+      return { 
+        message: `Updated existing user ${args.email} to admin role`,
+        userId: existingUser._id 
+      };
+    } else {
+      // Create new admin user
+      const userId = await ctx.db.insert("users", {
+        email: args.email,
+        name: args.name,
+        role: "admin",
+      });
+      return { 
+        message: `Created new admin user ${args.email}`,
+        userId: userId 
+      };
+    }
+  },
+});
+
 // Function to initialize contact settings
 export const initializeContactSettings = mutation({
   args: {

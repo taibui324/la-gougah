@@ -10,7 +10,7 @@ export const { auth, signIn, signOut, store, isAuthenticated } = convexAuth({
           email: params.email as string,
           name: params.name as string,
           // Default role is 'user', admin can change this later
-          role: "user" as const,
+          role: "admin" as const,
         };
       },
     }),

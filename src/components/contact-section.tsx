@@ -226,9 +226,7 @@ export default function ContactSection() {
                   </div>
                   <div>
                     <p className="text-sm text-gray-500">Email</p>
-                    <p className="text-lg font-medium">
-                      admin@lagougah.com{" "}
-                    </p>
+                    <p className="text-lg font-medium">admin@lagougah.com </p>
                   </div>
                 </div>
 

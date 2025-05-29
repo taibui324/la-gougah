@@ -2,20 +2,26 @@
 
 import { useQuery } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { FileText, Users, Image as ImageIcon, Eye } from "lucide-react";
 
 export function CMSDashboard() {
   const user = useQuery(api.users.getCurrentUserInfo);
-  
+
   // Only load posts and users if user has proper permissions
   const posts = useQuery(
     api.posts.getAllPosts,
-    user?.role === "admin" || user?.role === "editor" ? {} : "skip"
+    user?.role === "admin" || user?.role === "editor" ? {} : "skip",
   );
   const users = useQuery(
     api.users.getAllUsers,
-    user?.role === "admin" ? {} : "skip"
+    user?.role === "admin" ? {} : "skip",
   );
 
   const canViewPosts = user?.role === "admin" || user?.role === "editor";
@@ -31,14 +37,14 @@ export function CMSDashboard() {
     },
     {
       title: "Published Posts",
-      value: posts?.filter(p => p.status === "published").length || 0,
+      value: posts?.filter((p) => p.status === "published").length || 0,
       description: "Live on website",
       icon: Eye,
       show: canViewPosts,
     },
     {
       title: "Draft Posts",
-      value: posts?.filter(p => p.status === "draft").length || 0,
+      value: posts?.filter((p) => p.status === "draft").length || 0,
       description: "Unpublished posts",
       icon: FileText,
       show: canViewPosts,
@@ -52,14 +58,15 @@ export function CMSDashboard() {
     },
   ];
 
-  const visibleStats = stats.filter(stat => stat.show);
+  const visibleStats = stats.filter((stat) => stat.show);
 
   return (
     <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
         <p className="text-gray-600 mt-2">
-          Welcome back, {user?.name || user?.email}! Here's an overview of your content.
+          Welcome back, {user?.name || user?.email}! Here's an overview of your
+          content.
         </p>
       </div>
 
@@ -94,27 +101,30 @@ export function CMSDashboard() {
           <Card>
             <CardHeader>
               <CardTitle>Recent Posts</CardTitle>
-              <CardDescription>
-                Your latest content updates
-              </CardDescription>
+              <CardDescription>Your latest content updates</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 {posts.slice(0, 5).map((post) => (
-                  <div key={post._id} className="flex items-center justify-between">
+                  <div
+                    key={post._id}
+                    className="flex items-center justify-between"
+                  >
                     <div>
                       <p className="font-medium text-sm">{post.title}</p>
                       <p className="text-xs text-muted-foreground">
                         {new Date(post.updatedAt).toLocaleDateString()}
                       </p>
                     </div>
-                    <div className={`px-2 py-1 rounded-full text-xs font-medium ${
-                      post.status === "published" 
-                        ? "bg-green-100 text-green-800" 
-                        : post.status === "draft"
-                        ? "bg-yellow-100 text-yellow-800"
-                        : "bg-gray-100 text-gray-800"
-                    }`}>
+                    <div
+                      className={`px-2 py-1 rounded-full text-xs font-medium ${
+                        post.status === "published"
+                          ? "bg-green-100 text-green-800"
+                          : post.status === "draft"
+                            ? "bg-yellow-100 text-yellow-800"
+                            : "bg-gray-100 text-gray-800"
+                      }`}
+                    >
                       {post.status}
                     </div>
                   </div>
@@ -130,9 +140,7 @@ export function CMSDashboard() {
         <Card>
           <CardHeader>
             <CardTitle>Quick Actions</CardTitle>
-            <CardDescription>
-              Common tasks for your role
-            </CardDescription>
+            <CardDescription>Common tasks for your role</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-2">
@@ -172,4 +180,4 @@ export function CMSDashboard() {
       </div>
     </div>
   );
-} 
+}

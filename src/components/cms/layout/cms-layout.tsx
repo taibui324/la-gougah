@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 import { useQuery } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
 import { CMSSidebar } from "./cms-sidebar";
@@ -30,10 +30,8 @@ export function CMSLayout({ children }: CMSLayoutProps) {
       <CMSSidebar userRole={user.role} />
       <div className="lg:pl-64">
         <CMSHeader user={user} />
-        <main className="p-6">
-          {children}
-        </main>
+        <main className="p-6">{children}</main>
       </div>
     </div>
   );
-} 
+}

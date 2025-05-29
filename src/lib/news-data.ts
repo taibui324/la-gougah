@@ -14,7 +14,8 @@ export const newsItems: NewsItem[] = [
     slug: "ra-mat-san-pham-moi",
     title: "Ra mắt sản phẩm mới",
     date: "15/04/2025",
-    description: "La Gougah vừa ra mắt dòng sản phẩm nước khoáng mới với thiết kế chai thân thiện với môi trường.",
+    description:
+      "La Gougah vừa ra mắt dòng sản phẩm nước khoáng mới với thiết kế chai thân thiện với môi trường.",
     content: `
       <p>La Gougah vừa chính thức ra mắt dòng sản phẩm nước khoáng mới với thiết kế chai hoàn toàn mới, được làm từ vật liệu thân thiện với môi trường và có thể tái chế 100%.</p>
       
@@ -33,7 +34,8 @@ export const newsItems: NewsItem[] = [
     slug: "chuong-trinh-bao-ve-moi-truong",
     title: "Chương trình bảo vệ môi trường",
     date: "28/03/2025",
-    description: "La Gougah khởi động chiến dịch bảo vệ nguồn nước sạch tại các vùng núi cao Việt Nam.",
+    description:
+      "La Gougah khởi động chiến dịch bảo vệ nguồn nước sạch tại các vùng núi cao Việt Nam.",
     content: `
       <p>La Gougah vừa chính thức khởi động chiến dịch "Nguồn nước sạch cho tương lai" nhằm bảo vệ các nguồn nước tại các vùng núi cao Việt Nam, đặc biệt là khu vực cao nguyên Lâm Đồng - nơi có nguồn nước khoáng thiên nhiên của La Gougah.</p>
       
@@ -52,7 +54,8 @@ export const newsItems: NewsItem[] = [
     slug: "hop-tac-cung-phat-trien",
     title: "Hợp tác cùng phát triển",
     date: "10/03/2025",
-    description: "La Gougah ký kết hợp tác với các đối tác chiến lược để mở rộng thị trường trong nước và quốc tế.",
+    description:
+      "La Gougah ký kết hợp tác với các đối tác chiến lược để mở rộng thị trường trong nước và quốc tế.",
     content: `
       <p>La Gougah vừa chính thức ký kết thỏa thuận hợp tác chiến lược với nhiều đối tác lớn trong và ngoài nước, đánh dấu bước ngoặt quan trọng trong chiến lược mở rộng thị trường của công ty.</p>
       
@@ -80,4 +83,4 @@ export function getAllNewsSlugs() {
 // Function to get news item by slug
 export function getNewsBySlug(slug: string): NewsItem | undefined {
   return newsItems.find((item) => item.slug === slug);
-} 
+}

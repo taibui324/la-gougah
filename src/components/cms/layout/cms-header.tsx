@@ -36,7 +36,7 @@ export function CMSHeader({ user }: CMSHeaderProps) {
     if (name) {
       return name
         .split(" ")
-        .map(n => n[0])
+        .map((n) => n[0])
         .join("")
         .toUpperCase()
         .slice(0, 2);
@@ -99,4 +99,4 @@ export function CMSHeader({ user }: CMSHeaderProps) {
       </div>
     </header>
   );
-} 
+}

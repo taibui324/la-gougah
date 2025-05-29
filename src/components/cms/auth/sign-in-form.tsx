@@ -5,7 +5,13 @@ import { useAuthActions } from "@convex-dev/auth/react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 export function SignInForm() {
   const { signIn } = useAuthActions();
@@ -36,7 +42,9 @@ export function SignInForm() {
             La Gougah CMS
           </CardTitle>
           <CardDescription>
-            {step === "signIn" ? "Sign in to your account" : "Create a new account"}
+            {step === "signIn"
+              ? "Sign in to your account"
+              : "Create a new account"}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -52,7 +60,7 @@ export function SignInForm() {
                 disabled={isLoading}
               />
             </div>
-            
+
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
               <Input
@@ -92,7 +100,11 @@ export function SignInForm() {
               className="w-full bg-[#396CB1] hover:bg-[#273572]"
               disabled={isLoading}
             >
-              {isLoading ? "Loading..." : step === "signIn" ? "Sign In" : "Sign Up"}
+              {isLoading
+                ? "Loading..."
+                : step === "signIn"
+                  ? "Sign In"
+                  : "Sign Up"}
             </Button>
 
             <div className="text-center">
@@ -103,7 +115,9 @@ export function SignInForm() {
                 disabled={isLoading}
                 className="text-[#396CB1]"
               >
-                {step === "signIn" ? "Need an account? Sign up" : "Already have an account? Sign in"}
+                {step === "signIn"
+                  ? "Need an account? Sign up"
+                  : "Already have an account? Sign in"}
               </Button>
             </div>
           </form>
@@ -111,4 +125,4 @@ export function SignInForm() {
       </Card>
     </div>
   );
-} 
+}

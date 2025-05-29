@@ -13,11 +13,11 @@ export default function CMSPage() {
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#396CB1]"></div>
         </div>
       </AuthLoading>
-      
+
       <Unauthenticated>
         <SignInForm />
       </Unauthenticated>
-      
+
       <Authenticated>
         <CMSLayout>
           <CMSDashboard />
@@ -25,4 +25,4 @@ export default function CMSPage() {
       </Authenticated>
     </>
   );
-} 
+}
