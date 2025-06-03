@@ -2,119 +2,117 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useRef, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
-import { Button } from "@/components/ui/button";
-import { newsItems } from "@/lib/news-data";
+import { useQuery } from "convex/react";
+import { api } from "../../../convex/_generated/api";
+import { formatDistanceToNow } from "date-fns";
+import { vi } from "date-fns/locale";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function NewsPage() {
-  const contentRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("opacity-100", "translate-y-0");
-            entry.target.classList.remove("opacity-0", "translate-y-10");
-          }
-        });
-      },
-      { threshold: 0.1 },
-    );
-
-    if (contentRef.current) {
-      observer.observe(contentRef.current);
-    }
-
-    return () => {
-      if (contentRef.current) {
-        observer.unobserve(contentRef.current);
-      }
-    };
-  }, []);
+  const posts = useQuery(api.posts.getPublishedPosts);
 
   return (
     <>
       <Header />
-
-      {/* Hero Banner */}
-      <section className="relative h-[40vh] w-full overflow-hidden">
-        <div className="absolute inset-0">
-          <Image
-            src="/images/image-8.png"
-            alt="La Gougah News"
-            fill
-            className="object-cover"
-            priority
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/50 to-black/70" />
-        </div>
-
-        <div className="relative z-10 container mx-auto px-4 h-full flex items-center justify-center">
-          <h1 className="text-4xl md:text-6xl font-bold text-white text-center">
+      <main className="pt-24 pb-20 min-h-screen">
+        <div className="container mx-auto px-4">
+          <h1 className="text-4xl md:text-5xl font-light text-center text-[#273572] mb-6">
             Tin Tức
           </h1>
-        </div>
-      </section>
+          <p className="text-center text-gray-600 mb-16 max-w-3xl mx-auto">
+            Cập nhật những thông tin mới nhất về La Gougah và các hoạt động của
+            chúng tôi
+          </p>
 
-      {/* News Listing */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4">
-          <div
-            ref={contentRef}
-            className="max-w-6xl mx-auto transition-all duration-1000 opacity-0 translate-y-10"
-          >
-            <div className="grid grid-cols-1 gap-10 mt-8">
-              {newsItems.map((item) => (
-                <div
-                  key={item.id}
-                  className="flex flex-col md:flex-row gap-8 border-b border-gray-200 pb-10"
+          {!posts ? (
+            // Loading state
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {[1, 2, 3, 4, 5, 6].map((item) => (
+                <Card key={item} className="overflow-hidden border border-blue-100">
+                  <Skeleton className="h-48 w-full" />
+                  <CardHeader>
+                    <Skeleton className="h-4 w-20 mb-2" />
+                    <Skeleton className="h-6 w-full" />
+                  </CardHeader>
+                  <CardContent>
+                    <Skeleton className="h-20 w-full" />
+                  </CardContent>
+                  <CardFooter>
+                    <Skeleton className="h-10 w-24" />
+                  </CardFooter>
+                </Card>
+              ))}
+            </div>
+          ) : posts.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {posts.map((post) => (
+                <Card
+                  key={post._id}
+                  className="overflow-hidden border border-blue-100 shadow-sm hover:shadow-md transition-shadow"
                 >
-                  <div className="md:w-1/3">
-                    <div className="relative h-60 w-full rounded-lg overflow-hidden">
+                  <div className="relative h-48 w-full">
+                    {post.image ? (
                       <Image
-                        src={item.image}
-                        alt={item.title}
+                        src={post.image}
+                        alt={post.title}
                         fill
                         className="object-cover"
                       />
-                    </div>
+                    ) : (
+                      <div className="h-full w-full bg-blue-50 flex items-center justify-center">
+                        <span className="text-blue-300">No image</span>
+                      </div>
+                    )}
                   </div>
-                  <div className="md:w-2/3">
-                    <span className="text-sm text-blue-600 mb-2 block">
-                      {item.date}
-                    </span>
-                    <h2 className="text-2xl font-bold text-[#273572] mb-3">
-                      {item.title}
-                    </h2>
-                    <p className="text-gray-600 mb-4">{item.description}</p>
-                    <Link href={`/news/${item.slug}`}>
-                      <Button className="bg-[#396CB1] hover:bg-[#273572] text-white">
-                        Đọc tiếp
+                  <CardHeader>
+                    <div className="flex justify-between items-center mb-2">
+                      <span className="text-sm text-blue-600">
+                        {post.publishedAt 
+                          ? formatDistanceToNow(post.publishedAt, { addSuffix: true, locale: vi }) 
+                          : "Mới đăng"}
+                      </span>
+                    </div>
+                    <CardTitle className="text-xl text-[#273572]">
+                      {post.title}
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <CardDescription className="text-gray-600">
+                      {post.description}
+                    </CardDescription>
+                  </CardContent>
+                  <CardFooter>
+                    <Link href={`/news/${post.slug}`}>
+                      <Button
+                        variant="outline"
+                        className="text-blue-600 border-blue-600 hover:bg-blue-50"
+                      >
+                        Xem thêm
                       </Button>
                     </Link>
-                  </div>
-                </div>
+                  </CardFooter>
+                </Card>
               ))}
             </div>
-
-            {/* Back to Home Link */}
-            <div className="mt-16 text-center">
-              <Link href="/">
-                <Button
-                  variant="outline"
-                  className="text-blue-600 border-blue-600 hover:bg-blue-50"
-                >
-                  Quay Lại Trang Chủ
-                </Button>
-              </Link>
+          ) : (
+            // No posts state
+            <div className="text-center py-16">
+              <p className="text-gray-500 text-lg">Chưa có tin tức nào được đăng.</p>
             </div>
-          </div>
+          )}
         </div>
-      </section>
-
+      </main>
       <Footer />
     </>
   );

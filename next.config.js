@@ -1,6 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'export',
+  output: 'export', // Keep using static export
+  trailingSlash: true, // Add trailing slashes to help with static hosting
+  distDir: 'out', // Output directory for the static export
+  
   images: {
     unoptimized: true,
     domains: [

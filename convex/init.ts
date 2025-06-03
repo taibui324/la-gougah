@@ -1,5 +1,6 @@
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
+import { initializeContactSettings as initContactSettings } from "./contactSettings";
 
 // Function to create the first admin user
 export const createFirstAdmin = mutation({
@@ -8,188 +9,133 @@ export const createFirstAdmin = mutation({
     name: v.string(),
   },
   handler: async (ctx, args) => {
-    // Check if any admin users already exist
-    const existingAdmins = await ctx.db
-      .query("users")
-      .filter((q) => q.eq(q.field("role"), "admin"))
-      .collect();
-
-    if (existingAdmins.length > 0) {
-      throw new Error("Admin user already exists");
+    // Check if any users exist
+    const existingUsers = await ctx.db.query("users").collect();
+    if (existingUsers.length > 0) {
+      throw new Error("Cannot create first admin: users already exist");
     }
 
-    // Check if user with this email already exists
-    const existingUser = await ctx.db
-      .query("users")
-      .withIndex("email", (q) => q.eq("email", args.email))
-      .first();
+    // Create the admin user
+    const userId = await ctx.db.insert("users", {
+      email: args.email,
+      name: args.name,
+      role: "admin",
+    });
 
-    if (existingUser) {
-      // Update existing user to admin
-      await ctx.db.patch(existingUser._id, {
-        role: "admin",
-        name: args.name,
-      });
-      return existingUser._id;
-    } else {
-      // Create new admin user
-      const userId = await ctx.db.insert("users", {
-        email: args.email,
-        name: args.name,
-        role: "admin",
-      });
-      return userId;
-    }
+    return userId;
   },
 });
 
-// Function to check existing users (for debugging)
+// Query to list all users (for setup)
 export const listUsers = query({
   args: {},
   handler: async (ctx) => {
-    const users = await ctx.db.query("users").collect();
-    return users.map(user => ({
-      _id: user._id,
-      email: user.email,
-      name: user.name,
-      role: user.role,
-    }));
+    return await ctx.db.query("users").collect();
   },
 });
 
-// Function to initialize default menu items
+// Function to create menu items
 export const initializeMenuItems = mutation({
   args: {},
   handler: async (ctx) => {
     // Check if menu items already exist
-    const existingItems = await ctx.db.query("menuItems").collect();
-    if (existingItems.length > 0) {
+    const existingMenuItems = await ctx.db.query("menuItems").collect();
+    if (existingMenuItems.length > 0) {
       return { message: "Menu items already initialized" };
     }
 
-    const defaultMenuItems = [
-      {
-        title: "Nguồn Gốc",
-        href: "#origin",
-        order: 1,
-        isVisible: true,
-        description: "About our water source",
-      },
-      {
-        title: "Sản Phẩm",
-        href: "#products",
-        order: 2,
-        isVisible: true,
-        description: "Our product range",
-      },
-      {
-        title: "Công Nghệ",
-        href: "#technology",
-        order: 3,
-        isVisible: true,
-        description: "Our technology",
-      },
-      {
-        title: "Câu Chuyện",
-        href: "/story",
-        order: 4,
-        isVisible: true,
-        description: "Our story page",
-      },
-      {
-        title: "Tin Tức",
-        href: "/news",
-        order: 5,
-        isVisible: true,
-        description: "News and updates",
-      },
-      {
-        title: "Liên Hệ",
-        href: "#contact",
-        order: 6,
-        isVisible: true,
-        description: "Contact information",
-      },
-    ];
-
     const now = Date.now();
-    for (const item of defaultMenuItems) {
-      await ctx.db.insert("menuItems", {
-        ...item,
-        createdAt: now,
-        updatedAt: now,
-      });
-    }
+
+    // Create default menu items
+    await ctx.db.insert("menuItems", {
+      title: "Home",
+      href: "/",
+      isVisible: true,
+      order: 1,
+      description: "Homepage",
+      createdAt: now,
+      updatedAt: now,
+    });
+
+    await ctx.db.insert("menuItems", {
+      title: "Our Story",
+      href: "/story",
+      isVisible: true,
+      order: 2,
+      description: "About our brand",
+      createdAt: now,
+      updatedAt: now,
+    });
+
+    await ctx.db.insert("menuItems", {
+      title: "Our Technology",
+      href: "/technology",
+      isVisible: true,
+      order: 3,
+      description: "Our production technology",
+      createdAt: now,
+      updatedAt: now,
+    });
+
+    await ctx.db.insert("menuItems", {
+      title: "News",
+      href: "/news",
+      isVisible: true,
+      order: 4,
+      description: "Latest news and updates",
+      createdAt: now,
+      updatedAt: now,
+    });
 
     return { message: "Menu items initialized successfully" };
   },
 });
 
-// Function to create a new admin user (for testing)
+// Create a new admin user (when some users already exist)
 export const createNewAdmin = mutation({
   args: {
     email: v.string(),
     name: v.string(),
   },
   handler: async (ctx, args) => {
-    // Check if user with this email already exists
-    const existingUser = await ctx.db
-      .query("users")
-      .withIndex("email", (q) => q.eq("email", args.email))
-      .first();
+    // Create the admin user
+    const userId = await ctx.db.insert("users", {
+      email: args.email,
+      name: args.name,
+      role: "admin",
+    });
 
-    if (existingUser) {
-      // Update existing user to admin
-      await ctx.db.patch(existingUser._id, {
-        role: "admin",
-        name: args.name,
-      });
-      return { 
-        message: `Updated existing user ${args.email} to admin role`,
-        userId: existingUser._id 
-      };
-    } else {
-      // Create new admin user
-      const userId = await ctx.db.insert("users", {
-        email: args.email,
-        name: args.name,
-        role: "admin",
-      });
-      return { 
-        message: `Created new admin user ${args.email}`,
-        userId: userId 
-      };
-    }
+    return userId;
   },
 });
 
-// Function to initialize contact settings
+// Initialize contact settings
 export const initializeContactSettings = mutation({
   args: {
-    email: v.string(),
     adminUserId: v.id("users"),
+    email: v.string(),
   },
   handler: async (ctx, args) => {
-    // Check if contact settings already exist
+    // Get the admin user to verify permission
+    const adminUser = await ctx.db.get(args.adminUserId);
+    if (!adminUser || adminUser.role !== "admin") {
+      throw new Error("Only admins can initialize contact settings");
+    }
+    
+    // Check if settings already exist
     const existingSettings = await ctx.db.query("contactSettings").first();
     if (existingSettings) {
-      return { message: "Contact settings already initialized" };
+      return existingSettings._id;
     }
-
-    await ctx.db.insert("contactSettings", {
+    
+    // Create new settings
+    const now = Date.now();
+    const settingsId = await ctx.db.insert("contactSettings", {
       email: args.email,
-      phone: "+84 123 456 789",
-      address: "Lâm Đồng, Việt Nam",
-      socialLinks: {
-        facebook: "https://facebook.com/lagougah",
-        instagram: "https://instagram.com/lagougah",
-        twitter: "https://twitter.com/lagougah",
-        linkedin: "https://linkedin.com/company/lagougah",
-      },
-      updatedAt: Date.now(),
+      updatedAt: now,
       updatedBy: args.adminUserId,
     });
-
-    return { message: "Contact settings initialized successfully" };
+    
+    return settingsId;
   },
 }); 

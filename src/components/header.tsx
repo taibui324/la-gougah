@@ -3,6 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useQuery } from "convex/react";
+import { api } from "../../convex/_generated/api";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -23,21 +25,24 @@ interface MenuItem {
 export default function Header() {
   const pathname = usePathname();
   const isHomePage = pathname === "/";
-
-  // Base section link items
-  const menuItems: MenuItem[] = [
-    // { id: "about", title: "Giới thiệu", href: "#about" }, // Removed as requested
-    { id: "origin", title: "Nguồn Gốc", baseHref: "#origin" },
-    { id: "products", title: "Sản Phẩm", baseHref: "#products" },
-    { id: "technology", title: "Công Nghệ", baseHref: "#technology" },
-  ];
-
-  const rightMenuItems: MenuItem[] = [
-    // { id: "team", title: "Đội Ngũ", baseHref: "#team" }, // Temporarily hidden
-    { id: "story_page", title: "Câu Chuyện", baseHref: "/story" },
-    { id: "news", title: "Tin Tức", baseHref: "#news", fullPageHref: "/news" },
-    { id: "contact", title: "Liên Hệ", baseHref: "#contact" },
-  ];
+  
+  // Fetch visible menu items from Convex
+  const convexMenuItems = useQuery(api.menuItems.getVisibleMenuItems) || [];
+  
+  // Map database menu items to our component format
+  // We'll split them between left and right sides of the logo
+  const dbMenuItems = convexMenuItems.map(item => ({
+    id: item._id,
+    title: item.title,
+    baseHref: item.href,
+    fullPageHref: item.href.startsWith('/') ? item.href : undefined,
+  }));
+  
+  // Split menu items into left and right sides
+  // First half goes to the left, second half to the right
+  const middleIndex = Math.ceil(dbMenuItems.length / 2);
+  const menuItems = dbMenuItems.slice(0, middleIndex);
+  const rightMenuItems = dbMenuItems.slice(middleIndex);
 
   // Helper function to get the correct href based on current page
   const getHref = (baseHref: string, fullPageHref?: string) => {
@@ -118,7 +123,7 @@ export default function Header() {
                 </div>
               </div>
               <nav className="flex flex-col gap-6 mt-8">
-                {/* Combine and filter out team section for mobile menu too */}
+                {/* Show all menu items in mobile view */}
                 {[...menuItems, ...rightMenuItems].map((item) => (
                   <Link
                     key={item.id}

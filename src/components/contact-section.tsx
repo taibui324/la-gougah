@@ -6,8 +6,12 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Phone, Mail, MapPin } from "lucide-react";
 import emailjs from "@emailjs/browser";
+import { useQuery } from "convex/react";
+import { api } from "../../convex/_generated/api";
+import { ContactInfo } from "./contact-info";
 
 export default function ContactSection() {
+  const contactInfo = useQuery(api.contactSettings.getPublicContactInfo);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<
     "idle" | "success" | "error"
@@ -64,7 +68,7 @@ export default function ContactSection() {
       const publicKey = "5isW7RaQ9Tb9ckKXC"; // Replace with your EmailJS public key
 
       const templateParams = {
-        to_email: "admin@lagougah.com",
+        to_email: contactInfo?.email || "admin@lagougah.com",
         from_name: formData.name,
         from_email: formData.email,
         from_phone: formData.phone,
@@ -209,40 +213,44 @@ export default function ContactSection() {
                 Thông tin liên hệ
               </h3>
 
-              <div className="space-y-4">
-                <div className="flex items-center gap-4">
-                  <div className="bg-blue-100 p-3 rounded-full">
-                    <Phone className="h-5 w-5 text-blue-800" />
+              {contactInfo ? (
+                <ContactInfo />
+              ) : (
+                <div className="space-y-4">
+                  <div className="flex items-center gap-4">
+                    <div className="bg-blue-100 p-3 rounded-full">
+                      <Phone className="h-5 w-5 text-blue-800" />
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-500">Hotline</p>
+                      <p className="text-lg font-medium">02633679979</p>
+                    </div>
                   </div>
-                  <div>
-                    <p className="text-sm text-gray-500">Hotline</p>
-                    <p className="text-lg font-medium">02633679979</p>
-                  </div>
-                </div>
 
-                <div className="flex items-center gap-4">
-                  <div className="bg-blue-100 p-3 rounded-full">
-                    <Mail className="h-5 w-5 text-blue-800" />
+                  <div className="flex items-center gap-4">
+                    <div className="bg-blue-100 p-3 rounded-full">
+                      <Mail className="h-5 w-5 text-blue-800" />
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-500">Email</p>
+                      <p className="text-lg font-medium">admin@lagougah.com</p>
+                    </div>
                   </div>
-                  <div>
-                    <p className="text-sm text-gray-500">Email</p>
-                    <p className="text-lg font-medium">admin@lagougah.com </p>
-                  </div>
-                </div>
 
-                <div className="flex items-center gap-4">
-                  <div className="bg-blue-100 p-3 rounded-full">
-                    <MapPin className="h-5 w-5 text-blue-800" />
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-500">Địa chỉ</p>
-                    <p className="text-lg font-medium">
-                      Thôn Phú Hòa, Xã Phú Hội, Huyện Đức Trọng, Tỉnh Lâm Đồng,
-                      Việt Nam
-                    </p>
+                  <div className="flex items-center gap-4">
+                    <div className="bg-blue-100 p-3 rounded-full">
+                      <MapPin className="h-5 w-5 text-blue-800" />
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-500">Địa chỉ</p>
+                      <p className="text-lg font-medium">
+                        Thôn Phú Hòa, Xã Phú Hội, Huyện Đức Trọng, Tỉnh Lâm Đồng,
+                        Việt Nam
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
             </div>
           </div>
         </div>

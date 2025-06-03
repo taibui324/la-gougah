@@ -9,7 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { FileText, Users, Image as ImageIcon, Eye } from "lucide-react";
+import { FileText, Users, Image as ImageIcon, Eye, List, Menu } from "lucide-react";
 
 export function CMSDashboard() {
   const user = useQuery(api.users.getCurrentUserInfo);
@@ -23,9 +23,14 @@ export function CMSDashboard() {
     api.users.getAllUsers,
     user?.role === "admin" ? {} : "skip",
   );
+  const menuItems = useQuery(
+    api.menuItems.getAllMenuItems,
+    user?.role === "admin" ? {} : "skip",
+  );
 
   const canViewPosts = user?.role === "admin" || user?.role === "editor";
   const canViewUsers = user?.role === "admin";
+  const canManageMenu = user?.role === "admin";
 
   const stats = [
     {
@@ -48,6 +53,13 @@ export function CMSDashboard() {
       description: "Unpublished posts",
       icon: FileText,
       show: canViewPosts,
+    },
+    {
+      title: "Menu Items",
+      value: menuItems?.length || 0,
+      description: "Navigation items",
+      icon: Menu,
+      show: canManageMenu,
     },
     {
       title: "Total Users",
@@ -159,6 +171,14 @@ export function CMSDashboard() {
                     Manage Posts
                   </a>
                 </>
+              )}
+              {canManageMenu && (
+                <a
+                  href="/cms/menu"
+                  className="block w-full text-left px-3 py-2 text-sm rounded-md hover:bg-gray-100 transition-colors"
+                >
+                  Manage Menu Items
+                </a>
               )}
               {canViewUsers && (
                 <a

@@ -200,4 +200,19 @@ export const getMyPosts = query({
     
     return posts;
   },
+});
+
+// Query to get a post by ID (admin/editor only)
+export const getPostById = query({
+  args: { id: v.id("posts") },
+  handler: async (ctx, args) => {
+    await requireAdminOrEditor(ctx);
+    
+    const post = await ctx.db.get(args.id);
+    if (!post) {
+      throw new Error("Post not found");
+    }
+    
+    return post;
+  },
 }); 
