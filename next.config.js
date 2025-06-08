@@ -1,8 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Removed output: 'export' to enable dynamic features for CMS
-  // trailingSlash: true, // Only needed for static export
-  // distDir: 'out', // Only needed for static export
+  // Only use static export for local builds, not Vercel
+  ...(process.env.VERCEL || process.env.VERCEL_ENV ? {} : { 
+    output: 'export',
+    trailingSlash: true,
+    distDir: 'out'
+  }),
   
   images: {
     unoptimized: true,
