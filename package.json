@@ -5,9 +5,7 @@
   "scripts": {
     "dev": "next dev -H 0.0.0.0 --turbopack",
     "dev:full": "bunx concurrently \"bunx convex dev\" \"next dev -H 0.0.0.0 --turbopack\"",
-    "build": "node scripts/build.js",
-    "postbuild": "node scripts/add-analytics.js",
-    "export": "node scripts/build.js && node scripts/add-analytics.js",
+    "build": "next build",
     "start": "next start",
     "lint": "bunx biome lint --write && bunx tsc --noEmit",
     "format": "bunx biome format --write",
