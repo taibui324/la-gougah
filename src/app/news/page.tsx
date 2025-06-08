@@ -62,9 +62,9 @@ export default function NewsPage() {
                   className="overflow-hidden border border-blue-100 shadow-sm hover:shadow-md transition-shadow"
                 >
                   <div className="relative h-48 w-full">
-                    {post.image ? (
+                    {post.image || post.imageStorageId ? (
                       <Image
-                        src={post.image}
+                        src={post.image || `/api/storage/${post.imageStorageId}`}
                         alt={post.title}
                         fill
                         className="object-cover"

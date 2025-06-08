@@ -1,4 +1,4 @@
-import HeroSection from "@/components/hero-section";
+import { HeroBanner } from "@/components/ui/hero-banner";
 import OriginSection from "@/components/origin-section";
 import ProductSection from "@/components/product-section";
 import TechnologySection from "@/components/technology-section";
@@ -15,7 +15,13 @@ export default function Home() {
   return (
     <>
       <Header />
-      <HeroSection />
+      <HeroBanner 
+        pageType="homepage"
+        fallbackTitle="NƯỚC UỐNG THIÊN NHIÊN"
+        fallbackDescription="TINH HOA CHẤT VIỆT"
+        fallbackImage="/images/splash.png"
+        layout="homepage"
+      />
       {/* <AboutSection /> */}
       <SectionWrapper sectionId="origin">
         <OriginSection />

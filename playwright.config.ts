@@ -9,7 +9,7 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   reporter: 'html',
   use: {
-    baseURL: 'https://www.lagougah.com',
+    baseURL: process.env.PLAYWRIGHT_BASE_URL || 'http://localhost:3001',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
     video: 'on-first-retry',
@@ -20,4 +20,10 @@ export default defineConfig({
       use: { ...devices['Desktop Chrome'] },
     },
   ],
+  webServer: process.env.CI ? undefined : {
+    command: 'npm run dev',
+    port: 3001,
+    reuseExistingServer: !process.env.CI,
+    timeout: 120 * 1000,
+  },
 }); 

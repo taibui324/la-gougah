@@ -54,13 +54,23 @@ const formSchema = z.object({
   imageStorageId: z.string().optional(),
 });
 
-export default function EditPostPage({ params }: { params: { id: string } }) {
+export default function EditPostPage({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter();
   const { toast } = useToast();
-  const postId = params.id as Id<"posts">;
+  
+  // Handle Next.js 15 async params
+  const [postId, setPostId] = useState<Id<"posts"> | null>(null);
+  
+  useEffect(() => {
+    const resolveParams = async () => {
+      const resolvedParams = await params;
+      setPostId(resolvedParams.id as Id<"posts">);
+    };
+    resolveParams();
+  }, [params]);
   
   // Fetch post data
-  const post = useQuery(api.posts.getPostById, { id: postId });
+  const post = useQuery(api.posts.getPostById, postId ? { id: postId } : "skip");
   
   // Mutations
   const updatePost = useMutation(api.posts.updatePost);
@@ -100,8 +110,10 @@ export default function EditPostPage({ params }: { params: { id: string } }) {
         imageStorageId: post.imageStorageId as string | undefined,
       });
       
-      if (post.image) {
-        setPreviewImage(post.image);
+      // Set image preview - use image URL or generate from storage ID
+      const imageUrl = post.image || (post.imageStorageId ? `/api/storage/${post.imageStorageId}` : null);
+      if (imageUrl) {
+        setPreviewImage(imageUrl);
       }
       
       setIsLoading(false);
@@ -175,8 +187,13 @@ export default function EditPostPage({ params }: { params: { id: string } }) {
 
       const { storageId } = await result.json();
 
-      // Create a URL for previewing the image
-      const imageUrl = `${window.location.protocol}//${window.location.host}/api/storage/${storageId}`;
+      // Get the direct Convex storage URL
+      const convexClient = new (await import("convex/browser")).ConvexHttpClient(process.env.NEXT_PUBLIC_CONVEX_URL!);
+      const imageUrl = await convexClient.query((await import("../../../../../../convex/_generated/api")).api.storage.getStorageUrl, { storageId });
+      
+      if (!imageUrl) {
+        throw new Error("Failed to get image URL from storage");
+      }
       
       // Update form values with image data
       form.setValue("image", imageUrl);
@@ -203,6 +220,8 @@ export default function EditPostPage({ params }: { params: { id: string } }) {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       // Update the post in Convex
+      if (!postId) return;
+      
       await updatePost({
         id: postId,
         title: values.title,

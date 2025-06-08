@@ -21,6 +21,7 @@ import type * as init from "../init.js";
 import type * as lib_auth from "../lib/auth.js";
 import type * as menuItems from "../menuItems.js";
 import type * as posts from "../posts.js";
+import type * as storage from "../storage.js";
 import type * as users from "../users.js";
 
 /**
@@ -40,6 +41,7 @@ declare const fullApi: ApiFromModules<{
   "lib/auth": typeof lib_auth;
   menuItems: typeof menuItems;
   posts: typeof posts;
+  storage: typeof storage;
   users: typeof users;
 }>;
 export declare const api: FilterApi<

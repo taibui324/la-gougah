@@ -72,9 +72,9 @@ export default function NewsDetailPage() {
             </div>
             
             <div className="relative h-96 w-full mb-8 rounded-lg overflow-hidden">
-              {post.image ? (
+              {post.image || post.imageStorageId ? (
                 <Image 
-                  src={post.image} 
+                  src={post.image || `/api/storage/${post.imageStorageId}`} 
                   alt={post.title} 
                   fill 
                   className="object-cover"

@@ -1,8 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'export', // Keep using static export
-  trailingSlash: true, // Add trailing slashes to help with static hosting
-  distDir: 'out', // Output directory for the static export
+  // Removed output: 'export' to enable dynamic features for CMS
+  // trailingSlash: true, // Only needed for static export
+  // distDir: 'out', // Only needed for static export
   
   images: {
     unoptimized: true,

@@ -11,9 +11,12 @@ const schema = defineSchema({
     email: v.string(),
     image: v.optional(v.string()),
     role: v.union(v.literal("admin"), v.literal("editor"), v.literal("user")),
+    status: v.optional(v.union(v.literal("active"), v.literal("inactive"))),
     emailVerificationTime: v.optional(v.number()),
     phone: v.optional(v.string()),
     isAnonymous: v.optional(v.boolean()),
+    createdAt: v.optional(v.number()),
+    updatedAt: v.optional(v.number()),
   }).index("email", ["email"]),
 
   // Posts table for news articles
@@ -47,13 +50,21 @@ const schema = defineSchema({
     updatedAt: v.number(),
   }).index("order", ["order"]),
 
-  // Banners for homepage and other sections
+  // Banners for homepage and other sections with page-specific targeting
   banners: defineTable({
     title: v.string(),
     description: v.optional(v.string()),
     image: v.optional(v.string()),
     imageStorageId: v.optional(v.id("_storage")),
     link: v.optional(v.string()),
+    linkText: v.optional(v.string()), // Call-to-action button text
+    pageType: v.union(
+      v.literal("homepage"),
+      v.literal("technology"),
+      v.literal("story"),
+      v.literal("news"),
+      v.literal("general")
+    ),
     position: v.union(
       v.literal("hero"),
       v.literal("secondary"),
@@ -64,8 +75,10 @@ const schema = defineSchema({
     createdAt: v.number(),
     updatedAt: v.number(),
   })
+    .index("pageType", ["pageType"])
     .index("position", ["position"])
     .index("isActive", ["isActive"])
+    .index("pageTypePosition", ["pageType", "position"])
     .index("order", ["order"]),
 
   // Contact settings

@@ -142,8 +142,13 @@ export default function NewPostPage() {
 
       const { storageId } = await result.json();
 
-      // Create a URL for previewing the image
-      const imageUrl = `${window.location.protocol}//${window.location.host}/api/storage/${storageId}`;
+      // Get the direct Convex storage URL
+      const convexClient = new (await import("convex/browser")).ConvexHttpClient(process.env.NEXT_PUBLIC_CONVEX_URL!);
+      const imageUrl = await convexClient.query((await import("../../../../../convex/_generated/api")).api.storage.getStorageUrl, { storageId });
+      
+      if (!imageUrl) {
+        throw new Error("Failed to get image URL from storage");
+      }
       
       // Update form values with image data
       form.setValue("image", imageUrl);

@@ -6,6 +6,7 @@ import { useRef, useEffect } from "react";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import ScrollToTop from "@/components/scroll-to-top";
+import { HeroBanner } from "@/components/ui/hero-banner";
 
 export default function TechnologyPage() {
   const contentRef = useRef<HTMLDivElement>(null);
@@ -47,28 +48,13 @@ export default function TechnologyPage() {
       <Header />
 
       {/* Hero Banner */}
-      <section className="relative h-[60vh] w-full overflow-hidden">
-        <div className="absolute inset-0">
-          <Image
-            src="/images/image-3.png"
-            alt="La Gougah Technology"
-            fill
-            sizes="100vw"
-            quality={80}
-            className="object-cover"
-            priority
-            placeholder="blur"
-            blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mOMD/B7DwAEBAJDOiDPjgAAAABJRU5ErkJggg=="
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/50 to-black/70" />
-        </div>
-
-        <div className="relative z-10 container mx-auto px-4 h-full flex items-center justify-center">
-          <h1 className="text-5xl md:text-7xl font-bold text-white text-center">
-            Công Nghệ
-          </h1>
-        </div>
-      </section>
+      <HeroBanner 
+        pageType="technology"
+        fallbackTitle="Công Nghệ"
+        fallbackDescription="Công nghệ tiên tiến trong sản xuất nước uống thiên nhiên"
+        fallbackImage="/images/image-3.png"
+        className="h-[60vh]"
+      />
 
       {/* Technology Content */}
       <section className="py-20 bg-white">
