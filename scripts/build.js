@@ -4,8 +4,21 @@ const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
 
-// Check if we're in Vercel environment
-const isVercel = process.env.VERCEL || process.env.VERCEL_ENV;
+// Check if we're in Vercel environment - more comprehensive check
+const isVercel = !!(
+  process.env.VERCEL || 
+  process.env.VERCEL_ENV || 
+  process.env.VERCEL_URL || 
+  process.env.CI
+);
+
+console.log('Environment check:', {
+  VERCEL: process.env.VERCEL,
+  VERCEL_ENV: process.env.VERCEL_ENV,
+  VERCEL_URL: process.env.VERCEL_URL,
+  CI: process.env.CI,
+  isVercel
+});
 
 // Folders to temporarily rename during build (only for static export, not Vercel)
 const foldersToRename = [
@@ -20,7 +33,7 @@ const foldersToRename = [
 ];
 
 if (isVercel) {
-  console.log('Detected Vercel environment - running Next.js build with API routes...');
+  console.log('Detected Vercel/CI environment - running Next.js build with API routes...');
   try {
     // Run normal Next.js build for Vercel (keep API routes)
     execSync('next build', { stdio: 'inherit' });
@@ -30,7 +43,7 @@ if (isVercel) {
     process.exit(1);
   }
 } else {
-  console.log('Running static export build - temporarily renaming folders...');
+  console.log('Running local static export build - temporarily renaming folders...');
 
   // Store which folders were renamed
   const renamedFolders = [];

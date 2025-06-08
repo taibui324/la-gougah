@@ -1,7 +1,24 @@
 /** @type {import('next').NextConfig} */
+
+// Check if we're in Vercel/CI environment
+const isVercel = !!(
+  process.env.VERCEL || 
+  process.env.VERCEL_ENV || 
+  process.env.VERCEL_URL || 
+  process.env.CI
+);
+
+console.log('Next.js config - Environment check:', {
+  VERCEL: process.env.VERCEL,
+  VERCEL_ENV: process.env.VERCEL_ENV,
+  VERCEL_URL: process.env.VERCEL_URL,
+  CI: process.env.CI,
+  isVercel
+});
+
 const nextConfig = {
-  // Only use static export for local builds, not Vercel
-  ...(process.env.VERCEL || process.env.VERCEL_ENV ? {} : { 
+  // Only use static export for local builds, not Vercel/CI
+  ...(isVercel ? {} : { 
     output: 'export',
     trailingSlash: true,
     distDir: 'out'
