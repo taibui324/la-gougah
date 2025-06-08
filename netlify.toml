@@ -5,7 +5,13 @@
   command = "bun run build"
   publish = "out"
 
-# These redirect rules handle client-side routing in static builds
+# Handle API routes
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
+
+# Handle client-side routing for static pages
 [[redirects]]
   from = "/*"
   to = "/index.html"
@@ -13,6 +19,7 @@
 
 [build.environment]
   NETLIFY_NEXT_PLUGIN_SKIP = "true"
+  NODE_VERSION = "18"
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
