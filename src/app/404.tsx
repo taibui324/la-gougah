@@ -10,7 +10,7 @@ export default function NotFound() {
   useEffect(() => {
     // If we're on a specific page, check if adding a trailing slash would help
     const path = window.location.pathname;
-    if (path !== '/404' && !path.endsWith('/')) {
+    if (path !== "/404" && !path.endsWith("/")) {
       // Try redirecting to the page with a trailing slash
       router.replace(`${path}/`);
     }
@@ -23,7 +23,7 @@ export default function NotFound() {
         <p className="text-xl text-gray-600 mb-8">
           Trang bạn đang tìm kiếm không tồn tại hoặc đã được di chuyển.
         </p>
-        <Link 
+        <Link
           href="/"
           className="inline-block bg-[#396CB1] hover:bg-[#273572] text-white font-medium py-3 px-8 rounded-full transition-colors duration-300"
         >
@@ -32,4 +32,4 @@ export default function NotFound() {
       </div>
     </div>
   );
-} 
+}

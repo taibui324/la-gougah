@@ -26,7 +26,11 @@ export default function PostsPage() {
   const [pendingId, setPendingId] = useState<Id<"posts"> | null>(null);
 
   const handleDeletePost = async (id: Id<"posts">) => {
-    if (confirm("Are you sure you want to delete this post? This action cannot be undone.")) {
+    if (
+      confirm(
+        "Are you sure you want to delete this post? This action cannot be undone.",
+      )
+    ) {
       setPendingId(id);
       try {
         await deletePost({ id });
@@ -46,14 +50,21 @@ export default function PostsPage() {
     }
   };
 
-  const handleUpdateStatus = async (id: Id<"posts">, status: "draft" | "published" | "archived") => {
+  const handleUpdateStatus = async (
+    id: Id<"posts">,
+    status: "draft" | "published" | "archived",
+  ) => {
     setPendingId(id);
     try {
       await updatePost({ id, status });
       toast({
         title: "Post status updated",
         description: `The post has been ${
-          status === "published" ? "published" : status === "draft" ? "moved to drafts" : "archived"
+          status === "published"
+            ? "published"
+            : status === "draft"
+              ? "moved to drafts"
+              : "archived"
         }.`,
       });
     } catch (error) {
@@ -70,11 +81,23 @@ export default function PostsPage() {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case "published":
-        return <Badge className="bg-green-100 text-green-800 hover:bg-green-200">Published</Badge>;
+        return (
+          <Badge className="bg-green-100 text-green-800 hover:bg-green-200">
+            Published
+          </Badge>
+        );
       case "draft":
-        return <Badge className="bg-yellow-100 text-yellow-800 hover:bg-yellow-200">Draft</Badge>;
+        return (
+          <Badge className="bg-yellow-100 text-yellow-800 hover:bg-yellow-200">
+            Draft
+          </Badge>
+        );
       case "archived":
-        return <Badge className="bg-gray-100 text-gray-800 hover:bg-gray-200">Archived</Badge>;
+        return (
+          <Badge className="bg-gray-100 text-gray-800 hover:bg-gray-200">
+            Archived
+          </Badge>
+        );
       default:
         return null;
     }
@@ -92,8 +115,6 @@ export default function PostsPage() {
           </Button>
         </div>
 
-
-
         <Card>
           <CardHeader>
             <CardTitle>Manage Posts</CardTitle>
@@ -108,8 +129,12 @@ export default function PostsPage() {
               </div>
             ) : posts.length === 0 ? (
               <div className="py-12 text-center">
-                <h3 className="text-lg font-medium text-gray-900 mb-1">No posts yet</h3>
-                <p className="text-gray-500 mb-4">Get started by creating your first post</p>
+                <h3 className="text-lg font-medium text-gray-900 mb-1">
+                  No posts yet
+                </h3>
+                <p className="text-gray-500 mb-4">
+                  Get started by creating your first post
+                </p>
                 <Button asChild>
                   <a href="/cms/posts/new">
                     <Plus className="mr-2 h-4 w-4" /> Create First Post
@@ -125,10 +150,19 @@ export default function PostsPage() {
                   >
                     <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                       <div className="flex-1">
-                        <h3 className="text-lg font-medium mb-1 text-gray-900">{post.title}</h3>
-                        <p className="text-gray-500 text-sm mb-2 line-clamp-2">{post.description}</p>
+                        <h3 className="text-lg font-medium mb-1 text-gray-900">
+                          {post.title}
+                        </h3>
+                        <p className="text-gray-500 text-sm mb-2 line-clamp-2">
+                          {post.description}
+                        </p>
                         <div className="flex flex-wrap gap-2 items-center text-xs text-gray-500">
-                          <span>Updated {formatDistanceToNow(post.updatedAt, { addSuffix: true })}</span>
+                          <span>
+                            Updated{" "}
+                            {formatDistanceToNow(post.updatedAt, {
+                              addSuffix: true,
+                            })}
+                          </span>
                           <span>•</span>
                           {getStatusBadge(post.status)}
                           <span>•</span>
@@ -139,7 +173,11 @@ export default function PostsPage() {
                         {/* View button for published posts */}
                         {post.status === "published" && (
                           <Button variant="outline" size="sm" asChild>
-                            <a href={`/news/${post.slug}`} target="_blank" rel="noopener noreferrer">
+                            <a
+                              href={`/news/${post.slug}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
                               <Eye className="mr-1 h-4 w-4" /> View
                             </a>
                           </Button>
@@ -158,7 +196,9 @@ export default function PostsPage() {
                             variant="outline"
                             size="sm"
                             disabled={pendingId === post._id}
-                            onClick={() => handleUpdateStatus(post._id, "published")}
+                            onClick={() =>
+                              handleUpdateStatus(post._id, "published")
+                            }
                           >
                             {pendingId === post._id ? (
                               <Loader2 className="mr-1 h-4 w-4 animate-spin" />
@@ -173,7 +213,9 @@ export default function PostsPage() {
                             variant="outline"
                             size="sm"
                             disabled={pendingId === post._id}
-                            onClick={() => handleUpdateStatus(post._id, "draft")}
+                            onClick={() =>
+                              handleUpdateStatus(post._id, "draft")
+                            }
                           >
                             {pendingId === post._id ? (
                               <Loader2 className="mr-1 h-4 w-4 animate-spin" />
@@ -188,7 +230,9 @@ export default function PostsPage() {
                             variant="outline"
                             size="sm"
                             disabled={pendingId === post._id}
-                            onClick={() => handleUpdateStatus(post._id, "archived")}
+                            onClick={() =>
+                              handleUpdateStatus(post._id, "archived")
+                            }
                           >
                             {pendingId === post._id ? (
                               <Loader2 className="mr-1 h-4 w-4 animate-spin" />
@@ -224,4 +268,4 @@ export default function PostsPage() {
       </div>
     </CMSLayout>
   );
-} 
+}

@@ -14,7 +14,7 @@ export default function NotFound() {
           <p className="text-xl text-gray-600 mb-8">
             Trang bạn đang tìm kiếm không tồn tại hoặc đã được di chuyển.
           </p>
-          <Link 
+          <Link
             href="/"
             className="inline-block bg-[#396CB1] hover:bg-[#273572] text-white font-medium py-3 px-8 rounded-full transition-colors duration-300"
           >
@@ -25,4 +25,4 @@ export default function NotFound() {
       <Footer />
     </>
   );
-} 
+}

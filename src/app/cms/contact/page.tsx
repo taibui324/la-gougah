@@ -15,8 +15,10 @@ import { useToast } from "@/components/ui/use-toast";
 export default function ContactSettingsPage() {
   const { toast } = useToast();
   const contactSettings = useQuery(api.contactSettings.getContactSettings);
-  const updateContactSettings = useMutation(api.contactSettings.updateContactSettings);
-  
+  const updateContactSettings = useMutation(
+    api.contactSettings.updateContactSettings,
+  );
+
   const [formData, setFormData] = useState({
     email: "",
     phone: "",
@@ -26,9 +28,9 @@ export default function ContactSettingsPage() {
     twitter: "",
     linkedin: "",
   });
-  
+
   const [isLoading, setIsLoading] = useState(false);
-  
+
   useEffect(() => {
     if (contactSettings) {
       setFormData({
@@ -42,19 +44,21 @@ export default function ContactSettingsPage() {
       });
     }
   }, [contactSettings]);
-  
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
   };
-  
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
-    
+
     try {
       await updateContactSettings({
         email: formData.email,
@@ -67,7 +71,7 @@ export default function ContactSettingsPage() {
           linkedin: formData.linkedin || undefined,
         },
       });
-      
+
       toast({
         title: "Success",
         description: "Contact settings updated successfully",
@@ -76,14 +80,17 @@ export default function ContactSettingsPage() {
     } catch (error) {
       toast({
         title: "Error",
-        description: error instanceof Error ? error.message : "Failed to update contact settings",
+        description:
+          error instanceof Error
+            ? error.message
+            : "Failed to update contact settings",
         variant: "destructive",
       });
     } finally {
       setIsLoading(false);
     }
   };
-  
+
   return (
     <CMSLayout>
       <div className="space-y-6">
@@ -93,7 +100,7 @@ export default function ContactSettingsPage() {
             Manage contact information and social media links
           </p>
         </div>
-        
+
         <Card>
           <CardHeader>
             <CardTitle>Contact Information</CardTitle>
@@ -112,7 +119,7 @@ export default function ContactSettingsPage() {
                     required
                   />
                 </div>
-                
+
                 <div className="space-y-2">
                   <Label htmlFor="phone">Phone Number</Label>
                   <Input
@@ -123,7 +130,7 @@ export default function ContactSettingsPage() {
                     placeholder="+1 (555) 123-4567"
                   />
                 </div>
-                
+
                 <div className="space-y-2">
                   <Label htmlFor="address">Address</Label>
                   <Textarea
@@ -136,7 +143,7 @@ export default function ContactSettingsPage() {
                   />
                 </div>
               </div>
-              
+
               <div>
                 <h3 className="text-lg font-medium mb-4">Social Media Links</h3>
                 <div className="space-y-4">
@@ -150,7 +157,7 @@ export default function ContactSettingsPage() {
                       placeholder="https://facebook.com/lagougah"
                     />
                   </div>
-                  
+
                   <div className="space-y-2">
                     <Label htmlFor="instagram">Instagram</Label>
                     <Input
@@ -161,7 +168,7 @@ export default function ContactSettingsPage() {
                       placeholder="https://instagram.com/lagougah"
                     />
                   </div>
-                  
+
                   <div className="space-y-2">
                     <Label htmlFor="twitter">Twitter</Label>
                     <Input
@@ -172,7 +179,7 @@ export default function ContactSettingsPage() {
                       placeholder="https://twitter.com/lagougah"
                     />
                   </div>
-                  
+
                   <div className="space-y-2">
                     <Label htmlFor="linkedin">LinkedIn</Label>
                     <Input
@@ -185,7 +192,7 @@ export default function ContactSettingsPage() {
                   </div>
                 </div>
               </div>
-              
+
               <Button
                 type="submit"
                 className="bg-[#396CB1] hover:bg-[#273572]"
@@ -199,4 +206,4 @@ export default function ContactSettingsPage() {
       </div>
     </CMSLayout>
   );
-} 
+}

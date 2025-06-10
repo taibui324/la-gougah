@@ -21,7 +21,10 @@ export function useStorage(): UseStorageReturn {
     return await generateUploadUrlMutation({});
   };
 
-  const upload = async ({ url, file }: { url: string; file: File }): Promise<UploadResult> => {
+  const upload = async ({
+    url,
+    file,
+  }: { url: string; file: File }): Promise<UploadResult> => {
     setIsLoading(true);
     try {
       // Upload the file to the generated URL
@@ -30,13 +33,13 @@ export function useStorage(): UseStorageReturn {
         headers: { "Content-Type": file.type },
         body: file,
       });
-      
+
       const { storageId } = await result.json();
       if (!storageId) throw new Error("Failed to upload file");
-      
+
       // Get the URL for the uploaded file
       const fileUrl = `${window.location.origin}/api/storage/${storageId}`;
-      
+
       return {
         url: fileUrl,
         storageId,

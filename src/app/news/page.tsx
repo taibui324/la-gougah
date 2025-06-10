@@ -39,7 +39,10 @@ export default function NewsPage() {
             // Loading state
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {[1, 2, 3, 4, 5, 6].map((item) => (
-                <Card key={item} className="overflow-hidden border border-blue-100">
+                <Card
+                  key={item}
+                  className="overflow-hidden border border-blue-100"
+                >
                   <Skeleton className="h-48 w-full" />
                   <CardHeader>
                     <Skeleton className="h-4 w-20 mb-2" />
@@ -64,7 +67,9 @@ export default function NewsPage() {
                   <div className="relative h-48 w-full">
                     {post.image || post.imageStorageId ? (
                       <Image
-                        src={post.image || `/api/storage/${post.imageStorageId}`}
+                        src={
+                          post.image || `/api/storage/${post.imageStorageId}`
+                        }
                         alt={post.title}
                         fill
                         className="object-cover"
@@ -78,8 +83,11 @@ export default function NewsPage() {
                   <CardHeader>
                     <div className="flex justify-between items-center mb-2">
                       <span className="text-sm text-blue-600">
-                        {post.publishedAt 
-                          ? formatDistanceToNow(post.publishedAt, { addSuffix: true, locale: vi }) 
+                        {post.publishedAt
+                          ? formatDistanceToNow(post.publishedAt, {
+                              addSuffix: true,
+                              locale: vi,
+                            })
                           : "Mới đăng"}
                       </span>
                     </div>
@@ -108,7 +116,9 @@ export default function NewsPage() {
           ) : (
             // No posts state
             <div className="text-center py-16">
-              <p className="text-gray-500 text-lg">Chưa có tin tức nào được đăng.</p>
+              <p className="text-gray-500 text-lg">
+                Chưa có tin tức nào được đăng.
+              </p>
             </div>
           )}
         </div>

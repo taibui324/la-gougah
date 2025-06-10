@@ -24,12 +24,12 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { 
-  Select, 
-  SelectContent, 
-  SelectItem, 
-  SelectTrigger, 
-  SelectValue 
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from "@/components/ui/select";
 import { useToast } from "@/components/ui/use-toast";
 import { z } from "zod";
@@ -46,8 +46,12 @@ const formSchema = z.object({
     .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, {
       message: "Slug must contain only lowercase letters, numbers, and hyphens",
     }),
-  description: z.string().min(10, { message: "Description must be at least 10 characters" }),
-  content: z.string().min(50, { message: "Content must be at least 50 characters" }),
+  description: z
+    .string()
+    .min(10, { message: "Description must be at least 10 characters" }),
+  content: z
+    .string()
+    .min(50, { message: "Content must be at least 50 characters" }),
   status: z.enum(["draft", "published"]),
   image: z.string().optional(),
   imageStorageId: z.string().optional(),
@@ -143,13 +147,19 @@ export default function NewPostPage() {
       const { storageId } = await result.json();
 
       // Get the direct Convex storage URL
-      const convexClient = new (await import("convex/browser")).ConvexHttpClient(process.env.NEXT_PUBLIC_CONVEX_URL!);
-      const imageUrl = await convexClient.query((await import("../../../../../convex/_generated/api")).api.storage.getStorageUrl, { storageId });
-      
+      const convexClient = new (
+        await import("convex/browser")
+      ).ConvexHttpClient(process.env.NEXT_PUBLIC_CONVEX_URL!);
+      const imageUrl = await convexClient.query(
+        (await import("../../../../../convex/_generated/api")).api.storage
+          .getStorageUrl,
+        { storageId },
+      );
+
       if (!imageUrl) {
         throw new Error("Failed to get image URL from storage");
       }
-      
+
       // Update form values with image data
       form.setValue("image", imageUrl);
       form.setValue("imageStorageId", storageId);
@@ -163,7 +173,8 @@ export default function NewPostPage() {
       console.error("Error uploading image:", error);
       toast({
         title: "Upload failed",
-        description: "There was an error uploading your image. Please try again.",
+        description:
+          "There was an error uploading your image. Please try again.",
         variant: "destructive",
       });
     } finally {
@@ -197,7 +208,8 @@ export default function NewPostPage() {
     } catch (error: any) {
       toast({
         title: "Error",
-        description: error.message || "Failed to create post. Please try again.",
+        description:
+          error.message || "Failed to create post. Please try again.",
         variant: "destructive",
       });
     }
@@ -222,7 +234,10 @@ export default function NewPostPage() {
           </CardHeader>
           <CardContent>
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-6"
+              >
                 {/* Title field */}
                 <FormField
                   control={form.control}
@@ -253,13 +268,11 @@ export default function NewPostPage() {
                     <FormItem>
                       <FormLabel>Slug</FormLabel>
                       <FormControl>
-                        <Input
-                          placeholder="enter-post-slug"
-                          {...field}
-                        />
+                        <Input placeholder="enter-post-slug" {...field} />
                       </FormControl>
                       <FormDescription>
-                        The URL-friendly version of the title (auto-generated but can be edited)
+                        The URL-friendly version of the title (auto-generated
+                        but can be edited)
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
@@ -310,7 +323,8 @@ export default function NewPostPage() {
                         </SelectContent>
                       </Select>
                       <FormDescription>
-                        Published posts are visible on the website, drafts are only visible in the CMS
+                        Published posts are visible on the website, drafts are
+                        only visible in the CMS
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
@@ -354,7 +368,9 @@ export default function NewPostPage() {
                               className="relative cursor-pointer rounded-md font-medium text-[#396CB1] focus-within:outline-none"
                             >
                               <span>
-                                {isUploading ? "Uploading..." : "Upload an image"}
+                                {isUploading
+                                  ? "Uploading..."
+                                  : "Upload an image"}
                               </span>
                               <input
                                 id="image-upload"
@@ -392,7 +408,8 @@ export default function NewPostPage() {
                         />
                       </FormControl>
                       <FormDescription>
-                        The main content of your post. Supports markdown formatting.
+                        The main content of your post. Supports markdown
+                        formatting.
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
@@ -426,4 +443,4 @@ export default function NewPostPage() {
       </div>
     </CMSLayout>
   );
-} 
+}

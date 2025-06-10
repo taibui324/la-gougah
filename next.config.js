@@ -1,6 +1,9 @@
 /** @type {import('next').NextConfig} */
 
 const nextConfig = {
+  // Add deployment flexibility
+  output: process.env.NEXT_OUTPUT || 'standalone',
+  
   images: {
     unoptimized: true,
     domains: [
@@ -43,6 +46,28 @@ const nextConfig = {
   },
   eslint: {
     ignoreDuringBuilds: true,
+  },
+  
+  // Add production optimizations
+  compress: true,
+  poweredByHeader: false,
+  
+  // Environment-specific redirects for Mat Bao
+  async redirects() {
+    return [
+      // Redirect www to non-www for lagougah.com
+      {
+        source: '/:path*',
+        has: [
+          {
+            type: 'host',
+            value: 'www.lagougah.com',
+          },
+        ],
+        destination: 'https://lagougah.com/:path*',
+        permanent: true,
+      },
+    ];
   },
 };
 

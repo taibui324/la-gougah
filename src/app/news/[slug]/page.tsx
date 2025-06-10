@@ -21,7 +21,7 @@ export async function generateStaticParams() {
 
     const convex = new ConvexHttpClient(convexUrl);
     const posts = await convex.query(api.posts.getPublishedPosts, {});
-    
+
     return posts.map((post) => ({
       slug: post.slug,
     }));
@@ -37,7 +37,7 @@ interface PageProps {
 
 export default async function NewsDetailPage({ params }: PageProps) {
   const { slug } = await params;
-  
+
   try {
     const convexUrl = process.env.NEXT_PUBLIC_CONVEX_URL;
     if (!convexUrl) {
@@ -47,7 +47,7 @@ export default async function NewsDetailPage({ params }: PageProps) {
 
     const convex = new ConvexHttpClient(convexUrl);
     const post = await convex.query(api.posts.getPostBySlug, { slug });
-    
+
     // Handle not found case
     if (!post) {
       notFound();
@@ -62,40 +62,46 @@ export default async function NewsDetailPage({ params }: PageProps) {
               <div className="mb-8">
                 <Link href="/news">
                   <Button variant="ghost" className="text-blue-600 pl-0">
-                    <ChevronLeft className="mr-2 h-4 w-4" /> Quay lại tất cả tin tức
+                    <ChevronLeft className="mr-2 h-4 w-4" /> Quay lại tất cả tin
+                    tức
                   </Button>
                 </Link>
               </div>
-              
+
               <div className="relative h-96 w-full mb-8 rounded-lg overflow-hidden">
                 {post.image || post.imageStorageId ? (
-                  <Image 
-                    src={post.image || `/api/storage/${post.imageStorageId}`} 
-                    alt={post.title} 
-                    fill 
+                  <Image
+                    src={post.image || `/api/storage/${post.imageStorageId}`}
+                    alt={post.title}
+                    fill
                     className="object-cover"
                     priority
                   />
                 ) : (
                   <div className="h-full w-full bg-blue-50 flex items-center justify-center">
-                    <span className="text-blue-300 text-lg">No image available</span>
+                    <span className="text-blue-300 text-lg">
+                      No image available
+                    </span>
                   </div>
                 )}
               </div>
-              
+
               <div className="flex items-center mb-6">
                 <span className="text-sm text-blue-600">
-                  {post.publishedAt 
-                    ? formatDistanceToNow(post.publishedAt, { addSuffix: true, locale: vi }) 
+                  {post.publishedAt
+                    ? formatDistanceToNow(post.publishedAt, {
+                        addSuffix: true,
+                        locale: vi,
+                      })
                     : "Mới đăng"}
                 </span>
               </div>
-              
+
               <h1 className="text-3xl md:text-4xl font-medium text-[#273572] mb-6">
                 {post.title}
               </h1>
-              
-              <div 
+
+              <div
                 className="prose prose-lg max-w-none"
                 dangerouslySetInnerHTML={{ __html: post.content }}
               />

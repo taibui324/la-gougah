@@ -40,7 +40,7 @@ export default function StoryPage() {
       <Header />
 
       {/* Hero Banner */}
-      <HeroBanner 
+      <HeroBanner
         pageType="story"
         fallbackTitle="Câu Chuyện"
         fallbackDescription="Hành trình của thương hiệu La Gougah"

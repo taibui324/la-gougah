@@ -25,19 +25,19 @@ interface MenuItem {
 export default function Header() {
   const pathname = usePathname();
   const isHomePage = pathname === "/";
-  
+
   // Fetch visible menu items from Convex
   const convexMenuItems = useQuery(api.menuItems.getVisibleMenuItems) || [];
-  
+
   // Map database menu items to our component format
   // We'll split them between left and right sides of the logo
-  const dbMenuItems = convexMenuItems.map(item => ({
+  const dbMenuItems = convexMenuItems.map((item) => ({
     id: item._id,
     title: item.title,
     baseHref: item.href,
-    fullPageHref: item.href.startsWith('/') ? item.href : undefined,
+    fullPageHref: item.href.startsWith("/") ? item.href : undefined,
   }));
-  
+
   // Split menu items into left and right sides
   // First half goes to the left, second half to the right
   const middleIndex = Math.ceil(dbMenuItems.length / 2);

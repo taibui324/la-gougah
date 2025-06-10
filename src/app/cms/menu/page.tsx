@@ -33,7 +33,10 @@ export default function MenuItemsPage() {
   const { toast } = useToast();
   const [pendingId, setPendingId] = useState<Id<"menuItems"> | null>(null);
 
-  const handleToggleVisibility = async (id: Id<"menuItems">, currentValue: boolean) => {
+  const handleToggleVisibility = async (
+    id: Id<"menuItems">,
+    currentValue: boolean,
+  ) => {
     setPendingId(id);
     try {
       await toggleVisibility({ id, isVisible: !currentValue });
@@ -41,8 +44,8 @@ export default function MenuItemsPage() {
       toast({
         title: "Menu item updated",
         description: `Menu item is now ${actionType}. ${
-          !currentValue 
-            ? "The corresponding section will now be displayed on the homepage." 
+          !currentValue
+            ? "The corresponding section will now be displayed on the homepage."
             : "The corresponding section will now be hidden on the homepage."
         }`,
       });
@@ -92,8 +95,9 @@ export default function MenuItemsPage() {
           <AlertCircle className="h-4 w-4" />
           <AlertTitle>Important</AlertTitle>
           <AlertDescription>
-            Hiding a menu item will also hide its corresponding section on the homepage. 
-            This affects sections like "News", "Products", "Origin Story", etc.
+            Hiding a menu item will also hide its corresponding section on the
+            homepage. This affects sections like "News", "Products", "Origin
+            Story", etc.
           </AlertDescription>
         </Alert>
 
@@ -101,7 +105,8 @@ export default function MenuItemsPage() {
           <CardHeader>
             <CardTitle>Manage Menu Items</CardTitle>
             <CardDescription>
-              Control which items appear in your site navigation and which sections are visible on the homepage
+              Control which items appear in your site navigation and which
+              sections are visible on the homepage
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -128,7 +133,9 @@ export default function MenuItemsPage() {
                   {menuItems.map((item) => (
                     <TableRow key={item._id}>
                       <TableCell>{item.order}</TableCell>
-                      <TableCell className="font-medium">{item.title}</TableCell>
+                      <TableCell className="font-medium">
+                        {item.title}
+                      </TableCell>
                       <TableCell>{item.href}</TableCell>
                       <TableCell>
                         <div className="flex items-center space-x-2">
@@ -147,8 +154,8 @@ export default function MenuItemsPage() {
                           <span className="text-sm text-gray-500">
                             {item.isVisible ? "Visible" : "Hidden"}
                             <span className="text-xs block text-gray-400">
-                              {item.isVisible 
-                                ? "Section shown on homepage" 
+                              {item.isVisible
+                                ? "Section shown on homepage"
                                 : "Section hidden on homepage"}
                             </span>
                           </span>
@@ -156,11 +163,7 @@ export default function MenuItemsPage() {
                       </TableCell>
                       <TableCell className="text-right">
                         <div className="flex justify-end space-x-2">
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            asChild
-                          >
+                          <Button variant="outline" size="sm" asChild>
                             <a href={`/cms/menu/edit/${item._id}`}>
                               <Pencil className="h-4 w-4 mr-1" />
                               Edit
@@ -191,4 +194,4 @@ export default function MenuItemsPage() {
       </div>
     </CMSLayout>
   );
-} 
+}

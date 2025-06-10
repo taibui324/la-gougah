@@ -30,8 +30,15 @@ export default function RootLayout({
           name="description"
           content="La Gougah - Thương hiệu nước uống cao cấp từ nguồn nước khoáng thiên nhiên Việt Nam"
         />
+        <meta
+          name="format-detection"
+          content="telephone=no, date=no, email=no, address=no"
+        />
       </head>
-      <body className="min-h-screen bg-background text-foreground antialiased">
+      <body
+        className="min-h-screen bg-background text-foreground antialiased"
+        suppressHydrationWarning={true}
+      >
         <ConvexClientProvider>
           <main className="relative">{children}</main>
           <Analytics />

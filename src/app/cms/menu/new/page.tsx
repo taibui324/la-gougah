@@ -73,17 +73,18 @@ export default function NewMenuItemPage() {
         description: values.description,
         isExternal: values.isExternal,
       });
-      
+
       toast({
         title: "Menu item created",
         description: "The new menu item has been successfully created.",
       });
-      
+
       router.push("/cms/menu");
     } catch (error: any) {
       toast({
         title: "Error",
-        description: error.message || "Failed to create menu item. Please try again.",
+        description:
+          error.message || "Failed to create menu item. Please try again.",
         variant: "destructive",
       });
     }
@@ -93,7 +94,9 @@ export default function NewMenuItemPage() {
     <CMSLayout>
       <div className="space-y-6">
         <div className="flex justify-between items-center">
-          <h1 className="text-3xl font-bold text-gray-900">Add New Menu Item</h1>
+          <h1 className="text-3xl font-bold text-gray-900">
+            Add New Menu Item
+          </h1>
           <Button variant="outline" onClick={() => router.push("/cms/menu")}>
             Cancel
           </Button>
@@ -102,13 +105,14 @@ export default function NewMenuItemPage() {
         <Card>
           <CardHeader>
             <CardTitle>Menu Item Details</CardTitle>
-            <CardDescription>
-              Create a new navigation menu item
-            </CardDescription>
+            <CardDescription>Create a new navigation menu item</CardDescription>
           </CardHeader>
           <CardContent>
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-6"
+              >
                 {/* Title field */}
                 <FormField
                   control={form.control}
@@ -138,7 +142,8 @@ export default function NewMenuItemPage() {
                         <Input placeholder="/page or #section" {...field} />
                       </FormControl>
                       <FormDescription>
-                        The link destination. Use # for page sections (e.g., #contact) or / for pages (e.g., /about)
+                        The link destination. Use # for page sections (e.g.,
+                        #contact) or / for pages (e.g., /about)
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
@@ -157,11 +162,14 @@ export default function NewMenuItemPage() {
                           type="number"
                           min={1}
                           {...field}
-                          onChange={(e) => field.onChange(parseInt(e.target.value) || 1)}
+                          onChange={(e) =>
+                            field.onChange(parseInt(e.target.value) || 1)
+                          }
                         />
                       </FormControl>
                       <FormDescription>
-                        The order in which this item appears in the menu (lower numbers appear first)
+                        The order in which this item appears in the menu (lower
+                        numbers appear first)
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
@@ -183,7 +191,8 @@ export default function NewMenuItemPage() {
                         />
                       </FormControl>
                       <FormDescription>
-                        For internal reference only, not displayed on the website
+                        For internal reference only, not displayed on the
+                        website
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
@@ -197,7 +206,9 @@ export default function NewMenuItemPage() {
                   render={({ field }) => (
                     <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
                       <div className="space-y-0.5">
-                        <FormLabel className="text-base">External Link</FormLabel>
+                        <FormLabel className="text-base">
+                          External Link
+                        </FormLabel>
                         <FormDescription>
                           Open link in a new tab
                         </FormDescription>
@@ -261,4 +272,4 @@ export default function NewMenuItemPage() {
       </div>
     </CMSLayout>
   );
-} 
+}

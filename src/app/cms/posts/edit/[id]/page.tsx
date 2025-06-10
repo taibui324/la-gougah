@@ -25,12 +25,12 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { 
-  Select, 
-  SelectContent, 
-  SelectItem, 
-  SelectTrigger, 
-  SelectValue 
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from "@/components/ui/select";
 import { useToast } from "@/components/ui/use-toast";
 import { z } from "zod";
@@ -47,20 +47,26 @@ const formSchema = z.object({
     .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, {
       message: "Slug must contain only lowercase letters, numbers, and hyphens",
     }),
-  description: z.string().min(10, { message: "Description must be at least 10 characters" }),
-  content: z.string().min(50, { message: "Content must be at least 50 characters" }),
+  description: z
+    .string()
+    .min(10, { message: "Description must be at least 10 characters" }),
+  content: z
+    .string()
+    .min(50, { message: "Content must be at least 50 characters" }),
   status: z.enum(["draft", "published", "archived"]),
   image: z.string().optional(),
   imageStorageId: z.string().optional(),
 });
 
-export default function EditPostPage({ params }: { params: Promise<{ id: string }> }) {
+export default function EditPostPage({
+  params,
+}: { params: Promise<{ id: string }> }) {
   const router = useRouter();
   const { toast } = useToast();
-  
+
   // Handle Next.js 15 async params
   const [postId, setPostId] = useState<Id<"posts"> | null>(null);
-  
+
   useEffect(() => {
     const resolveParams = async () => {
       const resolvedParams = await params;
@@ -68,14 +74,17 @@ export default function EditPostPage({ params }: { params: Promise<{ id: string 
     };
     resolveParams();
   }, [params]);
-  
+
   // Fetch post data
-  const post = useQuery(api.posts.getPostById, postId ? { id: postId } : "skip");
-  
+  const post = useQuery(
+    api.posts.getPostById,
+    postId ? { id: postId } : "skip",
+  );
+
   // Mutations
   const updatePost = useMutation(api.posts.updatePost);
   const generateUploadUrl = useMutation(api.http.generateUploadUrl);
-  
+
   // State
   const [isUploading, setIsUploading] = useState(false);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
@@ -109,13 +118,15 @@ export default function EditPostPage({ params }: { params: Promise<{ id: string 
         image: post.image,
         imageStorageId: post.imageStorageId as string | undefined,
       });
-      
+
       // Set image preview - use image URL or generate from storage ID
-      const imageUrl = post.image || (post.imageStorageId ? `/api/storage/${post.imageStorageId}` : null);
+      const imageUrl =
+        post.image ||
+        (post.imageStorageId ? `/api/storage/${post.imageStorageId}` : null);
       if (imageUrl) {
         setPreviewImage(imageUrl);
       }
-      
+
       setIsLoading(false);
     }
   }, [post, form]);
@@ -137,7 +148,7 @@ export default function EditPostPage({ params }: { params: Promise<{ id: string 
     // Only auto-generate slug if it matches the current title's slug
     const currentSlug = form.getValues("slug");
     const currentTitle = post?.title || "";
-    
+
     if (currentSlug === generateSlug(currentTitle)) {
       const newSlug = generateSlug(title);
       form.setValue("slug", newSlug);
@@ -188,13 +199,19 @@ export default function EditPostPage({ params }: { params: Promise<{ id: string 
       const { storageId } = await result.json();
 
       // Get the direct Convex storage URL
-      const convexClient = new (await import("convex/browser")).ConvexHttpClient(process.env.NEXT_PUBLIC_CONVEX_URL!);
-      const imageUrl = await convexClient.query((await import("../../../../../../convex/_generated/api")).api.storage.getStorageUrl, { storageId });
-      
+      const convexClient = new (
+        await import("convex/browser")
+      ).ConvexHttpClient(process.env.NEXT_PUBLIC_CONVEX_URL!);
+      const imageUrl = await convexClient.query(
+        (await import("../../../../../../convex/_generated/api")).api.storage
+          .getStorageUrl,
+        { storageId },
+      );
+
       if (!imageUrl) {
         throw new Error("Failed to get image URL from storage");
       }
-      
+
       // Update form values with image data
       form.setValue("image", imageUrl);
       form.setValue("imageStorageId", storageId);
@@ -208,7 +225,8 @@ export default function EditPostPage({ params }: { params: Promise<{ id: string 
       console.error("Error uploading image:", error);
       toast({
         title: "Upload failed",
-        description: "There was an error uploading your image. Please try again.",
+        description:
+          "There was an error uploading your image. Please try again.",
         variant: "destructive",
       });
     } finally {
@@ -221,7 +239,7 @@ export default function EditPostPage({ params }: { params: Promise<{ id: string 
     try {
       // Update the post in Convex
       if (!postId) return;
-      
+
       await updatePost({
         id: postId,
         title: values.title,
@@ -243,7 +261,8 @@ export default function EditPostPage({ params }: { params: Promise<{ id: string 
     } catch (error: any) {
       toast({
         title: "Error",
-        description: error.message || "Failed to update post. Please try again.",
+        description:
+          error.message || "Failed to update post. Please try again.",
         variant: "destructive",
       });
     }
@@ -263,8 +282,13 @@ export default function EditPostPage({ params }: { params: Promise<{ id: string 
     return (
       <CMSLayout>
         <div className="h-[60vh] flex flex-col items-center justify-center">
-          <h2 className="text-2xl font-bold text-gray-800 mb-2">Post Not Found</h2>
-          <p className="text-gray-600 mb-4">The post you're trying to edit doesn't exist or you don't have permission to access it.</p>
+          <h2 className="text-2xl font-bold text-gray-800 mb-2">
+            Post Not Found
+          </h2>
+          <p className="text-gray-600 mb-4">
+            The post you're trying to edit doesn't exist or you don't have
+            permission to access it.
+          </p>
           <Button onClick={() => router.push("/cms/posts")}>
             Return to Posts
           </Button>
@@ -286,13 +310,14 @@ export default function EditPostPage({ params }: { params: Promise<{ id: string 
         <Card>
           <CardHeader>
             <CardTitle>Edit Post</CardTitle>
-            <CardDescription>
-              Update your post details
-            </CardDescription>
+            <CardDescription>Update your post details</CardDescription>
           </CardHeader>
           <CardContent>
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-6"
+              >
                 {/* Title field */}
                 <FormField
                   control={form.control}
@@ -323,10 +348,7 @@ export default function EditPostPage({ params }: { params: Promise<{ id: string 
                     <FormItem>
                       <FormLabel>Slug</FormLabel>
                       <FormControl>
-                        <Input
-                          placeholder="enter-post-slug"
-                          {...field}
-                        />
+                        <Input placeholder="enter-post-slug" {...field} />
                       </FormControl>
                       <FormDescription>
                         The URL-friendly version of the title
@@ -381,7 +403,8 @@ export default function EditPostPage({ params }: { params: Promise<{ id: string 
                         </SelectContent>
                       </Select>
                       <FormDescription>
-                        Published posts are visible on the website, drafts are only visible in the CMS
+                        Published posts are visible on the website, drafts are
+                        only visible in the CMS
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
@@ -425,7 +448,9 @@ export default function EditPostPage({ params }: { params: Promise<{ id: string 
                               className="relative cursor-pointer rounded-md font-medium text-[#396CB1] focus-within:outline-none"
                             >
                               <span>
-                                {isUploading ? "Uploading..." : "Upload an image"}
+                                {isUploading
+                                  ? "Uploading..."
+                                  : "Upload an image"}
                               </span>
                               <input
                                 id="image-upload"
@@ -463,7 +488,8 @@ export default function EditPostPage({ params }: { params: Promise<{ id: string 
                         />
                       </FormControl>
                       <FormDescription>
-                        The main content of your post. Supports markdown formatting.
+                        The main content of your post. Supports markdown
+                        formatting.
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
@@ -497,4 +523,4 @@ export default function EditPostPage({ params }: { params: Promise<{ id: string 
       </div>
     </CMSLayout>
   );
-} 
+}

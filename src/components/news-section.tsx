@@ -19,7 +19,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export default function NewsSection() {
   const posts = useQuery(api.posts.getPublishedPosts);
-  
+
   // Take only the first 3 posts for the homepage section
   const recentPosts = posts?.slice(0, 3);
 
@@ -39,7 +39,10 @@ export default function NewsSection() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[1, 2, 3].map((item) => (
-              <Card key={item} className="overflow-hidden border border-blue-100">
+              <Card
+                key={item}
+                className="overflow-hidden border border-blue-100"
+              >
                 <Skeleton className="h-48 w-full" />
                 <CardHeader>
                   <Skeleton className="h-4 w-20 mb-2" />
@@ -102,8 +105,11 @@ export default function NewsSection() {
                 <CardHeader>
                   <div className="flex justify-between items-center mb-2">
                     <span className="text-sm text-blue-600">
-                      {post.publishedAt 
-                        ? formatDistanceToNow(post.publishedAt, { addSuffix: true, locale: vi }) 
+                      {post.publishedAt
+                        ? formatDistanceToNow(post.publishedAt, {
+                            addSuffix: true,
+                            locale: vi,
+                          })
                         : "Mới đăng"}
                     </span>
                   </div>

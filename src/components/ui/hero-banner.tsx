@@ -23,14 +23,18 @@ export function HeroBanner({
   fallbackDescription = "Discover amazing experiences and stories",
   fallbackImage = "/images/hero-fallback.jpg",
   className = "",
-  layout = "default"
+  layout = "default",
 }: HeroBannerProps) {
   const heroBanner = useQuery(api.banners.getHeroBannerByPage, { pageType });
 
   // Use banner data if available, otherwise fallback
   const title = heroBanner?.title || fallbackTitle;
   const description = heroBanner?.description || fallbackDescription;
-  const image = heroBanner?.image || (heroBanner?.imageStorageId ? `/api/storage/${heroBanner.imageStorageId}` : fallbackImage);
+  const image =
+    heroBanner?.image ||
+    (heroBanner?.imageStorageId
+      ? `/api/storage/${heroBanner.imageStorageId}`
+      : fallbackImage);
   const link = heroBanner?.link;
   const linkText = heroBanner?.linkText || "Learn More";
 
@@ -92,10 +96,10 @@ export function HeroBanner({
                   </p>
                 )}
                 {link && (
-                  <Button 
-                    size="lg" 
+                  <Button
+                    size="lg"
                     className="bg-[#396CB1] hover:bg-[#273572] text-white transition-colors duration-300"
-                    onClick={() => window.open(link, '_blank')}
+                    onClick={() => window.open(link, "_blank")}
                   >
                     {linkText}
                     <ChevronRight className="ml-2 h-5 w-5" />
@@ -118,16 +122,12 @@ export function HeroBanner({
 
   // Standard layout for other pages
   return (
-    <section className={`relative flex items-center justify-center overflow-hidden ${className}`}>
+    <section
+      className={`relative flex items-center justify-center overflow-hidden ${className}`}
+    >
       {/* Background Image */}
       <div className="absolute inset-0">
-        <Image
-          src={image}
-          alt={title}
-          fill
-          className="object-cover"
-          priority
-        />
+        <Image src={image} alt={title} fill className="object-cover" priority />
         <div className="absolute inset-0 bg-gradient-to-b from-black/50 to-black/70" />
       </div>
 
@@ -136,7 +136,7 @@ export function HeroBanner({
         <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
           {title}
         </h1>
-        
+
         {description && (
           <p className="text-xl md:text-2xl mb-8 opacity-90 max-w-2xl mx-auto">
             {description}
@@ -144,10 +144,10 @@ export function HeroBanner({
         )}
 
         {link && (
-          <Button 
-            size="lg" 
+          <Button
+            size="lg"
             className="bg-white text-black hover:bg-gray-100 transition-colors duration-300"
-            onClick={() => window.open(link, '_blank')}
+            onClick={() => window.open(link, "_blank")}
           >
             {linkText}
             <ChevronRight className="ml-2 h-5 w-5" />
@@ -158,4 +158,4 @@ export function HeroBanner({
   );
 }
 
-export default HeroBanner; 
+export default HeroBanner;

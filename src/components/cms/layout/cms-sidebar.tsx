@@ -42,13 +42,13 @@ export function CMSSidebar({ userRole }: CMSSidebarProps) {
               "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
               pathname === "/cms"
                 ? "bg-[#396CB1] text-white"
-                : "text-gray-700 hover:bg-gray-100 hover:text-[#273572]"
+                : "text-gray-700 hover:bg-gray-100 hover:text-[#273572]",
             )}
           >
             <LayoutDashboard className="h-4 w-4" />
             Dashboard
           </Link>
-          
+
           {/* Posts - Available to admin and editor */}
           {(userRole === "admin" || userRole === "editor") && (
             <Link
@@ -57,14 +57,14 @@ export function CMSSidebar({ userRole }: CMSSidebarProps) {
                 "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
                 pathname.includes("/cms/posts")
                   ? "bg-[#396CB1] text-white"
-                  : "text-gray-700 hover:bg-gray-100 hover:text-[#273572]"
+                  : "text-gray-700 hover:bg-gray-100 hover:text-[#273572]",
               )}
             >
               <FileText className="h-4 w-4" />
               Posts
             </Link>
           )}
-          
+
           {/* Banners - Available to admin and editor */}
           {(userRole === "admin" || userRole === "editor") && (
             <Link
@@ -73,14 +73,14 @@ export function CMSSidebar({ userRole }: CMSSidebarProps) {
                 "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
                 pathname.includes("/cms/banners")
                   ? "bg-[#396CB1] text-white"
-                  : "text-gray-700 hover:bg-gray-100 hover:text-[#273572]"
+                  : "text-gray-700 hover:bg-gray-100 hover:text-[#273572]",
               )}
             >
               <ImageIcon className="h-4 w-4" />
               Banners
             </Link>
           )}
-          
+
           {/* Menu Items - Available to admin and editor */}
           {(userRole === "admin" || userRole === "editor") && (
             <Link
@@ -89,14 +89,14 @@ export function CMSSidebar({ userRole }: CMSSidebarProps) {
                 "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
                 pathname.includes("/cms/menu")
                   ? "bg-[#396CB1] text-white"
-                  : "text-gray-700 hover:bg-gray-100 hover:text-[#273572]"
+                  : "text-gray-700 hover:bg-gray-100 hover:text-[#273572]",
               )}
             >
               <Menu className="h-4 w-4" />
               Menu Items
             </Link>
           )}
-          
+
           {/* User Management - Admin only */}
           {userRole === "admin" && (
             <Link
@@ -105,14 +105,14 @@ export function CMSSidebar({ userRole }: CMSSidebarProps) {
                 "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
                 pathname.includes("/cms/users")
                   ? "bg-[#396CB1] text-white"
-                  : "text-gray-700 hover:bg-gray-100 hover:text-[#273572]"
+                  : "text-gray-700 hover:bg-gray-100 hover:text-[#273572]",
               )}
             >
               <Users className="h-4 w-4" />
               User Management
             </Link>
           )}
-          
+
           {/* Contact Settings - Admin only */}
           {userRole === "admin" && (
             <Link
@@ -121,7 +121,7 @@ export function CMSSidebar({ userRole }: CMSSidebarProps) {
                 "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
                 pathname.includes("/cms/contact")
                   ? "bg-[#396CB1] text-white"
-                  : "text-gray-700 hover:bg-gray-100 hover:text-[#273572]"
+                  : "text-gray-700 hover:bg-gray-100 hover:text-[#273572]",
               )}
             >
               <Mail className="h-4 w-4" />

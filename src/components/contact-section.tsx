@@ -244,8 +244,8 @@ export default function ContactSection() {
                     <div>
                       <p className="text-sm text-gray-500">Địa chỉ</p>
                       <p className="text-lg font-medium">
-                        Thôn Phú Hòa, Xã Phú Hội, Huyện Đức Trọng, Tỉnh Lâm Đồng,
-                        Việt Nam
+                        Thôn Phú Hòa, Xã Phú Hội, Huyện Đức Trọng, Tỉnh Lâm
+                        Đồng, Việt Nam
                       </p>
                     </div>
                   </div>

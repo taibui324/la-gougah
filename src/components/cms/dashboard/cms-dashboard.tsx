@@ -9,7 +9,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { FileText, Users, Image as ImageIcon, Eye, List, Menu } from "lucide-react";
+import {
+  FileText,
+  Users,
+  Image as ImageIcon,
+  Eye,
+  List,
+  Menu,
+} from "lucide-react";
 
 export function CMSDashboard() {
   const user = useQuery(api.users.getCurrentUserInfo);

@@ -15,7 +15,7 @@ export default function Home() {
   return (
     <>
       <Header />
-      <HeroBanner 
+      <HeroBanner
         pageType="homepage"
         fallbackTitle="NƯỚC UỐNG THIÊN NHIÊN"
         fallbackDescription="TINH HOA CHẤT VIỆT"

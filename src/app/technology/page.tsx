@@ -48,7 +48,7 @@ export default function TechnologyPage() {
       <Header />
 
       {/* Hero Banner */}
-      <HeroBanner 
+      <HeroBanner
         pageType="technology"
         fallbackTitle="Công Nghệ"
         fallbackDescription="Công nghệ tiên tiến trong sản xuất nước uống thiên nhiên"

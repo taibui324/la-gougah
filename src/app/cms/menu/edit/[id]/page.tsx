@@ -43,18 +43,20 @@ const formSchema = z.object({
   description: z.string().optional(),
 });
 
-export default function EditMenuItemPage({ params }: { params: { id: string } }) {
+export default function EditMenuItemPage({
+  params,
+}: { params: { id: string } }) {
   const router = useRouter();
   const { toast } = useToast();
   const menuItemId = params.id as Id<"menuItems">;
-  
+
   // Query to get menu item
   const menuItem = useQuery(api.menuItems.getMenuItemById, { id: menuItemId });
-  
+
   // Mutation to update menu item
   const updateMenuItem = useMutation(api.menuItems.updateMenuItem);
   const toggleVisibility = useMutation(api.menuItems.toggleMenuItemVisibility);
-  
+
   // State for loading
   const [isLoading, setIsLoading] = useState(true);
 
@@ -99,7 +101,7 @@ export default function EditMenuItemPage({ params }: { params: { id: string } })
         description: values.description,
         isExternal: values.isExternal,
       });
-      
+
       // Toggle visibility if needed in a separate call
       if (menuItem?.isVisible !== values.isVisible) {
         await toggleVisibility({
@@ -107,23 +109,25 @@ export default function EditMenuItemPage({ params }: { params: { id: string } })
           isVisible: values.isVisible,
         });
       }
-      
-      const visibilityChangeMessage = menuItem?.isVisible !== values.isVisible
-        ? values.isVisible
-          ? " The corresponding section will now be displayed on the homepage."
-          : " The corresponding section will now be hidden on the homepage."
-        : "";
-      
+
+      const visibilityChangeMessage =
+        menuItem?.isVisible !== values.isVisible
+          ? values.isVisible
+            ? " The corresponding section will now be displayed on the homepage."
+            : " The corresponding section will now be hidden on the homepage."
+          : "";
+
       toast({
         title: "Menu item updated",
         description: `The menu item has been successfully updated.${visibilityChangeMessage}`,
       });
-      
+
       router.push("/cms/menu");
     } catch (error: any) {
       toast({
         title: "Error",
-        description: error.message || "Failed to update menu item. Please try again.",
+        description:
+          error.message || "Failed to update menu item. Please try again.",
         variant: "destructive",
       });
     }
@@ -143,8 +147,13 @@ export default function EditMenuItemPage({ params }: { params: { id: string } })
     return (
       <CMSLayout>
         <div className="h-[60vh] flex flex-col items-center justify-center">
-          <h2 className="text-2xl font-bold text-gray-800 mb-2">Menu Item Not Found</h2>
-          <p className="text-gray-600 mb-4">The menu item you're trying to edit doesn't exist or you don't have permission to access it.</p>
+          <h2 className="text-2xl font-bold text-gray-800 mb-2">
+            Menu Item Not Found
+          </h2>
+          <p className="text-gray-600 mb-4">
+            The menu item you're trying to edit doesn't exist or you don't have
+            permission to access it.
+          </p>
           <Button onClick={() => router.push("/cms/menu")}>
             Return to Menu Items
           </Button>
@@ -163,13 +172,14 @@ export default function EditMenuItemPage({ params }: { params: { id: string } })
           </Button>
         </div>
 
-        {menuItem && menuItem.href.startsWith('#') && (
+        {menuItem && menuItem.href.startsWith("#") && (
           <Alert>
             <AlertCircle className="h-4 w-4" />
             <AlertTitle>Section Visibility</AlertTitle>
             <AlertDescription>
-              This menu item links to the "{menuItem.title}" section on the homepage. 
-              Changing visibility will also show/hide this section on the homepage.
+              This menu item links to the "{menuItem.title}" section on the
+              homepage. Changing visibility will also show/hide this section on
+              the homepage.
             </AlertDescription>
           </Alert>
         )}
@@ -177,13 +187,14 @@ export default function EditMenuItemPage({ params }: { params: { id: string } })
         <Card>
           <CardHeader>
             <CardTitle>Menu Item Details</CardTitle>
-            <CardDescription>
-              Update the navigation menu item
-            </CardDescription>
+            <CardDescription>Update the navigation menu item</CardDescription>
           </CardHeader>
           <CardContent>
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-6"
+              >
                 {/* Title field */}
                 <FormField
                   control={form.control}
@@ -213,7 +224,8 @@ export default function EditMenuItemPage({ params }: { params: { id: string } })
                         <Input placeholder="/page or #section" {...field} />
                       </FormControl>
                       <FormDescription>
-                        The link destination. Use # for page sections (e.g., #contact) or / for pages (e.g., /about)
+                        The link destination. Use # for page sections (e.g.,
+                        #contact) or / for pages (e.g., /about)
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
@@ -232,11 +244,14 @@ export default function EditMenuItemPage({ params }: { params: { id: string } })
                           type="number"
                           min={1}
                           {...field}
-                          onChange={(e) => field.onChange(parseInt(e.target.value) || 1)}
+                          onChange={(e) =>
+                            field.onChange(parseInt(e.target.value) || 1)
+                          }
                         />
                       </FormControl>
                       <FormDescription>
-                        The order in which this item appears in the menu (lower numbers appear first)
+                        The order in which this item appears in the menu (lower
+                        numbers appear first)
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
@@ -258,7 +273,8 @@ export default function EditMenuItemPage({ params }: { params: { id: string } })
                         />
                       </FormControl>
                       <FormDescription>
-                        For internal reference only, not displayed on the website
+                        For internal reference only, not displayed on the
+                        website
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
@@ -272,7 +288,9 @@ export default function EditMenuItemPage({ params }: { params: { id: string } })
                   render={({ field }) => (
                     <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
                       <div className="space-y-0.5">
-                        <FormLabel className="text-base">External Link</FormLabel>
+                        <FormLabel className="text-base">
+                          External Link
+                        </FormLabel>
                         <FormDescription>
                           Open link in a new tab
                         </FormDescription>
@@ -296,8 +314,8 @@ export default function EditMenuItemPage({ params }: { params: { id: string } })
                       <div className="space-y-0.5">
                         <FormLabel className="text-base">Visibility</FormLabel>
                         <FormDescription>
-                          {field.value 
-                            ? "Item is visible in navigation and its section is shown on homepage" 
+                          {field.value
+                            ? "Item is visible in navigation and its section is shown on homepage"
                             : "Item is hidden from navigation and its section is hidden on homepage"}
                         </FormDescription>
                       </div>
@@ -338,4 +356,4 @@ export default function EditMenuItemPage({ params }: { params: { id: string } })
       </div>
     </CMSLayout>
   );
-} 
+}

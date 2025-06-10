@@ -6,10 +6,15 @@
     "dev": "next dev -H 0.0.0.0 --turbopack",
     "dev:full": "bunx concurrently \"bunx convex dev\" \"next dev -H 0.0.0.0 --turbopack\"",
     "build": "next build",
+    "build:static": "NEXT_OUTPUT=export next build",
+    "build:server": "NEXT_OUTPUT=standalone next build",
+    "build:matbao": "npm run build:server && npm run build:static",
     "start": "next start",
+    "start:prod": "NODE_ENV=production next start -p 3000",
     "lint": "bunx biome lint --write && bunx tsc --noEmit",
     "format": "bunx biome format --write",
-    "test": "playwright test"
+    "test": "playwright test",
+    "deploy:prepare": "npm run build:matbao && npm run convex:deploy"
   },
   "dependencies": {
     "@auth/core": "^0.37.0",
@@ -49,7 +54,7 @@
     "@biomejs/biome": "1.9.4",
     "@eslint/eslintrc": "^3",
     "@playwright/test": "^1.52.0",
-    "@types/node": "^20",
+    "@types/node": "^20.19.0",
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
     "concurrently": "^9.1.2",
