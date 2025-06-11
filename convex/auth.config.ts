@@ -1,7 +1,7 @@
 export default {
   providers: [
     {
-      domain: (typeof process !== 'undefined' && process.env.CONVEX_SITE_URL) || "https://la-gougah-landing.vercel.app",
+      domain: process.env.CONVEX_SITE_URL,
       applicationID: "convex",
     },
   ],
