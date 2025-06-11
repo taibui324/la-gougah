@@ -34,6 +34,42 @@ export const listUsers = query({
   },
 });
 
+// Function to update menu items to Vietnamese
+export const updateMenuItemsToVietnamese = mutation({
+  args: {},
+  handler: async (ctx) => {
+    const menuItems = await ctx.db.query("menuItems").collect();
+    
+    const translations: Record<string, string> = {
+      "Home": "Trang Chủ",
+      "Our Story": "Câu Chuyện",
+      "Origin": "Nguồn Gốc",
+      "Our Technology": "Công Nghệ",
+      "Products": "Sản Phẩm",
+      "News": "Tin Tức",
+      "Contact": "Liên Hệ"
+    };
+    
+    const updates = [];
+    
+    for (const item of menuItems) {
+      const vietnameseTitle = translations[item.title];
+      if (vietnameseTitle && vietnameseTitle !== item.title) {
+        await ctx.db.patch(item._id, {
+          title: vietnameseTitle,
+          updatedAt: Date.now(),
+        });
+        updates.push(`Updated "${item.title}" to "${vietnameseTitle}"`);
+      }
+    }
+    
+    return {
+      message: "Menu items updated to Vietnamese",
+      updates: updates
+    };
+  },
+});
+
 // Function to create menu items
 export const initializeMenuItems = mutation({
   args: {},
