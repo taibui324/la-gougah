@@ -36,6 +36,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Loader2, Save, Image as ImageIcon } from "lucide-react";
+import { MarkdownEditor } from "@/components/cms/posts/markdown-editor";
 
 // Form validation schema
 const formSchema = z.object({
@@ -398,18 +399,19 @@ export default function NewPostPage() {
                   name="content"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Content</FormLabel>
                       <FormControl>
-                        <Textarea
-                          placeholder="Write your post content here..."
-                          {...field}
-                          rows={12}
-                          className="font-mono text-sm"
+                        <MarkdownEditor
+                          value={field.value}
+                          onChange={field.onChange}
+                          placeholder="Write your post content in markdown..."
+                          label="Content"
+                          height={500}
+                          showStats={true}
+                          error={form.formState.errors.content?.message}
                         />
                       </FormControl>
                       <FormDescription>
-                        The main content of your post. Supports markdown
-                        formatting.
+                        Write your post content using markdown formatting. Use the preview tab to see how it will look.
                       </FormDescription>
                       <FormMessage />
                     </FormItem>

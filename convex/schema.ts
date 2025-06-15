@@ -19,12 +19,14 @@ const schema = defineSchema({
     updatedAt: v.optional(v.number()),
   }).index("email", ["email"]),
 
-  // Posts table for news articles
+  // Posts table for news articles with markdown support
   posts: defineTable({
     title: v.string(),
     slug: v.string(),
     description: v.string(),
     content: v.string(),
+    contentHtml: v.optional(v.string()),
+    excerpt: v.optional(v.string()),
     image: v.optional(v.string()),
     imageStorageId: v.optional(v.id("_storage")),
     status: v.union(v.literal("draft"), v.literal("published"), v.literal("archived")),
@@ -32,6 +34,8 @@ const schema = defineSchema({
     createdAt: v.number(),
     updatedAt: v.number(),
     authorId: v.id("users"),
+    wordCount: v.optional(v.number()),
+    readingTime: v.optional(v.number()),
   })
     .index("slug", ["slug"])
     .index("status", ["status"])

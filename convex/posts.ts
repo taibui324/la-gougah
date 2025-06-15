@@ -2,6 +2,49 @@ import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
 import { requireAdminOrEditor, getCurrentUser } from "./lib/auth";
 
+// Helper function to calculate word count
+function calculateWordCount(text: string): number {
+  return text.trim().split(/\s+/).filter(word => word.length > 0).length;
+}
+
+// Helper function to calculate reading time (average 200 words per minute)
+function calculateReadingTime(wordCount: number): number {
+  return Math.ceil(wordCount / 200);
+}
+
+// Helper function to generate excerpt from markdown content
+function generateExcerpt(content: string, maxLength: number = 160): string {
+  // Remove markdown syntax for excerpt
+  const plainText = content
+    .replace(/#{1,6}\s+/g, '') // Remove headers
+    .replace(/\*\*(.*?)\*\*/g, '$1') // Remove bold
+    .replace(/\*(.*?)\*/g, '$1') // Remove italic
+    .replace(/\[(.*?)\]\(.*?\)/g, '$1') // Remove links, keep text
+    .replace(/`(.*?)`/g, '$1') // Remove inline code
+    .replace(/```[\s\S]*?```/g, '') // Remove code blocks
+    .replace(/\n+/g, ' ') // Replace newlines with spaces
+    .trim();
+  
+  if (plainText.length <= maxLength) {
+    return plainText;
+  }
+  
+  return plainText.substring(0, maxLength).replace(/\s+\S*$/, '') + '...';
+}
+
+// Helper function to process markdown content
+function processMarkdownContent(content: string) {
+  const wordCount = calculateWordCount(content);
+  const readingTime = calculateReadingTime(wordCount);
+  const excerpt = generateExcerpt(content);
+  
+  return {
+    wordCount,
+    readingTime,
+    excerpt,
+  };
+}
+
 // Query to get all published posts (public)
 export const getPublishedPosts = query({
   args: {},
@@ -64,13 +107,13 @@ export const getPostsByAuthor = query({
   },
 });
 
-// Mutation to create a new post
+// Mutation to create a new post with markdown support
 export const createPost = mutation({
   args: {
     title: v.string(),
     slug: v.string(),
     description: v.string(),
-    content: v.string(),
+    content: v.string(), // Markdown content
     image: v.optional(v.string()),
     imageStorageId: v.optional(v.id("_storage")),
     status: v.union(v.literal("draft"), v.literal("published")),
@@ -88,12 +131,18 @@ export const createPost = mutation({
       throw new Error("A post with this slug already exists");
     }
     
+    // Process markdown content
+    const { wordCount, readingTime, excerpt } = processMarkdownContent(args.content);
+    
     const now = Date.now();
     const postId = await ctx.db.insert("posts", {
       title: args.title,
       slug: args.slug,
       description: args.description,
       content: args.content,
+      excerpt,
+      wordCount,
+      readingTime,
       image: args.image,
       imageStorageId: args.imageStorageId,
       status: args.status,
@@ -107,14 +156,14 @@ export const createPost = mutation({
   },
 });
 
-// Mutation to update a post
+// Mutation to update a post with markdown support
 export const updatePost = mutation({
   args: {
     id: v.id("posts"),
     title: v.optional(v.string()),
     slug: v.optional(v.string()),
     description: v.optional(v.string()),
-    content: v.optional(v.string()),
+    content: v.optional(v.string()), // Markdown content
     image: v.optional(v.string()),
     imageStorageId: v.optional(v.id("_storage")),
     status: v.optional(v.union(v.literal("draft"), v.literal("published"), v.literal("archived"))),
@@ -148,9 +197,17 @@ export const updatePost = mutation({
     if (args.title !== undefined) updates.title = args.title;
     if (args.slug !== undefined) updates.slug = args.slug;
     if (args.description !== undefined) updates.description = args.description;
-    if (args.content !== undefined) updates.content = args.content;
     if (args.image !== undefined) updates.image = args.image;
     if (args.imageStorageId !== undefined) updates.imageStorageId = args.imageStorageId;
+    
+    // Process markdown content if it's being updated
+    if (args.content !== undefined) {
+      const { wordCount, readingTime, excerpt } = processMarkdownContent(args.content);
+      updates.content = args.content;
+      updates.excerpt = excerpt;
+      updates.wordCount = wordCount;
+      updates.readingTime = readingTime;
+    }
     
     // Handle status change
     if (args.status !== undefined) {
@@ -214,6 +271,29 @@ export const getPostById = query({
     }
     
     return post;
+  },
+});
+
+// Query to get post statistics
+export const getPostStats = query({
+  args: {},
+  handler: async (ctx) => {
+    await requireAdminOrEditor(ctx);
+    
+    const allPosts = await ctx.db.query("posts").collect();
+    
+    const stats = {
+      total: allPosts.length,
+      published: allPosts.filter(p => p.status === "published").length,
+      draft: allPosts.filter(p => p.status === "draft").length,
+      archived: allPosts.filter(p => p.status === "archived").length,
+      totalWordCount: allPosts.reduce((sum, post) => sum + (post.wordCount || 0), 0),
+      averageReadingTime: allPosts.length > 0 
+        ? Math.round(allPosts.reduce((sum, post) => sum + (post.readingTime || 0), 0) / allPosts.length)
+        : 0,
+    };
+    
+    return stats;
   },
 });
 
