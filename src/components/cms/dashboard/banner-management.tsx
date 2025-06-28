@@ -50,19 +50,19 @@ import {
 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 
-type PageType = "homepage" | "technology" | "story" | "news" | "general";
+type PageType = "homepage" | "technology" | "story";
 type Position = "hero" | "secondary" | "footer";
 
 interface Banner {
   _id: string;
   title: string;
-  description?: string;
   image?: string;
   imageStorageId?: string;
   link?: string;
-  linkText?: string;
   pageType: PageType;
   position: Position;
+  isSlider: boolean;
+  sliderGroup?: string;
   isActive: boolean;
   order: number;
   createdAt: number;
@@ -71,13 +71,13 @@ interface Banner {
 
 interface BannerFormData {
   title: string;
-  description: string;
   image: string;
   imageStorageId: string;
   link: string;
-  linkText: string;
   pageType: PageType;
   position: Position;
+  isSlider: boolean;
+  sliderGroup: string;
   isActive: boolean;
   order: number;
 }
@@ -86,16 +86,12 @@ const pageTypeLabels = {
   homepage: "Homepage",
   technology: "Technology Page",
   story: "Story Page",
-  news: "News Page",
-  general: "General",
 };
 
 const pageTypeIcons = {
   homepage: Monitor,
   technology: Globe,
   story: FileText,
-  news: Newspaper,
-  general: BarChart3,
 };
 
 const positionLabels = {
@@ -115,13 +111,13 @@ export function BannerManagement() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [formData, setFormData] = useState<BannerFormData>({
     title: "",
-    description: "",
     image: "",
     imageStorageId: "",
     link: "",
-    linkText: "",
     pageType: "homepage",
     position: "hero",
+    isSlider: false,
+    sliderGroup: "",
     isActive: true,
     order: 1,
   });
@@ -155,6 +151,7 @@ export function BannerManagement() {
 
       // Generate upload URL
       const uploadUrl = await generateUploadUrl();
+      console.log("Generated upload URL:", uploadUrl);
 
       // Upload the file
       const result = await fetch(uploadUrl, {
@@ -164,34 +161,26 @@ export function BannerManagement() {
       });
 
       if (!result.ok) {
-        throw new Error("Failed to upload image.");
+        const errorText = await result.text();
+        console.error("Upload failed with status:", result.status, errorText);
+        throw new Error(`Failed to upload image: ${result.status} ${errorText}`);
       }
 
+      // Get the storage ID from the response
       const { storageId } = await result.json();
-
-      // Get the direct Convex storage URL
-      const convexClient = new (
-        await import("convex/browser")
-      ).ConvexHttpClient(process.env.NEXT_PUBLIC_CONVEX_URL!);
-      const imageUrl = await convexClient.query(
-        (await import("../../../../convex/_generated/api")).api.storage
-          .getStorageUrl,
-        { storageId },
-      );
-
-      if (!imageUrl) {
-        throw new Error("Failed to get image URL from storage");
-      }
+      console.log("File uploaded successfully, storageId:", storageId);
 
       // Create image preview URL (use the blob for immediate preview)
       const previewUrl = URL.createObjectURL(file);
       setImagePreview(previewUrl);
 
-      // Update form data with both storage ID and image URL
+      // Update form data with storage ID but not the direct URL
+      // The direct URL will be constructed when needed using the storage ID
       setFormData((prev) => ({
         ...prev,
         imageStorageId: storageId,
-        image: imageUrl,
+        // Don't set the image field - we'll use the storage ID instead
+        image: "",
       }));
 
       toast({
@@ -199,6 +188,7 @@ export function BannerManagement() {
         description: "Image uploaded successfully",
       });
     } catch (error) {
+      console.error("Upload error:", error);
       toast({
         title: "Error",
         description:
@@ -256,13 +246,13 @@ export function BannerManagement() {
     try {
       await createBanner({
         title: formData.title,
-        description: formData.description || undefined,
         image: formData.image || undefined,
         imageStorageId: (formData.imageStorageId as any) || undefined,
         link: formData.link || undefined,
-        linkText: formData.linkText || undefined,
         pageType: formData.pageType,
         position: formData.position,
+        isSlider: formData.isSlider,
+        sliderGroup: formData.sliderGroup || undefined,
         isActive: formData.isActive,
         order: formData.order,
       });
@@ -311,13 +301,13 @@ export function BannerManagement() {
       await updateBanner({
         id: selectedBanner._id as any,
         title: formData.title,
-        description: formData.description || undefined,
         image: formData.image || undefined,
         imageStorageId: (formData.imageStorageId as any) || undefined,
         link: formData.link || undefined,
-        linkText: formData.linkText || undefined,
         pageType: formData.pageType,
         position: formData.position,
+        isSlider: formData.isSlider,
+        sliderGroup: formData.sliderGroup || undefined,
         isActive: formData.isActive,
         order: formData.order,
       });
@@ -398,13 +388,13 @@ export function BannerManagement() {
 
     setFormData({
       title: banner.title,
-      description: banner.description || "",
       image: imageUrl,
       imageStorageId: banner.imageStorageId || "",
       link: banner.link || "",
-      linkText: banner.linkText || "",
       pageType: banner.pageType,
       position: banner.position,
+      isSlider: banner.isSlider,
+      sliderGroup: banner.sliderGroup || "",
       isActive: banner.isActive,
       order: banner.order,
     });
@@ -422,13 +412,13 @@ export function BannerManagement() {
   const resetForm = () => {
     setFormData({
       title: "",
-      description: "",
       image: "",
       imageStorageId: "",
       link: "",
-      linkText: "",
       pageType: "homepage",
       position: "hero",
+      isSlider: false,
+      sliderGroup: "",
       isActive: true,
       order: 1,
     });
@@ -569,7 +559,7 @@ export function BannerManagement() {
             Banner Management
           </h1>
           <p className="text-gray-600">
-            Manage page-specific banners and promotional content
+            Manage page-specific banners and slider images
           </p>
         </div>
 
@@ -585,51 +575,22 @@ export function BannerManagement() {
               <DialogTitle>Create New Banner</DialogTitle>
             </DialogHeader>
             <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="title">Title *</Label>
-                  <Input
-                    id="title"
-                    value={formData.title}
-                    onChange={(e) =>
-                      setFormData((prev) => ({
-                        ...prev,
-                        title: e.target.value,
-                      }))
-                    }
-                    placeholder="Enter banner title"
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="linkText">Button Text</Label>
-                  <Input
-                    id="linkText"
-                    value={formData.linkText}
-                    onChange={(e) =>
-                      setFormData((prev) => ({
-                        ...prev,
-                        linkText: e.target.value,
-                      }))
-                    }
-                    placeholder="e.g., Learn More"
-                  />
-                </div>
-              </div>
-
               <div>
-                <Label htmlFor="description">Description</Label>
-                <Textarea
-                  id="description"
-                  value={formData.description}
+                <Label htmlFor="title">Title (For Internal Reference) *</Label>
+                <Input
+                  id="title"
+                  value={formData.title}
                   onChange={(e) =>
                     setFormData((prev) => ({
                       ...prev,
-                      description: e.target.value,
+                      title: e.target.value,
                     }))
                   }
-                  placeholder="Enter banner description"
-                  rows={3}
+                  placeholder="Enter internal title for reference"
                 />
+                <p className="text-xs text-gray-500 mt-1">
+                  This title is for internal reference only and will not be displayed on the banner
+                </p>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
@@ -650,8 +611,6 @@ export function BannerManagement() {
                         Technology Page
                       </SelectItem>
                       <SelectItem value="story">Story Page</SelectItem>
-                      <SelectItem value="news">News Page</SelectItem>
-                      <SelectItem value="general">General</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -676,10 +635,44 @@ export function BannerManagement() {
                   </Select>
                 </div>
               </div>
+              
+              <div className="grid grid-cols-1 gap-4">
+                <div className="flex flex-col space-y-2">
+                  <div className="flex items-center space-x-2">
+                    <input 
+                      type="checkbox" 
+                      id="isSlider"
+                      checked={formData.isSlider}
+                      onChange={(e) => 
+                        setFormData((prev) => ({...prev, isSlider: e.target.checked}))
+                      }
+                      className="w-5 h-5"
+                    />
+                    <Label htmlFor="isSlider">This banner is part of a slider/carousel</Label>
+                  </div>
+                  
+                  {formData.isSlider && (
+                    <div className="pl-7">
+                      <Label htmlFor="sliderGroup">Slider Group Name</Label>
+                      <Input
+                        id="sliderGroup"
+                        value={formData.sliderGroup}
+                        onChange={(e) => 
+                          setFormData((prev) => ({...prev, sliderGroup: e.target.value}))
+                        }
+                        placeholder="e.g., main-slider"
+                      />
+                      <p className="text-xs text-gray-500 mt-1">
+                        Group banners together in the same slider (use the same name for all slides)
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <Label htmlFor="link">Link URL</Label>
+                  <Label htmlFor="link">Link URL (Optional)</Label>
                   <Input
                     id="link"
                     value={formData.link}
@@ -703,6 +696,9 @@ export function BannerManagement() {
                     }
                     min="1"
                   />
+                  <p className="text-xs text-gray-500 mt-1">
+                    Controls the order of banners in a slider (lower numbers appear first)
+                  </p>
                 </div>
               </div>
 
@@ -791,7 +787,7 @@ export function BannerManagement() {
         value={selectedPage}
         onValueChange={(value: string) => setSelectedPage(value as PageType)}
       >
-        <TabsList className="grid w-full grid-cols-5">
+        <TabsList className="grid w-full grid-cols-3">
           <TabsTrigger value="homepage" className="flex items-center space-x-2">
             <Monitor className="h-4 w-4" />
             <span>Homepage</span>
@@ -807,18 +803,10 @@ export function BannerManagement() {
             <FileText className="h-4 w-4" />
             <span>Story</span>
           </TabsTrigger>
-          <TabsTrigger value="news" className="flex items-center space-x-2">
-            <Newspaper className="h-4 w-4" />
-            <span>News</span>
-          </TabsTrigger>
-          <TabsTrigger value="general" className="flex items-center space-x-2">
-            <BarChart3 className="h-4 w-4" />
-            <span>General</span>
-          </TabsTrigger>
         </TabsList>
 
         {(
-          ["homepage", "technology", "story", "news", "general"] as PageType[]
+          ["homepage", "technology", "story"] as PageType[]
         ).map((pageType) => (
           <TabsContent key={pageType} value={pageType}>
             <Card>
@@ -863,11 +851,6 @@ export function BannerManagement() {
                           <TableCell className="font-medium">
                             <div>
                               <div>{banner.title}</div>
-                              {banner.description && (
-                                <div className="text-sm text-gray-500 truncate max-w-xs">
-                                  {banner.description}
-                                </div>
-                              )}
                             </div>
                           </TableCell>
                           <TableCell>
@@ -940,7 +923,7 @@ export function BannerManagement() {
           <div className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <Label htmlFor="edit-title">Title *</Label>
+                <Label htmlFor="edit-title">Title (For Internal Reference) *</Label>
                 <Input
                   id="edit-title"
                   value={formData.title}
@@ -949,38 +932,46 @@ export function BannerManagement() {
                   }
                   placeholder="Enter banner title"
                 />
+                <p className="text-xs text-gray-500 mt-1">
+                  This title is for internal reference only
+                </p>
               </div>
               <div>
-                <Label htmlFor="edit-linkText">Button Text</Label>
-                <Input
-                  id="edit-linkText"
-                  value={formData.linkText}
-                  onChange={(e) =>
-                    setFormData((prev) => ({
-                      ...prev,
-                      linkText: e.target.value,
-                    }))
-                  }
-                  placeholder="e.g., Learn More"
-                />
+                <Label htmlFor="edit-isSlider">Slider</Label>
+                <div className="flex items-center space-x-2 mt-2">
+                  <input 
+                    type="checkbox" 
+                    id="edit-isSlider"
+                    checked={formData.isSlider}
+                    onChange={(e) => 
+                      setFormData((prev) => ({...prev, isSlider: e.target.checked}))
+                    }
+                    className="w-5 h-5"
+                  />
+                  <Label htmlFor="edit-isSlider">This is part of a slider</Label>
+                </div>
               </div>
             </div>
 
-            <div>
-              <Label htmlFor="edit-description">Description</Label>
-              <Textarea
-                id="edit-description"
-                value={formData.description}
-                onChange={(e) =>
-                  setFormData((prev) => ({
-                    ...prev,
-                    description: e.target.value,
-                  }))
-                }
-                placeholder="Enter banner description"
-                rows={3}
-              />
-            </div>
+            {formData.isSlider && (
+              <div>
+                <Label htmlFor="edit-sliderGroup">Slider Group</Label>
+                <Input
+                  id="edit-sliderGroup"
+                  value={formData.sliderGroup}
+                  onChange={(e) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      sliderGroup: e.target.value,
+                    }))
+                  }
+                  placeholder="e.g., main-slider"
+                />
+                <p className="text-xs text-gray-500 mt-1">
+                  Group banners together in the same slider
+                </p>
+              </div>
+            )}
 
             <div className="grid grid-cols-2 gap-4">
               <div>
@@ -998,8 +989,6 @@ export function BannerManagement() {
                     <SelectItem value="homepage">Homepage</SelectItem>
                     <SelectItem value="technology">Technology Page</SelectItem>
                     <SelectItem value="story">Story Page</SelectItem>
-                    <SelectItem value="news">News Page</SelectItem>
-                    <SelectItem value="general">General</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -1025,7 +1014,7 @@ export function BannerManagement() {
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <Label htmlFor="edit-link">Link URL</Label>
+                <Label htmlFor="edit-link">Link URL (Optional)</Label>
                 <Input
                   id="edit-link"
                   value={formData.link}
@@ -1049,6 +1038,9 @@ export function BannerManagement() {
                   }
                   min="1"
                 />
+                <p className="text-xs text-gray-500 mt-1">
+                  Lower numbers appear first in sliders
+                </p>
               </div>
             </div>
 

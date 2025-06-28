@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev -H 0.0.0.0 --turbopack",
     "dev:full": "bunx concurrently \"bunx convex dev --yes\" \"next dev -H 0.0.0.0 --turbopack\"",
-    "convex:dev": "npx convex dev --yes",
+    "convex:dev": "npx convex dev --verbose",
     "convex:deploy": "npx convex deploy --yes",
     "build": "next build",
     "build:static": "NEXT_OUTPUT=export next build",

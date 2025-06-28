@@ -5,12 +5,10 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft } from "lucide-react";
 import { notFound } from "next/navigation";
-import { formatDistanceToNow } from "date-fns";
-import { vi } from "date-fns/locale";
+// Date formatting now uses standard JavaScript
 import { ConvexHttpClient } from "convex/browser";
 import { api } from "../../../../convex/_generated/api";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
+import { MarkdownContent } from "@/components/markdown-content";
 
 // Generate static params for all published posts
 export async function generateStaticParams() {
@@ -78,6 +76,8 @@ export default async function NewsDetailPage({ params }: PageProps) {
                     fill
                     className="object-cover"
                     priority
+                    unoptimized={true}
+                    key={post.imageStorageId || post.image}
                   />
                 ) : (
                   <div className="h-full w-full bg-blue-50 flex items-center justify-center">
@@ -91,9 +91,10 @@ export default async function NewsDetailPage({ params }: PageProps) {
               <div className="flex items-center mb-6">
                 <span className="text-sm text-blue-600">
                   {post.publishedAt
-                    ? formatDistanceToNow(post.publishedAt, {
-                        addSuffix: true,
-                        locale: vi,
+                    ? new Date(post.publishedAt).toLocaleDateString('vi-VN', {
+                        day: '2-digit',
+                        month: '2-digit',
+                        year: 'numeric'
                       })
                     : "Mới đăng"}
                 </span>
@@ -103,79 +104,13 @@ export default async function NewsDetailPage({ params }: PageProps) {
                 {post.title}
               </h1>
 
-              <div className="prose prose-lg max-w-none">
-                <ReactMarkdown
-                  remarkPlugins={[remarkGfm]}
-                  components={{
-                    // Custom styling for markdown elements
-                    h1: ({ children }) => (
-                      <h1 className="text-3xl font-bold text-[#273572] mt-8 mb-4">
-                        {children}
-                      </h1>
-                    ),
-                    h2: ({ children }) => (
-                      <h2 className="text-2xl font-semibold text-[#273572] mt-6 mb-3">
-                        {children}
-                      </h2>
-                    ),
-                    h3: ({ children }) => (
-                      <h3 className="text-xl font-medium text-[#273572] mt-4 mb-2">
-                        {children}
-                      </h3>
-                    ),
-                    p: ({ children }) => (
-                      <p className="text-gray-700 leading-relaxed mb-4">
-                        {children}
-                      </p>
-                    ),
-                    a: ({ href, children }) => (
-                      <a
-                        href={href}
-                        className="text-blue-600 hover:text-blue-800 underline"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        {children}
-                      </a>
-                    ),
-                    blockquote: ({ children }) => (
-                      <blockquote className="border-l-4 border-blue-200 pl-4 italic text-gray-600 my-4">
-                        {children}
-                      </blockquote>
-                    ),
-                    code: ({ children, className }) => {
-                      const isInline = !className;
-                      if (isInline) {
-                        return (
-                          <code className="bg-gray-100 px-1 py-0.5 rounded text-sm font-mono">
-                            {children}
-                          </code>
-                        );
-                      }
-                      return (
-                        <code className="block bg-gray-100 p-4 rounded-lg overflow-x-auto text-sm font-mono">
-                          {children}
-                        </code>
-                      );
-                    },
-                    ul: ({ children }) => (
-                      <ul className="list-disc list-inside space-y-2 mb-4">
-                        {children}
-                      </ul>
-                    ),
-                    ol: ({ children }) => (
-                      <ol className="list-decimal list-inside space-y-2 mb-4">
-                        {children}
-                      </ol>
-                    ),
-                    li: ({ children }) => (
-                      <li className="text-gray-700">{children}</li>
-                    ),
-                  }}
-                >
-                  {post.content}
-                </ReactMarkdown>
-              </div>
+              {post.description && (
+                <div className="text-lg text-gray-700 font-bold italic mb-8 border-l-4 border-blue-200 pl-4 py-2">
+                  {post.description}
+                </div>
+              )}
+
+              <MarkdownContent content={post.content} />
             </div>
           </div>
         </main>

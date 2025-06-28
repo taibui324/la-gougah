@@ -54,6 +54,7 @@ A Content Management System (CMS) that allows small business owners to manage th
 - **Word Count & Reading Time**: Real-time statistics display
 - **Auto-save**: Automatic draft saving every 30 seconds
 - **Version Control**: Track changes and allow rollback to previous versions
+- **Date Display Format**: Display published dates in dd/mm/yyyy format on post listings and detail pages
 
 *SEO and Optimization:*
 - **SEO Preview**: Show how the post will appear in search results
@@ -63,11 +64,16 @@ A Content Management System (CMS) that allows small business owners to manage th
 - **Schema Markup**: Automatic structured data generation
 - **Content Analysis**: SEO scoring and readability analysis
 
-**Banner Management**: Provide functionality for users to upload and manage page-specific hero banner images and general banner images for different positions. Specifically includes:
-  - Page-specific hero banners for Homepage, Technology page, Story page, and News page
-  - General banner management for secondary and footer positions
+**Banner Management**: Provide functionality for users to upload and manage page-specific hero banner images and slider functionality for different pages. Specifically includes:
+  - Page-specific hero banners for Homepage, Technology page, and Story page
+  - Banner slider functionality allowing multiple images to be displayed in sequence
+  - Ordered image upload and management in the CMS with the ability to set display order
+  - Navigation controls (previous/next buttons) on the main page to navigate through banner slides
   - Image upload, preview, and replacement capabilities
-  - Banner status management (active/inactive) for each page  
+  - Banner status management (active/inactive) for each page
+  - Option to group banners into slider collections
+  - Focus on image-based banners without text overlays (designers will handle banner design)
+  - Support for optional link URLs to make banners clickable
 
 **Menu Item Management**: Allow users to hide or unhide menu items in the header, affecting the visibility of the corresponding content pages. When a menu item is hidden, its corresponding section on the homepage should also be hidden; when unhidden, the section should be displayed again.  
 
@@ -111,12 +117,14 @@ Users select "Posts" to manage news content (admin and editor roles):
   - **Bulk operations** for multiple posts (publish, archive, delete)
   - Published posts automatically appear on the news page and in the news section of the homepage
 
-Users navigate to "Banners" to manage page-specific hero banners and general banner images (admin and editor roles):
-  - Upload and manage hero banners for specific pages (Homepage, Technology, Story, News)
-  - Set banner titles, descriptions, and call-to-action buttons for each page
-  - Preview banner appearance before publishing
-  - Activate or deactivate banners for specific pages
-  - Upload and manage general banners for secondary and footer positions
+Users navigate to "Banners" to manage page-specific hero banners and banner sliders (admin and editor roles):
+  - Upload and manage hero banners for specific pages (Homepage, Technology, Story)
+  - Create banner sliders by uploading multiple images in a specific order
+  - Arrange and reorder banner images within a slider using drag-and-drop or order controls
+  - Set each banner's display order to control the sequence in the slider
+  - Group related banners together for different slider collections
+  - Preview banner and slider appearance before publishing
+  - Activate or deactivate individual banners or entire slider groups
   - Organize banners by page and position for easy management  
 
 Users access the "Menu Items" section to hide or unhide menu items and corresponding content pages (admin and editor roles). Hiding a menu item will:
@@ -168,7 +176,11 @@ Admin users go to "Contact Settings" to adjust their contact information as need
   * Versioning: revisionHistory, lastModified, modifiedBy
   * Scheduling: scheduledAt, publishedAt
 - **menuItems**: Navigation items with title, href, visibility status
-- **banners**: Banner images with page-specific targeting and position management
+- **banners**: Banner images with:
+  * Basic fields: title (for internal reference), image, imageStorageId, link
+  * Configuration: pageType (homepage, technology, story), position (hero, secondary, footer)
+  * Slider functionality: isSlider flag, sliderGroup identifier, order number
+  * Status: isActive flag, createdAt, updatedAt
 - **contactSettings**: Contact information including email, phone, address, social links
 - **postTemplates**: Reusable markdown templates for different post types
 - **contentSnippets**: Reusable markdown snippets and components
@@ -182,10 +194,13 @@ Admin users go to "Contact Settings" to adjust their contact information as need
   * **Templates**: getPostTemplates, createTemplate, applyTemplate
   * **Versioning**: saveRevision, getRevisionHistory, restoreRevision
 - **Menu Items**: toggleMenuItemVisibility, updateMenuItem, createMenuItem, deleteMenuItem, getVisibleMenuItems
-- **Banners**: createBanner, updateBanner, deleteBanner, getActiveBannersByPosition, getBannersByPage, getHeroBannerByPage, activateBanner, deactivateBanner
+- **Banners**: 
+  * **Core Operations**: createBanner, updateBanner, deleteBanner, activateBanner, deactivateBanner
+  * **Retrieval**: getActiveBannersByPosition, getBannersByPage, getHeroBannerByPage, getAllBanners, getBannerById
+  * **Slider Functionality**: getActiveSlidersByGroup, updateBannerOrder, reorderBanners
 - **Users**: createUser, updateUser, deleteUser, updateUserRole, getCurrentUserInfo, updateProfile, getAllUsers, getUsersByRole
 - **Authentication**: requireAdmin, requireAdminOrEditor, getCurrentUser, requireUser
-- **File Management**: uploadImage, processImageForMarkdown, generateImageMarkdown, optimizeImages
+- **File Management**: uploadImage, generateUploadUrl, getStorageUrl, processImageForMarkdown, generateImageMarkdown, optimizeImages
 
 **Frontend Implementation**:
 - **Markdown Editor Component**: 
@@ -202,6 +217,23 @@ Admin users go to "Contact Settings" to adjust their contact information as need
   * Template selection and snippet insertion
   * Version history and comparison views
   * Import/export functionality
+- **Banner Slider Components**:
+  * Interactive carousel/slider for displaying multiple banner images
+  * Navigation controls (previous/next buttons) for user interaction
+  * Automatic slideshow functionality with configurable timing (default: 5 seconds)
+  * Pagination indicators showing current position in the slider
+  * Responsive design adapting to different screen sizes
+  * Touch-enabled for mobile devices
+  * Fallback to static hero banner when no slider images are available
+  * Error handling for image loading failures
+  * Support for linking banner images to external URLs
+  * Smooth transitions between slides with fade effects
+- **Banner Management Interface**:
+  * Drag-and-drop interface for reordering banner images
+  * Visual preview of banner sliders before publishing
+  * Grouping controls to organize banners into slider collections
+  * Order controls to set the sequence of banners in sliders
+  * Toggle switches for activating/deactivating individual banners or entire sliders
 - **Content Processing**:
   * Client-side markdown parsing for preview
   * Server-side rendering for final output
@@ -228,7 +260,11 @@ Admin users go to "Contact Settings" to adjust their contact information as need
 - **Markdown Features**: Complete markdown editor with live preview, syntax highlighting, toolbar, shortcuts, and all standard markdown elements
 - **Content Management**: Import/export, templates, snippets, version control, auto-save
 - **SEO Optimization**: Meta tags, social media optimization, content analysis, schema markup
-- Page-specific banner management with hero banners for Homepage/Technology/Story/News pages
+- **Banner Management**: 
+  * Page-specific banner management with hero banners for Homepage/Technology/Story pages
+  * Banner slider functionality with ordered image uploads
+  * Navigation controls for users to browse through banner slides
+  * Grouping and ordering capabilities for banner collections
 - Menu item management and contact settings
 - **Performance**: Fast markdown rendering, optimized image handling, efficient content loading
 

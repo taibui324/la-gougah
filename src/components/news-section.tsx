@@ -13,8 +13,7 @@ import {
 } from "@/components/ui/card";
 import { useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
-import { formatDistanceToNow } from "date-fns";
-import { vi } from "date-fns/locale";
+// Date formatting now uses standard JavaScript
 import { Skeleton } from "@/components/ui/skeleton";
 
 export default function NewsSection() {
@@ -106,9 +105,10 @@ export default function NewsSection() {
                   <div className="flex justify-between items-center mb-2">
                     <span className="text-sm text-blue-600">
                       {post.publishedAt
-                        ? formatDistanceToNow(post.publishedAt, {
-                            addSuffix: true,
-                            locale: vi,
+                        ? new Date(post.publishedAt).toLocaleDateString('vi-VN', {
+                            day: '2-digit',
+                            month: '2-digit',
+                            year: 'numeric'
                           })
                         : "Mới đăng"}
                     </span>
@@ -118,9 +118,9 @@ export default function NewsSection() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <CardDescription className="text-gray-600">
+                  <div className="text-gray-600 text-sm font-bold italic">
                     {post.description}
-                  </CardDescription>
+                  </div>
                 </CardContent>
                 <CardFooter>
                   <Link href={`/news/${post.slug}`}>

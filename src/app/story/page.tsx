@@ -6,7 +6,7 @@ import { useRef, useEffect } from "react";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import ScrollToTop from "@/components/scroll-to-top";
-import { HeroBanner } from "@/components/ui/hero-banner";
+import HeroBanner from "@/components/ui/hero-banner";
 
 export default function StoryPage() {
   const contentRef = useRef<HTMLDivElement>(null);
@@ -42,8 +42,6 @@ export default function StoryPage() {
       {/* Hero Banner */}
       <HeroBanner
         pageType="story"
-        fallbackTitle="Câu Chuyện"
-        fallbackDescription="Hành trình của thương hiệu La Gougah"
         fallbackImage="/images/image-10.png"
         className="h-[60vh]"
       />

@@ -84,11 +84,17 @@ export default function NewPostPage() {
 
   // Generate slug from title
   const generateSlug = (title: string) => {
-    return title
+    // Handle Vietnamese characters and other diacritics
+    const normalized = title.normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '') // Remove diacritics
+      .replace(/[đĐ]/g, 'd')          // Replace Vietnamese đ/Đ with d
       .toLowerCase()
-      .replace(/[^a-z0-9\s-]/g, "")
-      .replace(/\s+/g, "-")
-      .replace(/-+/g, "-");
+      .replace(/[^a-z0-9\s-]/g, '') // Only allow letters, numbers, spaces, hyphens
+      .trim()
+      .replace(/\s+/g, '-')         // Replace spaces with hyphens
+      .replace(/-+/g, '-');         // Remove consecutive hyphens
+
+    return normalized || 'untitled'; // Ensure we always have a slug
   };
 
   // Handle title change to auto-generate slug
@@ -96,12 +102,9 @@ export default function NewPostPage() {
     const title = e.target.value;
     form.setValue("title", title);
 
-    // Only auto-generate slug if it hasn't been manually edited or is empty
-    const currentSlug = form.getValues("slug");
-    if (!currentSlug) {
-      const newSlug = generateSlug(title);
-      form.setValue("slug", newSlug);
-    }
+    // Always generate a new slug when title changes
+    const newSlug = generateSlug(title);
+    form.setValue("slug", newSlug);
   };
 
   // Handle image upload
@@ -289,13 +292,13 @@ export default function NewPostPage() {
                       <FormLabel>Description</FormLabel>
                       <FormControl>
                         <Textarea
-                          placeholder="Brief description of the post"
+                          placeholder="Write a brief description for this post..."
                           {...field}
-                          rows={2}
+                          rows={3}
                         />
                       </FormControl>
                       <FormDescription>
-                        A short summary that appears in post listings
+                        A short summary that appears in post listings. Will be displayed as bold and italic.
                       </FormDescription>
                       <FormMessage />
                     </FormItem>

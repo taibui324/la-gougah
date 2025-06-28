@@ -1,12 +1,16 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import dynamic from "next/dynamic";
+import { useMutation } from "convex/react";
+import { api } from "../../../../convex/_generated/api";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Eye, Edit, FileText, Clock } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Eye, Edit, FileText, Clock, Upload, Image as ImageIcon, Loader2 } from "lucide-react";
+import { useToast } from "@/components/ui/use-toast";
 
 // Dynamically import MDEditor to avoid SSR issues
 const MDEditor = dynamic(
@@ -68,11 +72,17 @@ export function MarkdownEditor({
   showStats = true,
 }: MarkdownEditorProps) {
   const [activeTab, setActiveTab] = useState<"edit" | "preview">("edit");
+  const [isUploading, setIsUploading] = useState(false);
+  const [dragActive, setDragActive] = useState(false);
   const [stats, setStats] = useState({
     wordCount: 0,
     readingTime: 0,
     excerpt: "",
   });
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const generateUploadUrl = useMutation(api.http.generateUploadUrl);
+  const { toast } = useToast();
 
   // Update stats when content changes
   useEffect(() => {
@@ -95,6 +105,136 @@ export function MarkdownEditor({
     }
   }, [value]);
 
+  // Handle image upload
+  const uploadImage = useCallback(async (file: File) => {
+    if (!file.type.includes('image/')) {
+      toast({
+        title: "Invalid file type",
+        description: "Please upload an image file",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) { // 5MB limit
+      toast({
+        title: "File too large",
+        description: "Image must be less than 5MB",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      setIsUploading(true);
+
+      // Generate upload URL
+      const postUrl = await generateUploadUrl();
+
+      // Upload file to Convex storage
+      const result = await fetch(postUrl, {
+        method: "POST",
+        headers: { "Content-Type": file.type },
+        body: file,
+      });
+
+      if (!result.ok) {
+        throw new Error(`Upload failed: ${result.statusText}`);
+      }
+
+      const { storageId } = await result.json();
+
+      // Use the API storage route for the image URL
+      const imageUrl = `/api/storage/${storageId}`;
+
+      // Generate markdown for the image
+      const altText = file.name.replace(/\.[^/.]+$/, ""); // Remove extension
+      const markdownImage = `![${altText}](${imageUrl})`;
+
+      // Insert the markdown image at the current cursor position
+      const textarea = document.querySelector('textarea[placeholder*="markdown"]') as HTMLTextAreaElement;
+      if (textarea) {
+        const start = textarea.selectionStart;
+        const end = textarea.selectionEnd;
+        const newContent = value.substring(0, start) + markdownImage + value.substring(end);
+        onChange(newContent);
+        
+        // Set cursor position after the inserted image
+        setTimeout(() => {
+          textarea.setSelectionRange(start + markdownImage.length, start + markdownImage.length);
+          textarea.focus();
+        }, 10);
+      } else {
+        // Fallback: append to end
+        onChange(value + '\n\n' + markdownImage);
+      }
+
+      toast({
+        title: "Image uploaded",
+        description: "Image has been uploaded and inserted into your content",
+      });
+
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      toast({
+        title: "Upload failed",
+        description: "There was an error uploading your image. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsUploading(false);
+    }
+  }, [generateUploadUrl, onChange, value, toast]);
+
+  // Handle file selection
+  const handleFileSelect = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      uploadImage(file);
+    }
+    // Reset input
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  }, [uploadImage]);
+
+  // Handle drag and drop
+  const handleDragEnter = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(true);
+  }, []);
+
+  const handleDragLeave = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(false);
+  }, []);
+
+  const handleDragOver = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+  }, []);
+
+  const handleDrop = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(false);
+
+    const files = Array.from(e.dataTransfer.files);
+    const imageFile = files.find(file => file.type.includes('image/'));
+    
+    if (imageFile) {
+      uploadImage(imageFile);
+    } else if (files.length > 0) {
+      toast({
+        title: "Invalid file type",
+        description: "Please drop an image file",
+        variant: "destructive",
+      });
+    }
+  }, [uploadImage, toast]);
+
   return (
     <div className="space-y-4">
       {label && (
@@ -102,19 +242,60 @@ export function MarkdownEditor({
       )}
       
       <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as "edit" | "preview")}>
-        <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="edit" className="flex items-center gap-2">
-            <Edit className="h-4 w-4" />
-            Edit
-          </TabsTrigger>
-          <TabsTrigger value="preview" className="flex items-center gap-2">
-            <Eye className="h-4 w-4" />
-            Preview
-          </TabsTrigger>
-        </TabsList>
+        <div className="flex items-center justify-between">
+          <TabsList className="grid w-full max-w-sm grid-cols-2">
+            <TabsTrigger value="edit" className="flex items-center gap-2">
+              <Edit className="h-4 w-4" />
+              Edit
+            </TabsTrigger>
+            <TabsTrigger value="preview" className="flex items-center gap-2">
+              <Eye className="h-4 w-4" />
+              Preview
+            </TabsTrigger>
+          </TabsList>
+          
+          <div className="flex items-center gap-2">
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              onChange={handleFileSelect}
+              className="hidden"
+            />
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => fileInputRef.current?.click()}
+              disabled={isUploading}
+              className="flex items-center gap-2"
+            >
+              {isUploading ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                <ImageIcon className="h-4 w-4" />
+              )}
+              {isUploading ? "Uploading..." : "Add Image"}
+            </Button>
+          </div>
+        </div>
         
         <TabsContent value="edit" className="mt-4">
-          <div className="border rounded-lg overflow-hidden">
+          <div 
+            className={`border rounded-lg overflow-hidden relative ${dragActive ? 'border-blue-500 bg-blue-50' : ''}`}
+            onDragEnter={handleDragEnter}
+            onDragLeave={handleDragLeave}
+            onDragOver={handleDragOver}
+            onDrop={handleDrop}
+          >
+            {dragActive && (
+              <div className="absolute inset-0 bg-blue-100 bg-opacity-80 flex items-center justify-center z-10 rounded-lg">
+                <div className="text-center">
+                  <Upload className="h-12 w-12 text-blue-500 mx-auto mb-2" />
+                  <p className="text-blue-700 font-medium">Drop image here to upload</p>
+                </div>
+              </div>
+            )}
             <MDEditor
               value={value}
               onChange={(val) => onChange(val || "")}
@@ -141,7 +322,34 @@ export function MarkdownEditor({
             style={{ height: `${height}px`, overflow: 'auto' }}
           >
             {value ? (
-              <MDPreview source={value} />
+              <MDPreview 
+                source={value}
+                components={{
+                  img: ({ src, alt, ...props }) => {
+                    // Handle Convex storage URLs properly
+                    if (src?.startsWith('/api/storage/')) {
+                      return (
+                        <img
+                          src={src}
+                          alt={alt}
+                          className="max-w-full h-auto rounded-lg"
+                          loading="lazy"
+                          {...props}
+                        />
+                      );
+                    }
+                    return (
+                      <img
+                        src={src}
+                        alt={alt}
+                        className="max-w-full h-auto rounded-lg"
+                        loading="lazy"
+                        {...props}
+                      />
+                    );
+                  },
+                }}
+              />
             ) : (
               <div className="flex items-center justify-center h-full text-gray-500">
                 <div className="text-center">
@@ -197,6 +405,21 @@ export function MarkdownEditor({
           </CardContent>
         </Card>
       )}
+      
+      {/* Instructions for users */}
+      <Card className="bg-blue-50">
+        <CardContent className="p-4">
+          <div className="text-sm text-blue-700">
+            <p className="font-medium mb-1">💡 Pro Tips:</p>
+            <ul className="list-disc list-inside space-y-1 text-xs">
+              <li>Drag and drop images directly into the editor</li>
+              <li>Use **bold** and *italic* formatting</li>
+              <li>Create headers with # ## ### etc.</li>
+              <li>Add links with [text](url) format</li>
+            </ul>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 } 

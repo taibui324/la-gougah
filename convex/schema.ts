@@ -56,24 +56,22 @@ const schema = defineSchema({
 
   // Banners for homepage and other sections with page-specific targeting
   banners: defineTable({
-    title: v.string(),
-    description: v.optional(v.string()),
+    title: v.string(), // For internal reference only, not displayed on site
     image: v.optional(v.string()),
     imageStorageId: v.optional(v.id("_storage")),
     link: v.optional(v.string()),
-    linkText: v.optional(v.string()), // Call-to-action button text
     pageType: v.union(
       v.literal("homepage"),
       v.literal("technology"),
-      v.literal("story"),
-      v.literal("news"),
-      v.literal("general")
+      v.literal("story")
     ),
     position: v.union(
       v.literal("hero"),
       v.literal("secondary"),
       v.literal("footer")
     ),
+    isSlider: v.optional(v.boolean()), // Whether this banner is part of a slider (optional for backward compatibility)
+    sliderGroup: v.optional(v.string()), // Group identifier for slider banners
     isActive: v.boolean(),
     order: v.number(),
     createdAt: v.number(),

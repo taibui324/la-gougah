@@ -26,9 +26,7 @@ export const getBannersByPage = query({
     pageType: v.union(
       v.literal("homepage"),
       v.literal("technology"),
-      v.literal("story"),
-      v.literal("news"),
-      v.literal("general")
+      v.literal("story")
     )
   },
   handler: async (ctx, args) => {
@@ -50,12 +48,12 @@ export const getHeroBannerByPage = query({
     pageType: v.union(
       v.literal("homepage"),
       v.literal("technology"),
-      v.literal("story"),
-      v.literal("news"),
-      v.literal("general")
+      v.literal("story")
     )
   },
   handler: async (ctx, args) => {
+    console.log(`Getting hero banner for page: ${args.pageType}`);
+    
     // Fetch the active hero banner for the specified page
     const banner = await ctx.db
       .query("banners")
@@ -66,6 +64,20 @@ export const getHeroBannerByPage = query({
       ))
       .order("asc")
       .first();
+    
+    if (banner) {
+      console.log(`Found hero banner for page ${args.pageType}:`, {
+        id: banner._id,
+        title: banner.title,
+        isActive: banner.isActive,
+        position: banner.position,
+        hasImage: !!banner.image,
+        hasStorageId: !!banner.imageStorageId,
+        imageStorageId: banner.imageStorageId,
+      });
+    } else {
+      console.log(`No hero banner found for page: ${args.pageType}`);
+    }
     
     return banner;
   },
@@ -78,9 +90,7 @@ export const getActiveBannersByPosition = query({
     pageType: v.optional(v.union(
       v.literal("homepage"),
       v.literal("technology"),
-      v.literal("story"),
-      v.literal("news"),
-      v.literal("general")
+      v.literal("story")
     ))
   },
   handler: async (ctx, args) => {
@@ -111,6 +121,52 @@ export const getActiveBannersByPosition = query({
   },
 });
 
+// Get active slider banners by group (public)
+export const getActiveSlidersByGroup = query({
+  args: { 
+    pageType: v.union(
+      v.literal("homepage"),
+      v.literal("technology"),
+      v.literal("story")
+    ),
+    sliderGroup: v.optional(v.string())
+  },
+  handler: async (ctx, args) => {
+    console.log(`Getting active sliders for page: ${args.pageType}, group: ${args.sliderGroup || "all"}`);
+    
+    let query = ctx.db
+      .query("banners")
+      .withIndex("pageType", (q) => q.eq("pageType", args.pageType))
+      .filter(q => q.and(
+        q.eq(q.field("isActive"), true),
+        q.eq(q.field("isSlider"), true)
+      ));
+    
+    if (args.sliderGroup) {
+      // Further filter by sliderGroup if provided
+      query = query.filter(q => q.eq(q.field("sliderGroup"), args.sliderGroup));
+    }
+    
+    const banners = await query.order("asc").collect();
+    console.log(`Found ${banners.length} active slider banners for page: ${args.pageType}`);
+    
+    // Log details of each banner for debugging
+    banners.forEach((banner, index) => {
+      console.log(`Banner ${index + 1}:`, {
+        id: banner._id,
+        title: banner.title,
+        isActive: banner.isActive,
+        isSlider: banner.isSlider,
+        hasImage: !!banner.image,
+        hasStorageId: !!banner.imageStorageId,
+        order: banner.order,
+      });
+    });
+    
+    return banners;
+  },
+});
+
 // Get a banner by ID (admin/editor only)
 export const getBannerById = query({
   args: { id: v.id("banners") },
@@ -128,23 +184,21 @@ export const getBannerById = query({
 export const createBanner = mutation({
   args: {
     title: v.string(),
-    description: v.optional(v.string()),
     image: v.optional(v.string()),
     imageStorageId: v.optional(v.id("_storage")),
     link: v.optional(v.string()),
-    linkText: v.optional(v.string()),
     pageType: v.union(
       v.literal("homepage"),
       v.literal("technology"),
-      v.literal("story"),
-      v.literal("news"),
-      v.literal("general")
+      v.literal("story")
     ),
     position: v.union(
       v.literal("hero"),
       v.literal("secondary"),
       v.literal("footer")
     ),
+    isSlider: v.boolean(),
+    sliderGroup: v.optional(v.string()),
     isActive: v.boolean(),
     order: v.number(),
   },
@@ -168,23 +222,21 @@ export const updateBanner = mutation({
   args: {
     id: v.id("banners"),
     title: v.string(),
-    description: v.optional(v.string()),
     image: v.optional(v.string()),
     imageStorageId: v.optional(v.id("_storage")),
     link: v.optional(v.string()),
-    linkText: v.optional(v.string()),
     pageType: v.union(
       v.literal("homepage"),
       v.literal("technology"),
-      v.literal("story"),
-      v.literal("news"),
-      v.literal("general")
+      v.literal("story")
     ),
     position: v.union(
       v.literal("hero"),
       v.literal("secondary"),
       v.literal("footer")
     ),
+    isSlider: v.boolean(),
+    sliderGroup: v.optional(v.string()),
     isActive: v.boolean(),
     order: v.number(),
   },
@@ -265,12 +317,11 @@ export const getBannerStats = query({
       total: allBanners.length,
       active: allBanners.filter(b => b.isActive).length,
       inactive: allBanners.filter(b => !b.isActive).length,
+      sliders: allBanners.filter(b => b.isSlider).length,
       byPage: {
         homepage: allBanners.filter(b => b.pageType === "homepage").length,
         technology: allBanners.filter(b => b.pageType === "technology").length,
         story: allBanners.filter(b => b.pageType === "story").length,
-        news: allBanners.filter(b => b.pageType === "news").length,
-        general: allBanners.filter(b => b.pageType === "general").length,
       },
       byPosition: {
         hero: allBanners.filter(b => b.position === "hero").length,

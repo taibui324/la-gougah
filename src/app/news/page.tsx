@@ -15,9 +15,9 @@ import Header from "@/components/header";
 import Footer from "@/components/footer";
 import { useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
-import { formatDistanceToNow } from "date-fns";
-import { vi } from "date-fns/locale";
+// Date formatting now uses standard JavaScript
 import { Skeleton } from "@/components/ui/skeleton";
+import { MarkdownContent } from "@/components/markdown-content";
 
 export default function NewsPage() {
   const posts = useQuery(api.posts.getPublishedPosts);
@@ -73,6 +73,8 @@ export default function NewsPage() {
                         alt={post.title}
                         fill
                         className="object-cover"
+                        unoptimized={true}
+                        key={post.imageStorageId || post.image}
                       />
                     ) : (
                       <div className="h-full w-full bg-blue-50 flex items-center justify-center">
@@ -84,9 +86,10 @@ export default function NewsPage() {
                     <div className="flex justify-between items-center mb-2">
                       <span className="text-sm text-blue-600">
                         {post.publishedAt
-                          ? formatDistanceToNow(post.publishedAt, {
-                              addSuffix: true,
-                              locale: vi,
+                          ? new Date(post.publishedAt).toLocaleDateString('vi-VN', {
+                              day: '2-digit',
+                              month: '2-digit',
+                              year: 'numeric'
                             })
                           : "Mới đăng"}
                       </span>
@@ -96,9 +99,9 @@ export default function NewsPage() {
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <CardDescription className="text-gray-600">
+                    <div className="text-gray-600 text-sm font-bold italic">
                       {post.description}
-                    </CardDescription>
+                    </div>
                   </CardContent>
                   <CardFooter>
                     <Link href={`/news/${post.slug}`}>

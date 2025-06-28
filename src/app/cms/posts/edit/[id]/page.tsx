@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useQuery, useMutation } from "convex/react";
+import { useQuery, useMutation, useConvexAuth } from "convex/react";
 import { api } from "../../../../../../convex/_generated/api";
 import { Id } from "../../../../../../convex/_generated/dataModel";
 import { CMSLayout } from "@/components/cms/layout/cms-layout";
@@ -65,6 +65,10 @@ export default function EditPostPage({
   const router = useRouter();
   const { toast } = useToast();
 
+  // Check authentication state first
+  const { isAuthenticated, isLoading: authLoading } = useConvexAuth();
+  const user = useQuery(api.users.getCurrentUserInfo);
+
   // Handle Next.js 15 async params
   const [postId, setPostId] = useState<Id<"posts"> | null>(null);
 
@@ -76,10 +80,10 @@ export default function EditPostPage({
     resolveParams();
   }, [params]);
 
-  // Fetch post data
+  // Fetch post data - only if authenticated and have user info
   const post = useQuery(
     api.posts.getPostById,
-    postId ? { id: postId } : "skip",
+    isAuthenticated && user && postId ? { id: postId } : "skip",
   );
 
   // Mutations
@@ -132,13 +136,30 @@ export default function EditPostPage({
     }
   }, [post, form]);
 
+  // Show loading while authentication or post data is loading
+  if (authLoading || user === undefined || isLoading || (postId && post === undefined)) {
+    return (
+      <CMSLayout>
+        <div className="py-8 flex justify-center">
+          <Loader2 className="h-8 w-8 animate-spin text-gray-400" />
+        </div>
+      </CMSLayout>
+    );
+  }
+
   // Generate slug from title
   const generateSlug = (title: string) => {
-    return title
+    // Handle Vietnamese characters and other diacritics
+    const normalized = title.normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '') // Remove diacritics
+      .replace(/[đĐ]/g, 'd')          // Replace Vietnamese đ/Đ with d
       .toLowerCase()
-      .replace(/[^a-z0-9\s-]/g, "")
-      .replace(/\s+/g, "-")
-      .replace(/-+/g, "-");
+      .replace(/[^a-z0-9\s-]/g, '') // Only allow letters, numbers, spaces, hyphens
+      .trim()
+      .replace(/\s+/g, '-')         // Replace spaces with hyphens
+      .replace(/-+/g, '-');         // Remove consecutive hyphens
+
+    return normalized || 'untitled'; // Ensure we always have a slug
   };
 
   // Handle title change to auto-generate slug
@@ -146,14 +167,9 @@ export default function EditPostPage({
     const title = e.target.value;
     form.setValue("title", title);
 
-    // Only auto-generate slug if it matches the current title's slug
-    const currentSlug = form.getValues("slug");
-    const currentTitle = post?.title || "";
-
-    if (currentSlug === generateSlug(currentTitle)) {
-      const newSlug = generateSlug(title);
-      form.setValue("slug", newSlug);
-    }
+    // Always generate a new slug when title changes
+    const newSlug = generateSlug(title);
+    form.setValue("slug", newSlug);
   };
 
   // Handle image upload
@@ -368,13 +384,13 @@ export default function EditPostPage({
                       <FormLabel>Description</FormLabel>
                       <FormControl>
                         <Textarea
-                          placeholder="Brief description of the post"
+                          placeholder="Write a brief description for this post..."
                           {...field}
-                          rows={2}
+                          rows={3}
                         />
                       </FormControl>
                       <FormDescription>
-                        A short summary that appears in post listings
+                        A short summary that appears in post listings. Will be displayed as bold and italic.
                       </FormDescription>
                       <FormMessage />
                     </FormItem>

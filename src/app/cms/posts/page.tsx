@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useQuery, useMutation } from "convex/react";
+import { useQuery, useMutation, useConvexAuth } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
 import { Id } from "../../../../convex/_generated/dataModel";
 import { CMSLayout } from "@/components/cms/layout/cms-layout";
@@ -19,7 +19,15 @@ import { Loader2, PenLine, Plus, Trash, Eye, Archive } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 export default function PostsPage() {
-  const posts = useQuery(api.posts.getAllPosts);
+  // Check authentication state first
+  const { isAuthenticated, isLoading: authLoading } = useConvexAuth();
+  const user = useQuery(api.users.getCurrentUserInfo);
+  
+  // Only make the posts query if we're authenticated and have user info
+  const posts = useQuery(
+    api.posts.getAllPosts,
+    isAuthenticated && user ? {} : "skip"
+  );
   const deletePost = useMutation(api.posts.deletePost);
   const updatePost = useMutation(api.posts.updatePost);
   const { toast } = useToast();
@@ -123,7 +131,7 @@ export default function PostsPage() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            {posts === undefined ? (
+            {authLoading || user === undefined || posts === undefined ? (
               <div className="py-8 flex justify-center">
                 <Loader2 className="h-8 w-8 animate-spin text-gray-400" />
               </div>
